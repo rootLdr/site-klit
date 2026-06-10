@@ -1,24 +1,291 @@
 ---
-// Página SUPORTE (esqueleto) — Fase 1, plano 01-03.
-// Usa o BaseLayout (Header + Footer + WhatsApp flutuante vêm do layout).
-// Canais e conteúdo real de suporte chegam na Fase 2.
+/**
+ * Página /SUPORTE (CNT-08) — Fase 2, plano 02-03.
+ *
+ * Substitui o esqueleto por conteúdo real: canais de atendimento (telefone,
+ * WhatsApp, e-mail placeholder), um bloco reservado para acesso remoto
+ * (TeamViewer/AnyDesk) marcado como "a fornecer" e horário de atendimento.
+ *
+ * IMPORTANTE: NÃO embutir libs/SDKs/scripts de terceiros (ex.: TeamViewer,
+ * AnyDesk) — apenas placeholder textual marcado. Estilos só via var(--token).
+ *
+ * Placeholders desta fase (resolvidos na Fase 3):
+ *   - WhatsApp: aponta para /contato; número/link wa.me real é Fase 3.
+ *   - E-mail: contato@klit.com.br — A CONFIRMAR com o usuário.
+ *   - Horário: "horário comercial" genérico — A CONFIRMAR.
+ *   - Acesso remoto: ferramentas a fornecer (sem SDK embutido).
+ */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/Section.astro";
 import Container from "../components/Container.astro";
+import Card from "../components/Card.astro";
+import Button from "../components/Button.astro";
 ---
 
 <BaseLayout
   title="KLIT — Suporte"
-  description="Suporte da KLIT. Canais de atendimento e conteúdo completo em breve."
+  description="Suporte da KLIT: telefone 51 3022-3066, WhatsApp e e-mail. Ponto único de contato para manter sua infraestrutura de TI estável e protegida."
 >
+  <!-- Intro -->
   <Section>
     <Container size="md">
-      <h1>Suporte</h1>
-      <p>
-        Esta é a página de Suporte em estrutura (esqueleto). Na Fase 2 ela
-        reunirá os canais de atendimento e as informações de suporte aos
-        clientes da KLIT.
-      </p>
+      <div class="intro">
+        <p class="intro__eyebrow">Atendimento KLIT</p>
+        <h1 class="intro__title">Suporte</h1>
+        <p class="intro__lead">
+          A KLIT é seu <strong>ponto único de contato</strong> para a
+          infraestrutura de TI. Nosso time acompanha o seu ambiente de ponta a
+          ponta — da rede aos sistemas — para manter a operação estável,
+          protegida e em dia, com a gestão integrada do <strong>Gesin</strong>.
+        </p>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Canais de atendimento -->
+  <Section tone="dark" id="canais">
+    <Container size="lg">
+      <div class="bloco__head">
+        <h2 class="bloco__title">Canais de atendimento</h2>
+        <p class="bloco__sub">
+          Fale com a KLIT pelo canal que for mais prático para você.
+        </p>
+      </div>
+
+      <ul class="canais__grid">
+        <li class="canais__item">
+          <Card title="Telefone">
+            <p class="canal__desc">Atendimento direto com o nosso time.</p>
+            <a class="canal__link" href="tel:+555130223066">51 3022-3066</a>
+          </Card>
+        </li>
+
+        <li class="canais__item">
+          <Card title="WhatsApp">
+            <p class="canal__desc">
+              Mande uma mensagem e retornamos rapidamente.
+            </p>
+            {/* TODO(Fase 3): trocar href para wa.me quando o número de WhatsApp for fornecido. */}
+            <Button href="/contato" variant="primary">Falar no WhatsApp</Button>
+          </Card>
+        </li>
+
+        <li class="canais__item">
+          <Card title="E-mail">
+            <p class="canal__desc">Para registros e envio de documentos.</p>
+            {/* A CONFIRMAR com o usuário: e-mail oficial de atendimento. */}
+            <a class="canal__link" href="mailto:contato@klit.com.br"
+              >contato@klit.com.br</a
+            >
+            <p class="canal__nota">E-mail a confirmar.</p>
+          </Card>
+        </li>
+      </ul>
+    </Container>
+  </Section>
+
+  <!-- Acesso remoto (placeholder reservado) -->
+  <Section id="acesso-remoto">
+    <Container size="md">
+      <div class="remoto">
+        <p class="remoto__eyebrow">Em breve</p>
+        <h2 class="remoto__title">Acesso remoto</h2>
+        <p class="remoto__text">
+          Em breve disponibilizaremos aqui as ferramentas de acesso remoto
+          (TeamViewer/AnyDesk) para agilizar o atendimento à distância. Este
+          espaço está reservado — os links e instruções serão fornecidos.
+        </p>
+        {/*
+          NÃO embutir libs/SDKs/scripts de terceiros (TeamViewer/AnyDesk).
+          Apenas placeholder textual. Os links/ferramentas reais são a fornecer.
+        */}
+        <p class="remoto__badge">Ferramentas a fornecer</p>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Horário de atendimento -->
+  <Section tone="default" id="horario">
+    <Container size="md">
+      <div class="horario">
+        <h2 class="horario__title">Horário de atendimento</h2>
+        <p class="horario__text">
+          {/* A CONFIRMAR: horário específico. Por ora, genérico e sóbrio. */}
+          Atendemos em horário comercial. Para situações fora do horário,
+          deixe sua mensagem por WhatsApp ou e-mail que retornamos assim que
+          possível.
+        </p>
+      </div>
     </Container>
   </Section>
 </BaseLayout>
+
+<style>
+  /* ===== Intro ===== */
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: var(--container-sm);
+  }
+  .intro__eyebrow {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .intro__title {
+    margin: 0;
+    font-size: var(--font-size-4xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+  .intro__lead {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+  }
+  .intro__lead strong {
+    color: var(--color-text);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* ===== Cabeçalho de bloco (sobre fundo escuro) ===== */
+  .bloco__head {
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-7);
+  }
+  .bloco__title {
+    margin: 0 0 var(--space-3);
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-dark-text);
+  }
+  .bloco__sub {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-dark-text-muted);
+  }
+
+  /* ===== Grade de canais ===== */
+  .canais__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+  .canais__item {
+    display: flex;
+  }
+  .canais__item :global(.card) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .canal__desc {
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-base);
+    line-height: var(--line-base);
+  }
+  .canal__link {
+    color: var(--color-primary);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    text-decoration: none;
+  }
+  .canal__link:hover {
+    text-decoration: underline;
+  }
+  .canal__nota {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+  }
+
+  /* ===== Acesso remoto (placeholder) ===== */
+  .remoto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: var(--container-sm);
+    border-left: 4px solid var(--color-accent);
+    padding-left: var(--space-6);
+  }
+  .remoto__eyebrow {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .remoto__title {
+    margin: 0;
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+  .remoto__text {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+  }
+  .remoto__badge {
+    align-self: flex-start;
+    margin: var(--space-2) 0 0;
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--color-muted);
+    color: var(--color-text-muted);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* ===== Horário ===== */
+  .horario {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: var(--container-sm);
+  }
+  .horario__title {
+    margin: 0;
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+  .horario__text {
+    margin: 0;
+    font-size: var(--font-size-base);
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+  }
+
+  /* ===== Responsivo ===== */
+  @media (max-width: 900px) {
+    .canais__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .canais__grid {
+      grid-template-columns: 1fr;
+    }
+    .intro__title {
+      font-size: var(--font-size-3xl);
+    }
+  }
+</style>
