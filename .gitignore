@@ -1,0 +1,15 @@
+# Dependências e build (fases futuras)
+node_modules/
+dist/
+build/
+.cache/
+.vite/
+.astro/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
+
+# Backups locais
+*.bak.*
