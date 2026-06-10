@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: verifying
 stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-06-10T23:28:03.634Z"
+last_updated: "2026-06-10T23:52:46.936Z"
 last_activity: 2026-06-10
 progress:
   total_phases: 3
   completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 9
+  completed_plans: 7
   percent: 67
 ---
 
@@ -30,7 +30,7 @@ Plan: 3 of 3 in current phase (01-02 concluído)
 Status: Phase complete — ready for verification
 Last activity: 2026-06-10
 
-Progress: [██████████] 100%
+Progress: [████████░░] 78%
 
 ## Accumulated Context
 
@@ -55,6 +55,9 @@ Decisões logadas em PROJECT.md (Key Decisions) e docs/decisions.md. Recentes:
 - [Phase ?]: 02-03: /solucoes deriva as 9 marcas do módulo de dados — nada inline; consistência com a home
 - [Phase ?]: 02-03: form de /contato com validação HTML5 nativa e action='#' placeholder — envio funcional é Fase 3 (ENT-02, Formspree)
 - [Phase ?]: 02-03: acesso remoto em /suporte é placeholder textual (a fornecer) — nenhum SDK TeamViewer/AnyDesk embutido nesta fase
+- [Phase 03]: Contato centralizado em src/data/site.js (named ESM); trocar WhatsApp/email/formspreeId em 1 lugar
+- [Phase 03]: Formspree por HTTP puro (sem SDK) com fetch/AJAX + fallback POST nativo + honeypot _gotcha
+- [Phase 03]: 555130223066 (fixo) reusado como WhatsApp; email/formspreeId placeholders a confirmar (CONTEXT.md)
 
 ### Pending Todos
 
@@ -73,6 +76,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-10T23:27:42.417Z
+Last session: 2026-06-10T23:51:55.732Z
 Stopped at: Completed 02-02-PLAN.md
 Resume file: None
