@@ -1,0 +1,78 @@
+---
+/**
+ * BaseLayout — layout raiz do site KLIT (FND-05, FND-06, FND-08).
+ *
+ * Responsabilidades:
+ *   - <html lang="pt-BR" data-theme="ocean"> com estado SSR inicial.
+ *   - <head> com SEO placeholder (title/description via props — SEO real é Fase 3),
+ *     favicon do brand, viewport e a fonte/tokens (via global.css).
+ *   - ANTI-FLASH CANÔNICO: o <script is:inline> abaixo é o ÚNICO ponto do site
+ *     que reaplica o tema salvo (localStorage "klit-theme") ANTES do paint, em
+ *     TODAS as páginas. Por isso o snippet inline foi REMOVIDO do ThemeSwitcher
+ *     (que mantém só a lógica client-side de clique/persistência/estado ativo).
+ *   - <body> renderiza Header (slot do topo), <slot/> (conteúdo da página),
+ *     Footer e o WhatsAppButton flutuante — presentes em todas as páginas.
+ *
+ * Props:
+ *   - title:       <title> da página (default placeholder pt-BR).
+ *   - description: <meta name="description"> (default placeholder pt-BR).
+ *
+ * Tokens/estilos chegam via global.css (que importa tokens.css + fonte Inter).
+ */
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "KLIT — Tecnologia & Segurança",
+  description =
+    "KLIT — soluções de tecnologia e segurança em Porto Alegre. Conteúdo completo em breve.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR" data-theme="ocean">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href="/brand/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- ============================================================
+         ANTI-FLASH CANÔNICO (FND-08) — ponto ÚNICO do site.
+         is:inline => executa imediatamente, sem type=module / sem defer,
+         ANTES de qualquer CSS/render. Reaplica o tema salvo para que NÃO
+         haja flash de cor em nenhuma página. O ThemeSwitcher NÃO duplica
+         mais este snippet (só trata cliques/persistência).
+         ============================================================ -->
+    <script is:inline>
+      (function () {
+        try {
+          var THEME_KEY = "klit-theme";
+          var VALID = ["ocean", "navy", "sky", "soft"];
+          var saved = localStorage.getItem(THEME_KEY);
+          var theme = VALID.indexOf(saved) !== -1 ? saved : "ocean";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "ocean");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <Header />
+    <main id="conteudo">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsAppButton />
+  </body>
+</html>

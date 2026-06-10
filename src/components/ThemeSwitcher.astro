@@ -6,10 +6,11 @@
  * site AO VIVO setando data-theme no <html> (aciona os blocos em tokens.css),
  * e persiste a escolha em localStorage (chave "klit-theme").
  *
- * Anti-flash: o <script is:inline> abaixo roda ANTES do paint e reaplica o
- * tema salvo no <html>. NOTA (01-03): idealmente esse mesmo snippet inline
- * deve ser hoistado para o <head> do BaseLayout para garantir zero flash em
- * TODAS as páginas; aqui ele mantém o componente funcional por si só.
+ * Anti-flash: a partir do 01-03 o snippet <script is:inline> foi HOISTADO
+ * para o <head> do BaseLayout (ponto canônico, roda antes do paint em todas as
+ * páginas). Por isso ele foi REMOVIDO daqui para evitar execução duplicada —
+ * este componente mantém apenas a lógica client-side de clique/persistência/
+ * estado ativo. O tema atual é lido do <html> (já setado pelo anti-flash).
  *
  * Acessibilidade: cada swatch é um <button> com aria-label e aria-pressed
  * marcando o tema ativo; foco por teclado visível (via :focus-visible global).
@@ -27,21 +28,9 @@ const THEMES = [
 ] as const;
 ---
 
-<!-- Anti-flash: aplica o tema salvo no <html> antes do paint.
-     is:inline => roda imediatamente, sem type=module / sem defer. -->
-<script is:inline>
-  (function () {
-    try {
-      var THEME_KEY = "klit-theme";
-      var VALID = ["ocean", "navy", "sky", "soft"];
-      var saved = localStorage.getItem(THEME_KEY);
-      var theme = VALID.indexOf(saved) !== -1 ? saved : "ocean";
-      document.documentElement.setAttribute("data-theme", theme);
-    } catch (e) {
-      document.documentElement.setAttribute("data-theme", "ocean");
-    }
-  })();
-</script>
+<!-- Anti-flash REMOVIDO daqui no 01-03: agora é canônico no <head> do
+     BaseLayout (roda antes do paint em todas as páginas). Evita execução
+     duplicada. Abaixo segue só a UI + a lógica client-side de troca. -->
 
 <div
   class="theme-switcher"
