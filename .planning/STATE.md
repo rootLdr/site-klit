@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: executing
+stopped_at: "Completed 01-01-PLAN.md (scaffold Astro + assets:sync)"
+last_updated: "2026-06-10T22:21:49.154Z"
+last_activity: 2026-06-10
+progress:
+  total_phases: 3
+  completed_phases: 0
+  total_plans: 3
+  completed_plans: 1
+  percent: 0
+---
+
 # Project State
 
 ## Project Reference
@@ -10,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-10)
 ## Current Position
 
 Phase: 1 of 3 (Fundação & Base Visual)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-06-10 — QUESTIONING + análise do site atual + setup (PROJECT/REQUIREMENTS/ROADMAP), assets-input/ e share Samba criados
+Plan: 1 of 3 in current phase
+Status: Ready to execute
+Last activity: 2026-06-10
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [███░░░░░░░] 33%
 
 ## Accumulated Context
 
@@ -25,6 +41,9 @@ Decisões logadas em PROJECT.md (Key Decisions) e docs/decisions.md. Recentes:
 - Setup: Um único conceito; site estático (sem backend); Segurança em destaque; Landing + páginas essenciais; CTA WhatsApp + formulário; tom premium/moderno.
 - Config: YOLO, paralelo, git tracking on, granularidade grossa (máx. 3 fases, planos N.1/N.2/N.3).
 - Ambiente: VM KVM (não WSL); acesso Windows via Samba `\\192.168.68.99\site-klit` (ATIVO).
+- [Phase ?]: 01-01: Pipeline assets:sync (idempotente) public/brand/ versionado; slugs ocean/navy/sky/soft.
+- [Phase ?]: 01-01: Scaffold Astro 6.4.6 estático na raiz (saída static, sem SSR); npm run dev OK.
+- [Phase ?]: 01-01: Canônicos do site = favicon.png + logo-horizontal.png (ocean) + logo-horizontal-branco.png (branco) p/ 01-03.
 
 ### Pending Todos
 
@@ -43,6 +62,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-10
-Stopped at: ROADMAP/REQUIREMENTS/STATE criados; pronto para `/gsd:plan-phase 1`
+Last session: 2026-06-10T22:21:49.143Z
+Stopped at: Completed 01-01-PLAN.md (scaffold Astro + assets:sync)
 Resume file: None
