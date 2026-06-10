@@ -1,27 +1,24 @@
 ---
-// Página SOLUÇÕES (esqueleto navegável) — Fase 1, plano 01-01.
-// Conteúdo real (as 9 soluções da KLIT) vem na Fase 2; layout base em 01-03.
+// Página SOLUÇÕES (esqueleto) — Fase 1, plano 01-03.
+// Usa o BaseLayout (Header + Footer + WhatsApp flutuante vêm do layout).
+// As 9 soluções da KLIT chegam na Fase 2.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import Container from "../components/Container.astro";
 ---
 
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>KLIT — Soluções</title>
-  </head>
-  <body>
-    <main>
+<BaseLayout
+  title="KLIT — Soluções"
+  description="Soluções de tecnologia e segurança da KLIT. Conteúdo completo em breve."
+>
+  <Section>
+    <Container size="md">
       <h1>Soluções</h1>
-      <p>Página de soluções (esqueleto). Conteúdo real chega na Fase 2.</p>
-      <nav aria-label="Navegação principal">
-        <ul>
-          <li><a href="/">Início</a></li>
-          <li><a href="/solucoes">Soluções</a></li>
-          <li><a href="/suporte">Suporte</a></li>
-          <li><a href="/contato">Contato</a></li>
-        </ul>
-      </nav>
-    </main>
-  </body>
-</html>
+      <p>
+        Aqui ficarão as soluções da KLIT. Esta página está em estrutura
+        (esqueleto) nesta fase; na Fase 2 ela trará o portfólio completo de
+        serviços de tecnologia e segurança.
+      </p>
+    </Container>
+  </Section>
+</BaseLayout>

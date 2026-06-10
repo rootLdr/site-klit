@@ -1,27 +1,26 @@
 ---
-// Página CONTATO (esqueleto navegável) — Fase 1, plano 01-01.
-// Formulário, WhatsApp e dados reais (Fone 51 3022-3066) vêm depois (Fase 2 / 01-03).
+// Página CONTATO (esqueleto) — Fase 1, plano 01-03.
+// Usa o BaseLayout (Header + Footer + WhatsApp flutuante vêm do layout).
+// Formulário e dados completos chegam na Fase 2. O telefone fixo 51 3022-3066
+// e o endereço já aparecem no Footer do layout.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import Container from "../components/Container.astro";
 ---
 
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>KLIT — Contato</title>
-  </head>
-  <body>
-    <main>
+<BaseLayout
+  title="KLIT — Contato"
+  description="Fale com a KLIT em Porto Alegre. Telefone 51 3022-3066. Formulário em breve."
+>
+  <Section>
+    <Container size="md">
       <h1>Contato</h1>
-      <p>Página de contato (esqueleto). Formulário e WhatsApp chegam depois.</p>
-      <nav aria-label="Navegação principal">
-        <ul>
-          <li><a href="/">Início</a></li>
-          <li><a href="/solucoes">Soluções</a></li>
-          <li><a href="/suporte">Suporte</a></li>
-          <li><a href="/contato">Contato</a></li>
-        </ul>
-      </nav>
-    </main>
-  </body>
-</html>
+      <p>
+        Esta é a página de Contato em estrutura (esqueleto). Na Fase 2 ela trará
+        o formulário e os atalhos de atendimento. O telefone (51 3022-3066) e o
+        endereço já estão disponíveis no rodapé, e o botão flutuante de WhatsApp
+        acompanha você em todas as páginas.
+      </p>
+    </Container>
+  </Section>
+</BaseLayout>

@@ -1,29 +1,24 @@
 ---
-// Página HOME (esqueleto navegável) — Fase 1, plano 01-01.
-// O conteúdo real da home (hero, pilar de Segurança, soluções) vem na Fase 2.
-// O BaseLayout, header, footer e WhatsApp são adicionados no plano 01-03.
-// Esta versão é só markup mínimo para comprovar que o site roda e navega.
+// Página HOME (esqueleto) — Fase 1, plano 01-03.
+// Usa o BaseLayout (Header + Footer + WhatsApp flutuante vêm do layout).
+// Conteúdo real da home (hero, pilar de Segurança, soluções) chega na Fase 2.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import Container from "../components/Container.astro";
 ---
 
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>KLIT — Início</title>
-  </head>
-  <body>
-    <main>
+<BaseLayout
+  title="KLIT — Início"
+  description="KLIT — tecnologia e segurança em Porto Alegre. Página inicial; conteúdo completo em breve."
+>
+  <Section>
+    <Container size="md">
       <h1>KLIT — Início</h1>
-      <p>Página inicial (esqueleto). Conteúdo real chega na Fase 2.</p>
-      <nav aria-label="Navegação principal">
-        <ul>
-          <li><a href="/">Início</a></li>
-          <li><a href="/solucoes">Soluções</a></li>
-          <li><a href="/suporte">Suporte</a></li>
-          <li><a href="/contato">Contato</a></li>
-        </ul>
-      </nav>
-    </main>
-  </body>
-</html>
+      <p>
+        Bem-vindo à KLIT. Esta é a página inicial em estrutura (esqueleto): o
+        layout, a navegação e o tema já funcionam. O conteúdo completo — com o
+        hero, o pilar de Segurança e as soluções — chega na Fase 2.
+      </p>
+    </Container>
+  </Section>
+</BaseLayout>
