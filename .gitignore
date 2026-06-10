@@ -5,6 +5,17 @@ build/
 .cache/
 .vite/
 .astro/
+.output/
+
+# Variáveis de ambiente
+.env
+.env.production
+.env.*.local
+
+# Editores
+.vscode/*
+!.vscode/extensions.json
+.idea/
 
 # Sistema
 .DS_Store
