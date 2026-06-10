@@ -13,8 +13,8 @@ Requisitos do primeiro conceito. Cada um mapeia para uma fase do roadmap.
 - [x] **FND-02**: Pipeline de assets consome de `assets-input/` (logos, imagens) e disponibiliza ao site
 - [x] **FND-03**: Design system premium definido via tokens trocáveis (cores, tipografia, espaçamento, grid)
 - [x] **FND-04**: Componentes base reutilizáveis (botão, card, seção, container)
-- [ ] **FND-05**: Header com navegação + footer + botão WhatsApp flutuante em todas as páginas
-- [ ] **FND-06**: Estrutura 100% responsiva (mobile, tablet, desktop)
+- [x] **FND-05**: Header com navegação + footer + botão WhatsApp flutuante em todas as páginas
+- [x] **FND-06**: Estrutura 100% responsiva (mobile, tablet, desktop)
 - [x] **FND-07**: Troca fácil de logo/textos/imagens (sem editar lógica complexa), documentada
 - [x] **FND-08**: **Seletor de tema** visível troca a cor primária entre as opções da paleta (Ocean Blue / Navy Dark / Sky Blue / Soft Blue) com 1 clique, aplicado em runtime (CSS custom properties / `data-theme`)
 

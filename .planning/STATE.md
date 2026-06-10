@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
+status: verifying
 stopped_at: "Completed 01-02-PLAN.md (design system: tokens/temas, primitivos, ThemeSwitcher)"
-last_updated: "2026-06-10T22:26:00.000Z"
+last_updated: "2026-06-10T22:34:39.748Z"
 last_activity: 2026-06-10
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
-  completed_plans: 2
-  percent: 67
+  completed_plans: 3
+  percent: 33
 ---
 
 # Project State
@@ -27,10 +27,10 @@ See: .planning/PROJECT.md (updated 2026-06-10)
 
 Phase: 1 of 3 (Fundação & Base Visual)
 Plan: 3 of 3 in current phase (01-02 concluído)
-Status: Ready to execute (01-03 layout base)
+Status: Phase complete — ready for verification
 Last activity: 2026-06-10
 
-Progress: [███████░░░] 67%
+Progress: [██████████] 100%
 
 ## Accumulated Context
 
@@ -47,6 +47,8 @@ Decisões logadas em PROJECT.md (Key Decisions) e docs/decisions.md. Recentes:
 - [Phase 1]: 01-02: Fonte Inter via @fontsource (pesos 400/500/600/700) como tipografia base, importada em global.css.
 - [Phase 1]: 01-02: Design tokens em tokens.css (paleta = único hex); temas via [data-theme] trocam só --color-primary (ocean/navy/sky/soft).
 - [Phase 1]: 01-02: ThemeSwitcher persiste em localStorage (chave klit-theme); swatches usam tokens de paleta (sem hex); anti-flash is:inline a hoistar p/ <head> em 01-03.
+- [Phase ?]: 01-03: anti-flash hoistado para o head do BaseLayout (ponto canônico) e removido do ThemeSwitcher para evitar execução dupla
+- [Phase ?]: 01-03: menu hambúrguer abaixo de 768px; logo header=ocean (fundo claro), footer=branco (fundo navy)
 
 ### Pending Todos
 
@@ -65,6 +67,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-10T22:26:00.000Z
+Last session: 2026-06-10T22:34:32.102Z
 Stopped at: Completed 01-02-PLAN.md (design system: tokens/temas, primitivos, ThemeSwitcher)
 Resume file: None

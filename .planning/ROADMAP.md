@@ -29,7 +29,7 @@ Construção de **um conceito** de site institucional moderno e premium para a K
 Plans:
 - [x] 01-01 (**1.1**): Scaffold do site estático — stack leve, dev server, estrutura de pastas e pipeline de `assets-input/`
 - [x] 01-02 (**1.2**): Design system premium — tokens via CSS custom properties (paleta KLIT, tipografia, espaçamento, grid) + **seletor de tema** (troca de cor primária em runtime) + componentes base (botão, card, seção, container)
-- [ ] 01-03 (**1.3**): Layout base — header com navegação, footer, botão WhatsApp flutuante e esqueleto responsivo das páginas
+- [x] 01-03 (**1.3**): Layout base — header com navegação, footer, botão WhatsApp flutuante e esqueleto responsivo das páginas
 
 ### Phase 2: Conteúdo & Páginas
 **Goal**: Home premium completa com Segurança em destaque e páginas essenciais (Soluções, Suporte, Contato), usando conteúdo real do site atual reescrito sem typos.
@@ -71,7 +71,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Fundação & Base Visual | 2/3 | In Progress|  |
+| 1. Fundação & Base Visual | 3/3 | Complete   | 2026-06-10 |
 | 2. Conteúdo & Páginas | 0/3 | Not started | - |
 | 3. Conversão, Qualidade & Entrega | 0/3 | Not started | - |
 
