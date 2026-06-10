@@ -36,9 +36,9 @@ Requisitos do primeiro conceito. Cada um mapeia para uma fase do roadmap.
 - [x] **ENT-01**: Botão WhatsApp flutuante abre conversa (link `wa.me`)
 - [x] **ENT-02**: Formulário de contato funcional via serviço externo (ex.: Formspree) com validação
 - [x] **ENT-03**: CTAs de contato claros nos pontos-chave da home
-- [ ] **ENT-04**: SEO básico (title, meta description, Open Graph, favicon)
-- [ ] **ENT-05**: Acessibilidade básica (contraste, alt text, teclado, HTML semântico)
-- [ ] **ENT-06**: Performance (imagens otimizadas, carregamento rápido)
+- [x] **ENT-04**: SEO básico (title, meta description, Open Graph, favicon)
+- [x] **ENT-05**: Acessibilidade básica (contraste, alt text, teclado, HTML semântico)
+- [x] **ENT-06**: Performance (imagens otimizadas, carregamento rápido)
 - [ ] **ENT-07**: README de manutenção (rodar local, estrutura, onde colocar assets, trocar conteúdo)
 - [ ] **ENT-08**: Build de produção gerável e servível localmente
 
