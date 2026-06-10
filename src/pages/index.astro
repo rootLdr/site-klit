@@ -11,6 +11,7 @@ import Container from "../components/Container.astro";
 import Button from "../components/Button.astro";
 import Card from "../components/Card.astro";
 import { solucoes, pilares, solucoesPorPilar, PILAR } from "../data/solucoes.js";
+import { whatsappUrl } from "../data/site.js";
 
 // Os 3 cards de Segurança vêm do MÓDULO de dados (fonte única de verdade) —
 // não redigitamos os nomes inline, garantindo consistência das marcas.
@@ -57,8 +58,7 @@ const valores = [
           quem entende do seu negócio.
         </p>
         <div class="hero__ctas">
-          {/* TODO(Fase 3): trocar href para wa.me quando o número de WhatsApp for fornecido. */}
-          <Button variant="primary" href="/contato">Falar no WhatsApp</Button>
+          <Button variant="primary" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Falar no WhatsApp</Button>
           <Button variant="secondary" href="/solucoes">Conheça as soluções</Button>
         </div>
       </div>
@@ -226,8 +226,7 @@ const valores = [
           segura e com custo previsível — sem investimento inicial.
         </p>
         <div class="cta__actions">
-          {/* TODO(Fase 3): trocar href para wa.me quando o número de WhatsApp for fornecido. */}
-          <Button variant="primary" href="/contato">Falar no WhatsApp</Button>
+          <Button variant="primary" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Falar no WhatsApp</Button>
           <Button variant="secondary" href="/contato">Ir para Contato</Button>
         </div>
         <p class="cta__fone">

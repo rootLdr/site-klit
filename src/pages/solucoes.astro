@@ -15,6 +15,7 @@ import Container from "../components/Container.astro";
 import Card from "../components/Card.astro";
 import Button from "../components/Button.astro";
 import { pilares, solucoesPorPilar } from "../data/solucoes.js";
+import { whatsappUrl } from "../data/site.js";
 ---
 
 <BaseLayout
@@ -74,8 +75,7 @@ import { pilares, solucoesPorPilar } from "../data/solucoes.js";
           investimento inicial nulo e custo previsível.
         </p>
         <div class="cta__actions">
-          {/* TODO(Fase 3): trocar href para wa.me quando o número de WhatsApp for fornecido. */}
-          <Button href="/contato" variant="primary">Falar no WhatsApp</Button>
+          <Button href={whatsappUrl} variant="primary" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</Button>
           <Button href="/contato" variant="secondary">Fale com a KLIT</Button>
         </div>
       </div>

@@ -9,8 +9,8 @@
  * IMPORTANTE: NÃO embutir libs/SDKs/scripts de terceiros (ex.: TeamViewer,
  * AnyDesk) — apenas placeholder textual marcado. Estilos só via var(--token).
  *
- * Placeholders desta fase (resolvidos na Fase 3):
- *   - WhatsApp: aponta para /contato; número/link wa.me real é Fase 3.
+ * Contato centralizado em src/data/site.js (ENT-07): o CTA do WhatsApp usa
+ * `whatsappUrl` (wa.me real). Restantes placeholders (Fase 3 / a confirmar):
  *   - E-mail: contato@klit.com.br — A CONFIRMAR com o usuário.
  *   - Horário: "horário comercial" genérico — A CONFIRMAR.
  *   - Acesso remoto: ferramentas a fornecer (sem SDK embutido).
@@ -20,6 +20,7 @@ import Section from "../components/Section.astro";
 import Container from "../components/Container.astro";
 import Card from "../components/Card.astro";
 import Button from "../components/Button.astro";
+import { whatsappUrl } from "../data/site.js";
 ---
 
 <BaseLayout
@@ -65,8 +66,7 @@ import Button from "../components/Button.astro";
             <p class="canal__desc">
               Mande uma mensagem e retornamos rapidamente.
             </p>
-            {/* TODO(Fase 3): trocar href para wa.me quando o número de WhatsApp for fornecido. */}
-            <Button href="/contato" variant="primary">Falar no WhatsApp</Button>
+            <Button href={whatsappUrl} variant="primary" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</Button>
           </Card>
         </li>
 

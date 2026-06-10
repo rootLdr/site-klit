@@ -16,6 +16,7 @@ import Section from "../components/Section.astro";
 import Container from "../components/Container.astro";
 import Button from "../components/Button.astro";
 import ContatoForm from "../components/ContatoForm.astro";
+import { whatsappUrl } from "../data/site.js";
 ---
 
 <BaseLayout
@@ -48,8 +49,7 @@ import ContatoForm from "../components/ContatoForm.astro";
 
           <div class="info__block">
             <h2 class="info__title">WhatsApp</h2>
-            {/* TODO(Fase 3): trocar href para wa.me quando o número de WhatsApp for fornecido. */}
-            <Button href="/contato" variant="primary">Falar no WhatsApp</Button>
+            <Button href={whatsappUrl} variant="primary" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</Button>
           </div>
 
           <div class="info__block">
