@@ -41,7 +41,17 @@ KLIT como **parceiro de infraestrutura de TI gerenciada e segura** para empresas
 ## Direção visual
 
 - **Tom:** premium, moderno, clean — bastante respiro, grid consistente, seções nítidas.
-- **Cor/tipografia:** *(a validar a partir dos logos / referências em `assets-input/`)*. Provável base: tons corporativos sóbrios + 1 cor de destaque para Segurança/CTA.
+- **Logo:** novo **Logo KLIT 2026** (marca de nós/rede + wordmark) já entregue em `assets-input/logos/Novo Logo 2026/`, com variantes por cor (horizontal, vertical, favicon, marca reduzida).
+- **Paleta oficial de marca** (definida):
+  | Cor | Hex | Papel |
+  |-----|-----|-------|
+  | Ocean Blue | `#005A91` | Primária (confiança) |
+  | Navy Dark | `#1B3A5C` | Seções escuras / profundidade |
+  | Sky Blue | `#81D2F1` | Destaque / acento (CTA, Segurança) |
+  | Soft Blue | `#A3C5F1` | Acento suave / fundos |
+  | Preto | `#000000` | Texto |
+  | Branco | — | Neutro / versão clara |
+- **Tipografia:** *(a validar — sugestão: sans-serif moderna e legível, ex. Inter/Plus Jakarta Sans; confirmar com manual de marca se houver).*
 - **Hero:** estático e direto (sem slider antigo), foco em uma mensagem.
 - **Logos de parceiros:** tratamento monocromático/uniforme moderno.
 - **Imagens:** *(dependem de `assets-input/images/`)* — placeholders até a entrega.

@@ -32,12 +32,21 @@ Registro objetivo das decisões tomadas na fase de QUESTIONING/alinhamento.
 | T4 | Pasta oficial de entrada: **`assets-input/`** (logos/images/references/docs) | Centraliza arquivos vindos do Windows; evita assets espalhados |
 | T5 | Tom visual: **premium e moderno** | Elevar de "datado/feio" para apresentável e de alto padrão |
 
+## Marca (definida — logos entregues em 2026-06-10)
+
+| # | Decisão | Detalhe |
+|---|---------|---------|
+| M1 | **Novo Logo KLIT 2026** | Marca de nós/rede + wordmark; variantes por cor em `assets-input/logos/Novo Logo 2026/` |
+| M2 | **Paleta oficial** | Ocean Blue `#005A91` (primária), Navy Dark `#1B3A5C`, Sky Blue `#81D2F1`, Soft Blue `#A3C5F1`, Preto `#000000`, Branco |
+| M3 | Azul como base visual | Reforça confiança/segurança — alinhado ao pilar de destaque |
+
 ## Pendentes de decisão (dependem de input do usuário)
 
 - Stack exata do site estático (HTML puro vs Astro/Vite) — definir no plano de execução.
-- Cores/tipografia da marca — aguardando logos e eventual manual de marca em `assets-input/`.
+- **Tipografia** da marca — sugerir (Inter/Plus Jakarta Sans) ou confirmar manual de marca.
 - Serviço de envio do formulário (Formspree, email, etc.) — definir na execução.
 - Lista de clientes/logos para prova social — confirmar com usuário (não extraível do site atual).
+- Arquivos de logo soltos com nomes aleatórios (`asdasdasd.png`, `qweqweq.png` etc.) na raiz de `Novo Logo 2026/` — são duplicatas; confirmar remoção.
 
 ---
 *Última atualização: 2026-06-10*
