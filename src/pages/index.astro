@@ -29,6 +29,15 @@ const parceiros = [
   "AWS",
 ];
 
+// Institucional (CNT-06) — copy reescrita SEM os typos do site antigo
+// (sem "Outsoursing", "Tecnico" nem "referencia"; "referência" com acento).
+const valores = [
+  "Cliente satisfeito",
+  "Ética",
+  "Inovação",
+  "Sustentabilidade",
+  "Lucratividade",
+];
 ---
 
 <BaseLayout
@@ -171,6 +180,61 @@ const parceiros = [
           ))
         }
       </ul>
+    </Container>
+  </Section>
+
+  {/* ============ Seção 6 — Institucional: Missão/Visão/Valores (CNT-06) ============ */}
+  <Section id="sobre">
+    <Container>
+      <div class="inst__head">
+        <p class="inst__eyebrow">Quem somos</p>
+        <h2 class="inst__title">A KLIT</h2>
+      </div>
+
+      <div class="inst__grid">
+        <Card title="Missão">
+          <p>
+            Conquistar e fidelizar clientes, garantindo eficácia aos usuários,
+            mobilidade e redução de custos.
+          </p>
+        </Card>
+        <Card title="Visão">
+          <p>Ser referência nacional nos segmentos em que atua.</p>
+        </Card>
+      </div>
+
+      <div class="inst__valores">
+        <h3 class="inst__valores-titulo">Valores</h3>
+        <ul class="inst__valores-lista">
+          {
+            valores.map((v) => (
+              <li class="inst__valor">{v}</li>
+            ))
+          }
+        </ul>
+      </div>
+    </Container>
+  </Section>
+
+  {/* ============ Seção 7 — CTA final + contato rápido ============ */}
+  <Section tone="dark">
+    <Container size="md">
+      <div class="cta">
+        <h2 class="cta__title">Vamos cuidar da TI da sua empresa?</h2>
+        <p class="cta__lead">
+          Fale com a KLIT e descubra como ter uma infraestrutura gerenciada,
+          segura e com custo previsível — sem investimento inicial.
+        </p>
+        <div class="cta__actions">
+          {/* TODO(Fase 3): trocar href para wa.me quando o número de WhatsApp for fornecido. */}
+          <Button variant="primary" href="/contato">Falar no WhatsApp</Button>
+          <Button variant="secondary" href="/contato">Ir para Contato</Button>
+        </div>
+        <p class="cta__fone">
+          Ou ligue para
+          <a class="cta__fone-link" href="tel:+555130223066">51 3022-3066</a>.
+        </p>
+      </div>
     </Container>
   </Section>
 </BaseLayout>
@@ -462,6 +526,137 @@ const parceiros = [
     box-shadow: var(--shadow-md);
   }
 
+  /* ===== Institucional (Missão / Visão / Valores) ===== */
+  .inst__head {
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-7);
+  }
+
+  .inst__eyebrow {
+    margin: 0 0 var(--space-3);
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .inst__title {
+    margin: 0;
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  .inst__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+    margin-bottom: var(--space-7);
+  }
+
+  .inst__grid :global(.card) {
+    height: 100%;
+  }
+
+  .inst__valores {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-6);
+  }
+
+  .inst__valores-titulo {
+    margin: 0 0 var(--space-5);
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-snug);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  .inst__valores-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+  }
+
+  .inst__valor {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+  }
+
+  .inst__valor::before {
+    content: "";
+    width: var(--space-2);
+    height: var(--space-2);
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+  }
+
+  /* ===== CTA final (sobre fundo escuro via Section tone="dark") ===== */
+  .cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+    max-width: var(--container-sm);
+  }
+
+  .cta__title {
+    margin: 0;
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-dark-text);
+  }
+
+  .cta__lead {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-dark-text-muted);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+
+  /* Botão secundário sobre fundo escuro: garante contraste com tokens dark. */
+  .cta__actions :global(.btn--secondary) {
+    color: var(--color-dark-text);
+    border-color: var(--color-dark-text);
+  }
+  .cta__actions :global(.btn--secondary:hover) {
+    background-color: var(--color-dark-text);
+    color: var(--color-dark-bg);
+  }
+
+  .cta__fone {
+    margin: var(--space-3) 0 0;
+    font-size: var(--font-size-base);
+    color: var(--color-dark-text-muted);
+  }
+
+  .cta__fone-link {
+    color: var(--color-dark-text);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .cta__fone-link:hover {
+    color: var(--color-accent);
+  }
+
   /* ===== Responsivo ===== */
   @media (max-width: 900px) {
     .seg__grid {
@@ -486,6 +681,9 @@ const parceiros = [
       padding-left: var(--space-5);
     }
     .pilar__grid {
+      grid-template-columns: 1fr;
+    }
+    .inst__grid {
       grid-template-columns: 1fr;
     }
   }
