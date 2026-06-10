@@ -4,8 +4,9 @@
  *
  * Responsabilidades:
  *   - <html lang="pt-BR" data-theme="ocean"> com estado SSR inicial.
- *   - <head> com SEO placeholder (title/description via props — SEO real é Fase 3),
- *     favicon do brand, viewport e a fonte/tokens (via global.css).
+ *   - <head> com SEO real (title/description via props + Open Graph, twitter:card
+ *     e <link rel="canonical"> derivados de Astro.url/Astro.site), favicon do
+ *     brand, viewport e a fonte/tokens (via global.css).
  *   - ANTI-FLASH CANÔNICO: o <script is:inline> abaixo é o ÚNICO ponto do site
  *     que reaplica o tema salvo (localStorage "klit-theme") ANTES do paint, em
  *     TODAS as páginas. Por isso o snippet inline foi REMOVIDO do ThemeSwitcher
@@ -14,8 +15,14 @@
  *     Footer e o WhatsAppButton flutuante — presentes em todas as páginas.
  *
  * Props:
- *   - title:       <title> da página (default placeholder pt-BR).
- *   - description: <meta name="description"> (default placeholder pt-BR).
+ *   - title:       <title> da página + og:title/twitter:title (default pt-BR).
+ *   - description: <meta name="description"> + og/twitter description (default).
+ *   - ogImage:     caminho da imagem de social share (default logo do brand);
+ *                  resolvido para URL absoluta via Astro.site.
+ *   - ogType:      tipo Open Graph (default "website").
+ *
+ * canonical/og:url são derivados de `new URL(Astro.url.pathname, Astro.site)`
+ * (Astro.site = https://klit.com.br, definido em astro.config).
  *
  * Tokens/estilos chegam via global.css (que importa tokens.css + fonte Inter).
  */
@@ -27,13 +34,21 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 interface Props {
   title?: string;
   description?: string;
+  ogImage?: string;
+  ogType?: string;
 }
 
 const {
   title = "KLIT — Tecnologia & Segurança",
   description =
     "KLIT — soluções de tecnologia e segurança em Porto Alegre. Conteúdo completo em breve.",
+  ogImage = "/brand/ocean/horizontal-2048.png",
+  ogType = "website",
 } = Astro.props;
+
+// canonical + og:url + og:image absolutos a partir do site de produção.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageAbs = new URL(ogImage, Astro.site).href;
 ---
 
 <!doctype html>
@@ -43,6 +58,25 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+
+    {/* Canonical (SEO) — aponta para o host de produção por página */}
+    <link rel="canonical" href={canonical} />
+
+    {/* Open Graph (compartilhamento social) */}
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:site_name" content="KLIT" />
+    <meta property="og:locale" content="pt_BR" />
+
+    {/* Twitter Card */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbs} />
+
     <link rel="icon" type="image/png" href="/brand/favicon.png" />
     <meta name="generator" content={Astro.generator} />
 
@@ -68,6 +102,8 @@ const {
     </script>
   </head>
   <body>
+    {/* Skip-to-content (ENT-05): primeiro foco tabulável; pula direto ao <main>. */}
+    <a href="#conteudo" class="skip-link">Pular para o conteúdo</a>
     <Header />
     <main id="conteudo">
       <slot />
@@ -76,3 +112,31 @@ const {
     <WhatsAppButton />
   </body>
 </html>
+
+<style>
+  /* Skip-link (ENT-05): escondido fora da tela por padrão; visível ao receber
+     foco por teclado. Só tokens — zero hex; respeita os 4 temas. */
+  .skip-link {
+    position: fixed;
+    top: var(--space-3);
+    left: var(--space-3);
+    z-index: 1000;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    /* Fora da tela até receber foco. */
+    transform: translateY(-150%);
+    transition: transform var(--transition-base);
+  }
+  .skip-link:focus,
+  .skip-link:focus-visible {
+    transform: translateY(0);
+    outline: 2px solid var(--color-primary-contrast);
+    outline-offset: 2px;
+    text-decoration: none;
+  }
+</style>
