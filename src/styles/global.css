@@ -1,0 +1,176 @@
+/* ============================================================
+   KLIT — Estilos globais
+   ------------------------------------------------------------
+   1. Tokens do design system (importados primeiro)
+   2. Fonte Inter via @fontsource (pesos usados no site)
+   3. Reset moderno enxuto
+   4. Tipografia base + estilos globais (apenas via tokens)
+   ============================================================ */
+
+/* 1. Tokens — devem vir antes para que var(--...) já exista */
+@import "./tokens.css";
+
+/* 2. Fonte Inter (self-hosted via @fontsource) — só os pesos usados */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+
+/* ---------- 3. Reset moderno enxuto ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  line-height: var(--line-base);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+  padding: 0;
+}
+
+/* Acessibilidade: foco visível por teclado em todo o site */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ---------- 4. Tipografia base + globais (via tokens) ---------- */
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+/* Títulos — tom premium: peso forte, line-height apertada, bastante respiro */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-tight);
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--font-size-4xl);
+  letter-spacing: -0.02em;
+}
+h2 {
+  font-size: var(--font-size-3xl);
+  letter-spacing: -0.015em;
+}
+h3 {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-snug);
+}
+h4 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-snug);
+}
+
+p {
+  line-height: var(--line-base);
+  max-width: 65ch; /* medida de leitura confortável */
+}
+
+p + p {
+  margin-top: var(--space-4);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul,
+ol {
+  padding-left: var(--space-5);
+  line-height: var(--line-base);
+}
+
+li + li {
+  margin-top: var(--space-2);
+}
+
+strong,
+b {
+  font-weight: var(--font-weight-semibold);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin-block: var(--space-6);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-navy);
+}
+
+/* Respeita preferência de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
