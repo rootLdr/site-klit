@@ -1,24 +1,219 @@
 ---
-// Página SOLUÇÕES (esqueleto) — Fase 1, plano 01-03.
-// Usa o BaseLayout (Header + Footer + WhatsApp flutuante vêm do layout).
-// As 9 soluções da KLIT chegam na Fase 2.
+/**
+ * Página /SOLUÇÕES (CNT-07) — Fase 2, plano 02-03.
+ *
+ * Detalha as 9 soluções da KLIT agrupadas nos 3 pilares, consumindo o módulo
+ * de dados criado em 02-01 (fonte única de verdade). NADA de marcas digitadas
+ * inline: tudo deriva de `pilares` + `solucoes`/`solucoesPorPilar`.
+ *
+ * Reusa o shell (BaseLayout → Header/Footer/WhatsApp) e os primitivos
+ * Section/Container/Card/Button. Estilos só via var(--token) — zero hex.
+ */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/Section.astro";
 import Container from "../components/Container.astro";
+import Card from "../components/Card.astro";
+import Button from "../components/Button.astro";
+import { pilares, solucoesPorPilar } from "../data/solucoes.js";
 ---
 
 <BaseLayout
   title="KLIT — Soluções"
-  description="Soluções de tecnologia e segurança da KLIT. Conteúdo completo em breve."
+  description="As soluções de TI gerenciada e segura da KLIT, do dado à rede à nuvem: segurança, infraestrutura & cloud e gestão & consultoria."
 >
+  <!-- Hero curto da página -->
   <Section>
     <Container size="md">
-      <h1>Soluções</h1>
-      <p>
-        Aqui ficarão as soluções da KLIT. Esta página está em estrutura
-        (esqueleto) nesta fase; na Fase 2 ela trará o portfólio completo de
-        serviços de tecnologia e segurança.
-      </p>
+      <div class="intro">
+        <p class="intro__eyebrow">Portfólio KLIT</p>
+        <h1 class="intro__title">Soluções</h1>
+        <p class="intro__lead">
+          Infraestrutura de TI gerenciada e segura para sua empresa — do dado à
+          rede à nuvem. Nosso portfólio se organiza em três pilares que se
+          complementam: <strong>segurança</strong> de ponta a ponta,
+          <strong>infraestrutura &amp; cloud</strong> como serviço e
+          <strong>gestão &amp; consultoria</strong> com ponto único de contato.
+        </p>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Um bloco por pilar, iterando o módulo de dados (ordem do módulo) -->
+  {
+    pilares.map((pilar, i) => (
+      <Section tone={i % 2 === 1 ? "default" : "default"} id={pilar.id}>
+        <Container size="lg">
+          <div class="pilar__head">
+            <p class="pilar__eyebrow">Pilar {i + 1}</p>
+            <h2 class="pilar__title">{pilar.titulo}</h2>
+            <p class="pilar__desc">{pilar.descricao}</p>
+          </div>
+
+          <ul class="pilar__grid">
+            {solucoesPorPilar(pilar.id).map((s) => (
+              <li class="pilar__item">
+                <Card as="article" title={s.nome}>
+                  <p class="sol__descritor">{s.descritor}</p>
+                  <p class="sol__paragrafo">{s.paragrafo}</p>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </Section>
+    ))
+  }
+
+  <!-- CTA final -->
+  <Section tone="dark">
+    <Container size="md">
+      <div class="cta">
+        <h2 class="cta__title">Vamos desenhar a TI da sua empresa?</h2>
+        <p class="cta__text">
+          Conte seu cenário e mostramos como combinar essas soluções com
+          investimento inicial nulo e custo previsível.
+        </p>
+        <div class="cta__actions">
+          {/* TODO(Fase 3): trocar href para wa.me quando o número de WhatsApp for fornecido. */}
+          <Button href="/contato" variant="primary">Falar no WhatsApp</Button>
+          <Button href="/contato" variant="secondary">Fale com a KLIT</Button>
+        </div>
+      </div>
     </Container>
   </Section>
 </BaseLayout>
+
+<style>
+  /* ===== Hero/intro da página ===== */
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: var(--container-sm);
+  }
+  .intro__eyebrow {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .intro__title {
+    margin: 0;
+    font-size: var(--font-size-4xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+  .intro__lead {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+  }
+  .intro__lead strong {
+    color: var(--color-text);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* ===== Cabeçalho de cada pilar ===== */
+  .pilar__head {
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-7);
+  }
+  .pilar__eyebrow {
+    margin: 0 0 var(--space-2);
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .pilar__title {
+    margin: 0 0 var(--space-3);
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+  .pilar__desc {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+  }
+
+  /* ===== Grade de soluções do pilar ===== */
+  .pilar__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+  .pilar__item {
+    display: flex;
+  }
+  .pilar__item :global(.card) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sol__descritor {
+    margin: 0 0 var(--space-3);
+    color: var(--color-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+  }
+  .sol__paragrafo {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-base);
+    line-height: var(--line-base);
+  }
+
+  /* ===== CTA final (fundo escuro) ===== */
+  .cta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: var(--container-sm);
+  }
+  .cta__title {
+    margin: 0;
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-dark-text);
+  }
+  .cta__text {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-dark-text-muted);
+  }
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+  }
+
+  /* ===== Responsivo ===== */
+  @media (max-width: 900px) {
+    .pilar__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .pilar__grid {
+      grid-template-columns: 1fr;
+    }
+    .intro__title {
+      font-size: var(--font-size-3xl);
+    }
+  }
+</style>
