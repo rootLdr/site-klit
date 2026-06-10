@@ -20,16 +20,16 @@ Requisitos do primeiro conceito. Cada um mapeia para uma fase do roadmap.
 
 ### Conteúdo & Páginas (CNT) — Categoria/Fase 2
 
-- [ ] **CNT-01**: Home com hero premium e mensagem de posicionamento fixa (sem slider)
-- [ ] **CNT-02**: Seção de **Segurança em destaque** (Kofre, Sherlock, Eskudo)
+- [x] **CNT-01**: Home com hero premium e mensagem de posicionamento fixa (sem slider)
+- [x] **CNT-02**: Seção de **Segurança em destaque** (Kofre, Sherlock, Eskudo)
 - [ ] **CNT-03**: As 9 soluções agrupadas em 3 pilares (Segurança / Infra & Cloud / Gestão & Consultoria)
-- [ ] **CNT-04**: Seção de tese econômica ("investimento inicial nulo")
+- [x] **CNT-04**: Seção de tese econômica ("investimento inicial nulo")
 - [ ] **CNT-05**: Faixa de parceiros (VMware, Trend Micro, Microsoft, Cisco, SolarWinds, Google, Azure, AWS)
 - [ ] **CNT-06**: Seção institucional (Missão/Visão/Valores reescritos, sem typos)
 - [ ] **CNT-07**: Página/seção Soluções detalhando as 9 (nomes de marca preservados)
 - [ ] **CNT-08**: Página Suporte com conteúdo real (substitui a `/suporte/` vazia)
 - [ ] **CNT-09**: Página Contato com telefone, endereço (Porto Alegre) e dados reais
-- [ ] **CNT-10**: Conteúdo factual do site atual preservado (contatos, parceiros, soluções)
+- [x] **CNT-10**: Conteúdo factual do site atual preservado (contatos, parceiros, soluções)
 
 ### Conversão, Qualidade & Entrega (ENT) — Categoria/Fase 3
 

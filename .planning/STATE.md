@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: verifying
 stopped_at: "Completed 01-02-PLAN.md (design system: tokens/temas, primitivos, ThemeSwitcher)"
-last_updated: "2026-06-10T22:34:39.748Z"
+last_updated: "2026-06-10T23:21:50.914Z"
 last_activity: 2026-06-10
 progress:
   total_phases: 3
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 6
+  completed_plans: 4
   percent: 33
 ---
 
@@ -30,7 +30,7 @@ Plan: 3 of 3 in current phase (01-02 concluído)
 Status: Phase complete — ready for verification
 Last activity: 2026-06-10
 
-Progress: [██████████] 100%
+Progress: [███████░░░] 67%
 
 ## Accumulated Context
 
@@ -49,6 +49,8 @@ Decisões logadas em PROJECT.md (Key Decisions) e docs/decisions.md. Recentes:
 - [Phase 1]: 01-02: ThemeSwitcher persiste em localStorage (chave klit-theme); swatches usam tokens de paleta (sem hex); anti-flash is:inline a hoistar p/ <head> em 01-03.
 - [Phase ?]: 01-03: anti-flash hoistado para o head do BaseLayout (ponto canônico) e removido do ThemeSwitcher para evitar execução dupla
 - [Phase ?]: 01-03: menu hambúrguer abaixo de 768px; logo header=ocean (fundo claro), footer=branco (fundo navy)
+- [Phase ?]: 02-01: Módulo de dados solucoes.js com NAMED ESM exports (solucoes, pilares, solucoesPorPilar, PILAR); sem export default — 02-02/02-03 importam { solucoes, pilares }.
+- [Phase ?]: 02-01: Home parte 1 — Hero estático sem slider; Segurança em Section tone=dark com cards do módulo + prova Trend Micro/Cisco; CTA WhatsApp aponta para /contato (TODO Fase 3).
 
 ### Pending Todos
 
@@ -67,6 +69,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-10T22:34:32.102Z
+Last session: 2026-06-10T23:21:47.121Z
 Stopped at: Completed 01-02-PLAN.md (design system: tokens/temas, primitivos, ThemeSwitcher)
 Resume file: None

@@ -44,7 +44,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01 (**2.1**): Home (parte 1) — hero premium + seção Segurança em destaque + tese econômica ("investimento inicial nulo")
+- [x] 02-01 (**2.1**): Home (parte 1) — hero premium + seção Segurança em destaque + tese econômica ("investimento inicial nulo")
 - [ ] 02-02 (**2.2**): Home (parte 2) — soluções em 3 pilares + faixa de parceiros + institucional (Missão/Visão/Valores)
 - [ ] 02-03 (**2.3**): Páginas essenciais — Soluções (detalhe das 9), Suporte (conteúdo real) e Contato
 
@@ -72,7 +72,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Fundação & Base Visual | 3/3 | Complete   | 2026-06-10 |
-| 2. Conteúdo & Páginas | 0/3 | Not started | - |
+| 2. Conteúdo & Páginas | 1/3 | In Progress|  |
 | 3. Conversão, Qualidade & Entrega | 0/3 | Not started | - |
 
 ---
