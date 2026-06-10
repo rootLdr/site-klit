@@ -1,0 +1,151 @@
+---
+/**
+ * ThemeSwitcher — seletor de tema em runtime (FND-08).
+ *
+ * Mostra 4 swatches (ocean/navy/sky/soft). Clicar troca a cor primária do
+ * site AO VIVO setando data-theme no <html> (aciona os blocos em tokens.css),
+ * e persiste a escolha em localStorage (chave "klit-theme").
+ *
+ * Anti-flash: o <script is:inline> abaixo roda ANTES do paint e reaplica o
+ * tema salvo no <html>. NOTA (01-03): idealmente esse mesmo snippet inline
+ * deve ser hoistado para o <head> do BaseLayout para garantir zero flash em
+ * TODAS as páginas; aqui ele mantém o componente funcional por si só.
+ *
+ * Acessibilidade: cada swatch é um <button> com aria-label e aria-pressed
+ * marcando o tema ativo; foco por teclado visível (via :focus-visible global).
+ *
+ * Tokens usados: --color-ocean/navy/sky/soft (background dos swatches — SEM
+ *   hex hardcoded), --color-border, --color-primary, --radius-*, --space-*.
+ */
+
+// Fonte única dos temas — usada para renderizar os swatches e no JS.
+const THEMES = [
+  { id: "ocean", label: "Ocean Blue", token: "var(--color-ocean)" },
+  { id: "navy", label: "Navy Dark", token: "var(--color-navy)" },
+  { id: "sky", label: "Sky Blue", token: "var(--color-sky)" },
+  { id: "soft", label: "Soft Blue", token: "var(--color-soft)" },
+] as const;
+---
+
+<!-- Anti-flash: aplica o tema salvo no <html> antes do paint.
+     is:inline => roda imediatamente, sem type=module / sem defer. -->
+<script is:inline>
+  (function () {
+    try {
+      var THEME_KEY = "klit-theme";
+      var VALID = ["ocean", "navy", "sky", "soft"];
+      var saved = localStorage.getItem(THEME_KEY);
+      var theme = VALID.indexOf(saved) !== -1 ? saved : "ocean";
+      document.documentElement.setAttribute("data-theme", theme);
+    } catch (e) {
+      document.documentElement.setAttribute("data-theme", "ocean");
+    }
+  })();
+</script>
+
+<div
+  class="theme-switcher"
+  role="group"
+  aria-label="Selecionar cor do tema"
+  data-theme-switcher
+>
+  {
+    THEMES.map((t) => (
+      <button
+        type="button"
+        class="theme-switcher__swatch"
+        data-theme-value={t.id}
+        style={`--swatch: ${t.token};`}
+        aria-label={`Tema ${t.label}`}
+        aria-pressed="false"
+        title={t.label}
+      />
+    ))
+  }
+</div>
+
+<style>
+  .theme-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface);
+  }
+
+  .theme-switcher__swatch {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border-radius: var(--radius-full);
+    /* Cor do swatch vem do token do tema, injetado via --swatch (sem hex) */
+    background-color: var(--swatch);
+    border: 2px solid var(--color-border);
+    transition:
+      transform var(--transition-fast),
+      border-color var(--transition-base),
+      box-shadow var(--transition-base);
+  }
+
+  .theme-switcher__swatch:hover {
+    transform: scale(1.12);
+  }
+
+  /* Estado ativo: contorna o swatch com a cor primária do tema atual */
+  .theme-switcher__swatch[aria-pressed="true"] {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+  }
+</style>
+
+<script>
+  // Lógica client-side do seletor (vanilla JS, sem dependências).
+  const THEME_KEY = "klit-theme";
+  const VALID = ["ocean", "navy", "sky", "soft"];
+
+  function applyTheme(theme: string) {
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+
+  function syncPressed(active: string, root: Element) {
+    root
+      .querySelectorAll<HTMLButtonElement>("[data-theme-value]")
+      .forEach((btn) => {
+        const isActive = btn.dataset.themeValue === active;
+        btn.setAttribute("aria-pressed", String(isActive));
+      });
+  }
+
+  function initSwitcher(root: Element) {
+    // Tema atual = o que já está no <html> (vindo do anti-flash) ou o salvo.
+    let saved = localStorage.getItem(THEME_KEY);
+    const current =
+      document.documentElement.getAttribute("data-theme") ||
+      (saved && VALID.includes(saved) ? saved : "ocean");
+
+    applyTheme(current);
+    syncPressed(current, root);
+
+    root
+      .querySelectorAll<HTMLButtonElement>("[data-theme-value]")
+      .forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const theme = btn.dataset.themeValue;
+          if (!theme || !VALID.includes(theme)) return;
+          applyTheme(theme); // troca ao vivo
+          try {
+            localStorage.setItem(THEME_KEY, theme); // persiste
+          } catch (e) {
+            /* localStorage indisponível: tema ainda muta na sessão */
+          }
+          syncPressed(theme, root);
+        });
+      });
+  }
+
+  document
+    .querySelectorAll("[data-theme-switcher]")
+    .forEach((el) => initSwitcher(el));
+</script>
