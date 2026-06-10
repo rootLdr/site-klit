@@ -46,6 +46,8 @@
   --color-muted: var(--color-gray-100);
   --color-dark-bg: var(--color-navy);       /* fundos escuros (Section tone="dark") */
   --color-dark-text: var(--color-white);
+  --color-dark-border: rgba(255, 255, 255, 0.12); /* divisórias sobre fundo escuro */
+  --color-dark-text-muted: rgba(255, 255, 255, 0.72); /* texto suave em fundo escuro */
 
   /* ---------- 3. Espaçamento (escala) ---------- */
   --space-1: 0.25rem; /*  4px */

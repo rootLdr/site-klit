@@ -1,0 +1,169 @@
+---
+/**
+ * Footer — rodapé do site (FND-05).
+ *
+ * Exibe:
+ *   - Logo reduzido do brand (versão BRANCA, pois o rodapé tem fundo escuro navy).
+ *   - Telefone real: 51 3022-3066 (link tel:+555130223066).
+ *   - Endereço completo de Porto Alegre.
+ *   - Navegação repetida (Início/Soluções/Suporte/Contato).
+ *
+ * Fundo: tom escuro (navy via --color-dark-bg) => texto claro e logo BRANCO
+ * (/brand/logo-horizontal-branco.png), coerente com o tema/fundo.
+ *
+ * Tokens usados: --color-dark-bg/dark-text/accent/border, --space-*, --container-*,
+ *   --radius-*, --font-*.  Zero hex hardcoded.
+ */
+const ano = new Date().getFullYear();
+
+const NAV = [
+  { href: "/", label: "Início" },
+  { href: "/solucoes", label: "Soluções" },
+  { href: "/suporte", label: "Suporte" },
+  { href: "/contato", label: "Contato" },
+];
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__brand">
+      {/* Rodapé de FUNDO ESCURO => logo BRANCO (variante branco) */}
+      <img
+        src="/brand/logo-horizontal-branco.png"
+        alt="KLIT"
+        width="180"
+        height="50"
+        class="site-footer__logo"
+        decoding="async"
+        loading="lazy"
+      />
+      <p class="site-footer__tagline">
+        Tecnologia e segurança para o seu negócio.
+      </p>
+    </div>
+
+    <div class="site-footer__contact">
+      <h2 class="site-footer__heading">Contato</h2>
+      <p>
+        <a href="tel:+555130223066" class="site-footer__phone">51 3022-3066</a>
+      </p>
+      <address class="site-footer__address">
+        Av. Doutor Nilo Peçanha 3238, 2º andar<br />
+        Chácara das Pedras, Porto Alegre/RS<br />
+        CEP 91330-001
+      </address>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="Navegação do rodapé">
+      <h2 class="site-footer__heading">Navegação</h2>
+      <ul>
+        {NAV.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="site-footer__bottom">
+    <p>© {ano} KLIT. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--color-dark-bg);
+    color: var(--color-dark-text);
+  }
+
+  .site-footer__inner {
+    width: 100%;
+    max-width: var(--container-lg);
+    margin-inline: auto;
+    padding: var(--space-8) var(--container-pad) var(--space-6);
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: var(--space-7);
+  }
+
+  .site-footer__logo {
+    height: 3rem;
+    width: auto;
+  }
+  .site-footer__tagline {
+    margin-top: var(--space-3);
+    color: var(--color-dark-text-muted);
+    font-size: var(--font-size-sm);
+    max-width: 32ch;
+  }
+
+  .site-footer__heading {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+  }
+
+  .site-footer__phone {
+    color: var(--color-dark-text);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+  }
+  .site-footer__phone:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .site-footer__address {
+    margin-top: var(--space-3);
+    font-style: normal;
+    line-height: var(--line-base);
+    color: var(--color-dark-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .site-footer__nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .site-footer__nav li + li {
+    margin-top: var(--space-2);
+  }
+  .site-footer__nav a {
+    color: var(--color-dark-text-muted);
+    font-size: var(--font-size-sm);
+  }
+  .site-footer__nav a:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .site-footer__bottom {
+    border-top: 1px solid var(--color-dark-border);
+    padding: var(--space-4) var(--container-pad);
+  }
+  .site-footer__bottom p {
+    width: 100%;
+    margin-inline: auto;
+    color: var(--color-dark-text-muted);
+    font-size: var(--font-size-xs);
+    text-align: center;
+  }
+
+  /* ---------- Responsivo ---------- */
+  @media (max-width: 768px) {
+    .site-footer__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+    .site-footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .site-footer__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+</style>

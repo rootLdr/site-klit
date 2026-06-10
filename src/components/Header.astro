@@ -1,0 +1,343 @@
+---
+/**
+ * Header — cabeçalho do site (FND-05, FND-06).
+ *
+ * Conteúdo:
+ *   - Logo do brand (linka para "/").
+ *   - Navegação: Início (/), Soluções (/solucoes), Suporte (/suporte),
+ *     Contato (/contato), com destaque do link ativo (Astro.url.pathname).
+ *   - ThemeSwitcher (de 01-02) à direita, visível no desktop e dentro do
+ *     menu mobile.
+ *   - Menu mobile HAMBÚRGUER (< ~768px): esconde a nav inline e mostra um
+ *     botão (aria-expanded/aria-controls) que abre/fecha um painel com os
+ *     links + o ThemeSwitcher. JS vanilla; fecha ao clicar num link e por Esc.
+ *
+ * Logo conforme o tema/fundo:
+ *   O header tem FUNDO CLARO (--color-surface) por padrão, então usamos o logo
+ *   colorido /brand/logo-horizontal.png (variante ocean). Se no futuro o header
+ *   passar a ter fundo escuro (navy), trocar a src para
+ *   /brand/logo-horizontal-branco.png (variante branca). Ver comentário no <img>.
+ *
+ * Tokens usados: --color-surface/border/text/primary/bg, --space-*, --radius-*,
+ *   --container-*, --shadow-sm, --transition-*, --font-*.  Zero hex hardcoded.
+ */
+import ThemeSwitcher from "./ThemeSwitcher.astro";
+
+const path = Astro.url.pathname;
+
+const NAV = [
+  { href: "/", label: "Início" },
+  { href: "/solucoes", label: "Soluções" },
+  { href: "/suporte", label: "Suporte" },
+  { href: "/contato", label: "Contato" },
+];
+
+// Marca ativo: "/" só na home; demais por prefixo (tolera "/solucoes/").
+function isActive(href: string): boolean {
+  if (href === "/") return path === "/";
+  return path === href || path.startsWith(href + "/");
+}
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__logo" aria-label="KLIT — página inicial">
+      {/*
+        Header de FUNDO CLARO => logo colorido (ocean).
+        Para um header de fundo ESCURO, troque para:
+        /brand/logo-horizontal-branco.png
+      */}
+      <img
+        src="/brand/logo-horizontal.png"
+        alt="KLIT"
+        width="160"
+        height="44"
+        decoding="async"
+      />
+    </a>
+
+    {/* Navegação inline (desktop) */}
+    <nav class="site-header__nav" aria-label="Navegação principal">
+      <ul class="nav-list">
+        {
+          NAV.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={["nav-link", { "nav-link--active": isActive(item.href) }]}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      {/* ThemeSwitcher visível no desktop */}
+      <div class="site-header__theme site-header__theme--desktop">
+        <ThemeSwitcher />
+      </div>
+
+      {/* Botão hambúrguer (aparece < ~768px) */}
+      <button
+        type="button"
+        class="site-header__toggle"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <span class="visually-hidden">Abrir menu</span>
+        <span class="site-header__bars" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  {/* Painel do menu mobile */}
+  <nav
+    id="mobile-menu"
+    class="mobile-menu"
+    aria-label="Navegação principal (mobile)"
+    data-mobile-menu
+    hidden
+  >
+    <ul class="mobile-menu__list">
+      {
+        NAV.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={["mobile-menu__link", { "mobile-menu__link--active": isActive(item.href) }]}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              data-menu-link
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mobile-menu__theme">
+      <span class="mobile-menu__theme-label">Tema</span>
+      <ThemeSwitcher />
+    </div>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .site-header__inner {
+    width: 100%;
+    max-width: var(--container-lg);
+    margin-inline: auto;
+    padding: var(--space-3) var(--container-pad);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .site-header__logo {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .site-header__logo img {
+    height: 2.5rem;
+    width: auto;
+  }
+  .site-header__logo:hover {
+    text-decoration: none;
+  }
+
+  /* ---------- Nav inline (desktop) ---------- */
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-link {
+    color: var(--color-text);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+    padding-block: var(--space-2);
+    border-bottom: 2px solid transparent;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+  .nav-link:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .nav-link--active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* ---------- Botão hambúrguer ---------- */
+  .site-header__toggle {
+    display: none; /* só aparece no mobile (media query abaixo) */
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+  }
+  .site-header__bars {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 22px;
+  }
+  .site-header__bars span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: var(--color-text);
+    border-radius: var(--radius-full);
+    transition: transform var(--transition-base), opacity var(--transition-fast);
+  }
+  /* Animação para "X" quando aberto */
+  .site-header__toggle[aria-expanded="true"] .site-header__bars span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .site-header__toggle[aria-expanded="true"] .site-header__bars span:nth-child(2) {
+    opacity: 0;
+  }
+  .site-header__toggle[aria-expanded="true"] .site-header__bars span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ---------- Painel mobile ---------- */
+  .mobile-menu {
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    padding: var(--space-4) var(--container-pad) var(--space-5);
+  }
+  .mobile-menu[hidden] {
+    display: none;
+  }
+  .mobile-menu__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    list-style: none;
+    margin: 0 0 var(--space-4);
+    padding: 0;
+  }
+  .mobile-menu__link {
+    display: block;
+    color: var(--color-text);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-lg);
+    padding: var(--space-3) var(--space-2);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid transparent;
+  }
+  .mobile-menu__link:hover {
+    color: var(--color-primary);
+    background-color: var(--color-surface-alt);
+    text-decoration: none;
+  }
+  .mobile-menu__link--active {
+    color: var(--color-primary);
+    border-left-color: var(--color-primary);
+  }
+  .mobile-menu__theme {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+  }
+  .mobile-menu__theme-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* ============================================================
+     Responsividade: abaixo de 768px vira menu hambúrguer.
+     ============================================================ */
+  @media (max-width: 768px) {
+    .site-header__nav,
+    .site-header__theme--desktop {
+      display: none;
+    }
+    .site-header__toggle {
+      display: inline-flex;
+    }
+  }
+
+  /* Acima de 768px, garante que o painel mobile nunca aparece. */
+  @media (min-width: 769px) {
+    .mobile-menu {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Toggle do menu mobile (vanilla, sem dependências).
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+
+  if (toggle && menu) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      const label = toggle.querySelector(".visually-hidden");
+      if (label) label.textContent = open ? "Fechar menu" : "Abrir menu";
+      if (open) {
+        menu.hidden = false;
+      } else {
+        menu.hidden = true;
+      }
+    };
+
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      setOpen(!open);
+    });
+
+    // Fecha ao clicar num link do menu.
+    menu.querySelectorAll<HTMLAnchorElement>("[data-menu-link]").forEach((link) => {
+      link.addEventListener("click", () => setOpen(false));
+    });
+
+    // Fecha com Esc.
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // Se a janela crescer para desktop, fecha/limpa o estado do menu.
+    const mq = window.matchMedia("(min-width: 769px)");
+    mq.addEventListener("change", (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>
