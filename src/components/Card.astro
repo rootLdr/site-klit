@@ -1,0 +1,52 @@
+---
+/**
+ * Card — superfície elevada para agrupar conteúdo.
+ *
+ * Fundo de superfície, raio e sombra dos tokens, padding generoso. Aceita um
+ * título opcional via prop `title` (renderizado como <h3>) e conteúdo no slot.
+ *
+ * Props:
+ *   - title: título opcional do card.
+ *   - as:    tag do wrapper (default "div"; use "article"/"li" quando fizer sentido).
+ *
+ * Tokens usados: --color-surface, --color-border, --radius-lg, --shadow-sm/md,
+ *   --space-*, --font-size-2xl.
+ */
+interface Props {
+  title?: string;
+  as?: keyof HTMLElementTagNameMap;
+}
+
+const { title, as: Tag = "div" } = Astro.props;
+---
+
+<Tag class="card">
+  {title && <h3 class="card__title">{title}</h3>}
+  <div class="card__body">
+    <slot />
+  </div>
+</Tag>
+
+<style>
+  .card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-6);
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .card__title {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .card__body :global(> :first-child) {
+    margin-top: 0;
+  }
+</style>

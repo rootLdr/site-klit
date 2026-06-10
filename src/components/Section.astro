@@ -1,0 +1,45 @@
+---
+/**
+ * Section — wrapper semântico <section> com espaçamento vertical generoso.
+ *
+ * Dá ritmo vertical premium (bastante respiro) entre blocos de conteúdo.
+ * O tom "dark" pinta o fundo com a cor escura da marca (navy) e texto claro,
+ * útil para destaques no layout (01-03) e na Fase 2.
+ *
+ * Props:
+ *   - tone: "default" | "dark" (default "default").
+ *   - id:   âncora opcional para navegação.
+ *
+ * Tokens usados: --space-*, --color-dark-bg, --color-dark-text.
+ */
+interface Props {
+  tone?: "default" | "dark";
+  id?: string;
+}
+
+const { tone = "default", id } = Astro.props;
+---
+
+<section id={id} class:list={["section", `section--${tone}`]}>
+  <slot />
+</section>
+
+<style>
+  .section {
+    /* Respiro vertical generoso (tom premium) */
+    padding-block: var(--space-8);
+  }
+
+  /* Variante escura: fundo navy + texto claro */
+  .section--dark {
+    background-color: var(--color-dark-bg);
+    color: var(--color-dark-text);
+  }
+
+  /* Em telas pequenas, reduz um pouco o espaçamento vertical */
+  @media (max-width: 640px) {
+    .section {
+      padding-block: var(--space-7);
+    }
+  }
+</style>

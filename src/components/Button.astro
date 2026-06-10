@@ -1,0 +1,109 @@
+---
+/**
+ * Button — botão primitivo.
+ *
+ * Renderiza um <a> quando recebe `href`, senão um <button>. A variante
+ * "primary" usa var(--color-primary): como o tema troca --color-primary em
+ * runtime (data-theme), o botão primário MUDA de cor automaticamente ao
+ * trocar o tema — não há cor fixa.
+ *
+ * Props:
+ *   - variant: "primary" (default) | "secondary" | "ghost".
+ *   - href:    se presente, renderiza como link <a>.
+ *   - type:    tipo do <button> (default "button"); ignorado se houver href.
+ *   - ...rest: demais atributos HTML (aria-*, target, rel, disabled, etc.).
+ *
+ * Tokens usados: --color-primary, --color-primary-contrast, --color-accent,
+ *   --color-border, --color-muted, --radius-*, --space-*, --font-weight-*.
+ */
+interface Props {
+  variant?: "primary" | "secondary" | "ghost";
+  href?: string;
+  type?: "button" | "submit" | "reset";
+  [key: string]: unknown;
+}
+
+const { variant = "primary", href, type = "button", ...rest } = Astro.props;
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+  class:list={["btn", `btn--${variant}`]}
+  href={href}
+  type={href ? undefined : type}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition:
+      background-color var(--transition-base),
+      border-color var(--transition-base),
+      color var(--transition-base),
+      transform var(--transition-fast),
+      box-shadow var(--transition-base);
+  }
+
+  .btn:hover {
+    text-decoration: none;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  /* Primária — segue a cor do tema (var(--color-primary)) */
+  .btn--primary {
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+    border-color: var(--color-primary);
+  }
+  .btn--primary:hover {
+    box-shadow: var(--shadow-md);
+    filter: brightness(0.94);
+  }
+
+  /* Secundária — contorno na cor do tema */
+  .btn--secondary {
+    background-color: transparent;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+  .btn--secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+  }
+
+  /* Ghost — discreta, sem borda */
+  .btn--ghost {
+    background-color: transparent;
+    color: var(--color-primary);
+    border-color: transparent;
+  }
+  .btn--ghost:hover {
+    background-color: var(--color-muted);
+  }
+
+  /* Estado desabilitado */
+  .btn[disabled],
+  .btn[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+</style>
