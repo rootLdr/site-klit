@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: milestone
 status: verifying
 stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-06-10T23:27:42.429Z"
+last_updated: "2026-06-10T23:28:03.634Z"
 last_activity: 2026-06-10
 progress:
   total_phases: 3
@@ -52,6 +52,9 @@ Decisões logadas em PROJECT.md (Key Decisions) e docs/decisions.md. Recentes:
 - [Phase ?]: 02-01: Módulo de dados solucoes.js com NAMED ESM exports (solucoes, pilares, solucoesPorPilar, PILAR); sem export default — 02-02/02-03 importam { solucoes, pilares }.
 - [Phase ?]: 02-01: Home parte 1 — Hero estático sem slider; Segurança em Section tone=dark com cards do módulo + prova Trend Micro/Cisco; CTA WhatsApp aponta para /contato (TODO Fase 3).
 - [Phase ?]: 02-02: home completa — 9 soluções em 3 pilares (módulo de dados); parceiros como chips textuais sem logos; institucional sem typos (Visão 'Ser referência nacional...'); CTA final dark com tel 51 3022-3066.
+- [Phase ?]: 02-03: /solucoes deriva as 9 marcas do módulo de dados — nada inline; consistência com a home
+- [Phase ?]: 02-03: form de /contato com validação HTML5 nativa e action='#' placeholder — envio funcional é Fase 3 (ENT-02, Formspree)
+- [Phase ?]: 02-03: acesso remoto em /suporte é placeholder textual (a fornecer) — nenhum SDK TeamViewer/AnyDesk embutido nesta fase
 
 ### Pending Todos
 

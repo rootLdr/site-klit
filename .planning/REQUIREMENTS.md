@@ -26,9 +26,9 @@ Requisitos do primeiro conceito. Cada um mapeia para uma fase do roadmap.
 - [x] **CNT-04**: Seção de tese econômica ("investimento inicial nulo")
 - [x] **CNT-05**: Faixa de parceiros (VMware, Trend Micro, Microsoft, Cisco, SolarWinds, Google, Azure, AWS)
 - [x] **CNT-06**: Seção institucional (Missão/Visão/Valores reescritos, sem typos)
-- [ ] **CNT-07**: Página/seção Soluções detalhando as 9 (nomes de marca preservados)
-- [ ] **CNT-08**: Página Suporte com conteúdo real (substitui a `/suporte/` vazia)
-- [ ] **CNT-09**: Página Contato com telefone, endereço (Porto Alegre) e dados reais
+- [x] **CNT-07**: Página/seção Soluções detalhando as 9 (nomes de marca preservados)
+- [x] **CNT-08**: Página Suporte com conteúdo real (substitui a `/suporte/` vazia)
+- [x] **CNT-09**: Página Contato com telefone, endereço (Porto Alegre) e dados reais
 - [x] **CNT-10**: Conteúdo factual do site atual preservado (contatos, parceiros, soluções)
 
 ### Conversão, Qualidade & Entrega (ENT) — Categoria/Fase 3
