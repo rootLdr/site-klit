@@ -1,28 +1,56 @@
 ---
 /**
- * ContatoForm — formulário de contato da KLIT (CNT-09).
+ * ContatoForm — formulário de contato da KLIT (CNT-09 · ENT-02).
  *
- * UI + validação HTML5 NATIVA (required, type=email, type=tel). Cada campo tem
- * um <label> associado por `for`/`id` (acessibilidade). O botão de envio reusa
- * o primitivo Button (variant primary, type submit).
+ * Envio REAL via Formspree (serviço externo, sem backend próprio). O endpoint
+ * vem da fonte única de contato (src/data/site.js → formspreeEndpoint).
  *
- * ⚠️ ENVIO NÃO FUNCIONAL NESTA FASE.
- *   O atributo `action="#"` é um PLACEHOLDER documentado. A integração com um
- *   serviço externo de envio (ex.: Formspree) é responsabilidade da Fase 3.
- *   // TODO(Fase 3, ENT-02): integrar serviço externo de envio (ex.: Formspree)
- *   //                       e substituir action="#" pelo endpoint real.
+ * ┌──────────────────────────────────────────────────────────────────────────┐
+ * │  CONFIGURAÇÃO PENDENTE (usuário):                                          │
+ * │  Enquanto `formspreeId` em src/data/site.js for "SEU_FORM_ID", o ENVIO     │
+ * │  FALHA de forma controlada (estado de erro tratado, orientando ligar/      │
+ * │  WhatsApp). Para ativar: crie o form em https://formspree.io, copie o ID   │
+ * │  e cole em src/data/site.js (1 lugar).                                     │
+ * └──────────────────────────────────────────────────────────────────────────┘
+ *
+ * Comportamento:
+ *   - Fallback SEM JS: o <form action={formspreeEndpoint} method="POST"> envia
+ *     nativamente (Formspree aceita POST direto).
+ *   - Com JS (progressive enhancement): intercepta o submit, valida via
+ *     checkValidity(), faz fetch com Accept: application/json e mostra estados
+ *     carregando / sucesso / erro numa região aria-live, sem recarregar.
+ *   - Anti-spam: honeypot `_gotcha` oculto (Formspree descarta se preenchido).
+ *
+ * Validação HTML5 nativa (required, type=email, type=tel). Cada campo tem um
+ * <label> associado por `for`/`id`. O botão reusa o primitivo Button.
  *
  * Estilos escopados, exclusivamente via var(--token) — zero hex.
  */
 import Button from "./Button.astro";
+import { formspreeEndpoint } from "../data/site.js";
 ---
 
-{/* TODO(Fase 3, ENT-02): integrar serviço externo de envio (ex.: Formspree). Envio NÃO funcional nesta fase: action é placeholder. */}
-<form class="form" action="#" method="post" novalidate={false}>
+<form class="form" action={formspreeEndpoint} method="POST" data-formspree>
   <p class="form__intro">
     Conte seu cenário que retornamos pelo WhatsApp ou e-mail. Campos com
     <span aria-hidden="true">*</span> são obrigatórios.
   </p>
+
+  {/* Honeypot anti-spam: invisível a humanos, submissível a bots.
+      Fora da tela (não display:none, que alguns bots ignoram) + aria-hidden. */}
+  <div class="form__honeypot" aria-hidden="true">
+    <label for="contato-gotcha">Não preencha este campo</label>
+    <input
+      type="text"
+      id="contato-gotcha"
+      name="_gotcha"
+      tabindex="-1"
+      autocomplete="off"
+    />
+  </div>
+
+  {/* Assunto do e-mail recebido no Formspree (opcional). */}
+  <input type="hidden" name="_subject" value="Novo contato pelo site KLIT" />
 
   <div class="form__field">
     <label class="form__label" for="contato-nome">Nome <span class="form__req" aria-hidden="true">*</span></label>
@@ -83,10 +111,67 @@ import Button from "./Button.astro";
     ></textarea>
   </div>
 
+  {/* Região de status acessível: anuncia carregando/sucesso/erro a leitores de tela. */}
+  <p class="form__status" role="status" aria-live="polite" hidden></p>
+
   <div class="form__actions">
     <Button type="submit" variant="primary">Enviar mensagem</Button>
   </div>
 </form>
+
+<script>
+  // Progressive enhancement: se o JS carregar, envia via fetch/AJAX e mostra
+  // estados inline. Sem JS, o <form action=... method=POST> envia nativamente.
+  const form = document.querySelector<HTMLFormElement>("form[data-formspree]");
+  if (form) {
+    const status = form.querySelector<HTMLParagraphElement>(".form__status");
+    const submitBtn = form.querySelector<HTMLButtonElement>('[type="submit"]');
+
+    const setStatus = (msg: string, state: "loading" | "success" | "error") => {
+      if (!status) return;
+      status.textContent = msg;
+      status.hidden = false;
+      status.dataset.state = state;
+    };
+
+    form.addEventListener("submit", async (event) => {
+      // Deixa o browser exibir as mensagens de campos obrigatórios.
+      if (!form.checkValidity()) return;
+
+      event.preventDefault();
+      if (submitBtn) submitBtn.setAttribute("disabled", "true");
+      setStatus("Enviando sua mensagem...", "loading");
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+
+        if (response.ok) {
+          form.reset();
+          setStatus(
+            "Mensagem enviada! Em breve retornaremos pelo WhatsApp ou e-mail.",
+            "success",
+          );
+        } else {
+          setStatus(
+            "Não foi possível enviar agora. Tente novamente ou fale conosco por telefone/WhatsApp.",
+            "error",
+          );
+        }
+      } catch {
+        setStatus(
+          "Falha de conexão ao enviar. Tente novamente ou fale conosco por telefone/WhatsApp.",
+          "error",
+        );
+      } finally {
+        if (submitBtn) submitBtn.removeAttribute("disabled");
+      }
+    });
+  }
+</script>
 
 <style>
   .form {
@@ -104,6 +189,16 @@ import Button from "./Button.astro";
   .form__intro span {
     color: var(--color-primary);
     font-weight: var(--font-weight-bold);
+  }
+
+  /* Honeypot: removido do fluxo visual e do leitor de tela, mas no DOM
+     (submissível). Posicionado fora da tela em vez de display:none. */
+  .form__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
   }
 
   .form__field {
@@ -151,6 +246,30 @@ import Button from "./Button.astro";
     resize: vertical;
     min-height: 7rem;
     line-height: var(--line-base);
+  }
+
+  /* Região de status (carregando/sucesso/erro) — só tokens, zero hex. */
+  .form__status {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-base);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+  }
+  .form__status[data-state="loading"] {
+    color: var(--color-text-muted);
+  }
+  .form__status[data-state="success"] {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+  .form__status[data-state="error"] {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 
   .form__actions {
