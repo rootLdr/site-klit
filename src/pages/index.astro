@@ -1,21 +1,34 @@
 ---
-// Página HOME — Fase 2, plano 02-01 (parte 1).
-// Monta as TRÊS primeiras seções da home sobre o BaseLayout da Fase 1:
-//   1. Hero (sem slider, mensagem fixa) — CNT-01
-//   2. Segurança em destaque (Kofre/Sherlock/Eskudo + Trend Micro/Cisco) — CNT-02
-//   3. Tese econômica ("Investimento inicial nulo" + mobilidade) — CNT-04
-// As seções de pilares/parceiros/institucional/CTA final chegam no 02-02
-// (serão anexadas depois desta parte).
+// Página HOME — Fase 2.
+// Parte 1 (02-01): Hero (sem slider) + Segurança em destaque + tese econômica.
+// Parte 2 (02-02): Soluções em 3 pilares (9 marcas) + Parceiros + Institucional + CTA final.
+// Seções na ordem: hero → segurança → tese → pilares → parceiros → institucional → CTA final.
+//   CNT-01 (hero) · CNT-02 (segurança) · CNT-04 (tese) — parte 1.
+//   CNT-03 (pilares/9) · CNT-05 (parceiros) · CNT-06 (institucional) · CNT-10 — parte 2.
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/Section.astro";
 import Container from "../components/Container.astro";
 import Button from "../components/Button.astro";
 import Card from "../components/Card.astro";
-import { solucoesPorPilar, PILAR } from "../data/solucoes.js";
+import { solucoes, pilares, solucoesPorPilar, PILAR } from "../data/solucoes.js";
 
 // Os 3 cards de Segurança vêm do MÓDULO de dados (fonte única de verdade) —
 // não redigitamos os nomes inline, garantindo consistência das marcas.
 const segurancaSolucoes = solucoesPorPilar(PILAR.SEGURANCA);
+
+// Parceiros tecnológicos (CNT-05) — lista textual elegante (chips).
+// TODO: logos oficiais a fornecer pelo usuário (não baixar logos de terceiros).
+const parceiros = [
+  "VMware",
+  "Trend Micro",
+  "Microsoft",
+  "Cisco",
+  "SolarWinds",
+  "Google",
+  "Azure",
+  "AWS",
+];
+
 ---
 
 <BaseLayout
@@ -91,6 +104,73 @@ const segurancaSolucoes = solucoesPorPilar(PILAR.SEGURANCA);
           qualquer momento.</strong>
         </p>
       </div>
+    </Container>
+  </Section>
+
+  {/* ============ Seção 4 — Soluções em 3 pilares (CNT-03) ============ */}
+  {/* As 9 marcas vêm do MÓDULO de dados (iteração dos 3 pilares); nada inline. */}
+  <Section id="solucoes">
+    <Container>
+      <div class="sol__head">
+        <p class="sol__eyebrow">Portfólio</p>
+        <h2 class="sol__title">Soluções para toda a sua TI</h2>
+        <p class="sol__subtitle">
+          Nove soluções organizadas em três pilares — da segurança à nuvem,
+          da operação à consultoria — para cobrir a infraestrutura inteira da
+          sua empresa.
+        </p>
+      </div>
+
+      <div class="sol__pilares">
+        {
+          pilares.map((pilar) => (
+            <div class="pilar">
+              <div class="pilar__head">
+                <h3 class="pilar__titulo">{pilar.titulo}</h3>
+                <p class="pilar__desc">{pilar.descricao}</p>
+              </div>
+              <ul class="pilar__grid">
+                {solucoesPorPilar(pilar.id).map((sol) => (
+                  <li class="pilar__item">
+                    <Card as="article" title={sol.nome}>
+                      <p>{sol.descritor}</p>
+                    </Card>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="sol__cta">
+        <Button variant="secondary" href="/solucoes">
+          Ver todas as soluções
+        </Button>
+      </div>
+    </Container>
+  </Section>
+
+  {/* ============ Seção 5 — Parceiros (CNT-05) ============ */}
+  {/* TODO: logos oficiais a fornecer pelo usuário (não baixar logos de terceiros). */}
+  <Section id="parceiros">
+    <Container>
+      <div class="parc__head">
+        <p class="parc__eyebrow">Ecossistema</p>
+        <h2 class="parc__title">Tecnologias e parceiros</h2>
+        <p class="parc__subtitle">
+          Trabalhamos com as principais plataformas do mercado para entregar
+          uma infraestrutura confiável de ponta a ponta.
+        </p>
+      </div>
+
+      <ul class="parc__chips">
+        {
+          parceiros.map((nome) => (
+            <li class="parc__chip">{nome}</li>
+          ))
+        }
+      </ul>
     </Container>
   </Section>
 </BaseLayout>
@@ -244,6 +324,144 @@ const segurancaSolucoes = solucoesPorPilar(PILAR.SEGURANCA);
     font-weight: var(--font-weight-semibold);
   }
 
+  /* ===== Soluções em 3 pilares ===== */
+  .sol__head {
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-8);
+  }
+
+  .sol__eyebrow {
+    margin: 0 0 var(--space-3);
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .sol__title {
+    margin: 0 0 var(--space-4);
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  .sol__subtitle {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+  }
+
+  .sol__pilares {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .pilar__head {
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .pilar__titulo {
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-snug);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+  }
+
+  .pilar__desc {
+    margin: 0;
+    font-size: var(--font-size-base);
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+  }
+
+  .pilar__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-5);
+  }
+
+  .pilar__item {
+    display: flex;
+  }
+
+  .pilar__item :global(.card) {
+    width: 100%;
+  }
+
+  .sol__cta {
+    margin-top: var(--space-8);
+    display: flex;
+  }
+
+  /* ===== Parceiros (chips textuais — sem logos de terceiros) ===== */
+  .parc__head {
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-7);
+  }
+
+  .parc__eyebrow {
+    margin: 0 0 var(--space-3);
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .parc__title {
+    margin: 0 0 var(--space-4);
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  .parc__subtitle {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+  }
+
+  .parc__chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .parc__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .parc__chip:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-md);
+  }
+
   /* ===== Responsivo ===== */
   @media (max-width: 900px) {
     .seg__grid {
@@ -266,6 +484,9 @@ const segurancaSolucoes = solucoesPorPilar(PILAR.SEGURANCA);
     }
     .tese {
       padding-left: var(--space-5);
+    }
+    .pilar__grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
