@@ -1,33 +1,26 @@
 ---
 /**
- * WhatsAppButton — botão flutuante de contato via WhatsApp (FND-05).
+ * WhatsAppButton — botão flutuante de contato via WhatsApp (FND-05 · ENT-01).
  *
  * Botão fixo no canto inferior direito, presente em TODAS as páginas (montado
- * pelo BaseLayout). Abre o WhatsApp em nova aba (target=_blank, rel=noopener).
+ * pelo BaseLayout). Abre o WhatsApp em nova aba (target=_blank, rel=noopener)
+ * com mensagem pré-preenchida.
  *
- * ┌──────────────────────────────────────────────────────────────────────────┐
- * │  ATENÇÃO — NÚMERO PLACEHOLDER (TROCAR ANTES DE PUBLICAR / Fase 3)          │
- * │                                                                            │
- * │  O href abaixo usa wa.me/55XXXXXXXXXXX — número FICTÍCIO.                   │
- * │  Substitua "55XXXXXXXXXXX" pelo número REAL de WhatsApp (provável celular  │
- * │  comercial) assim que o usuário fornecer. Formato: 55 + DDD + número, só   │
- * │  dígitos (ex.: 5551999999999).                                             │
- * │                                                                            │
- * │  Obs.: o telefone FIXO do site é 51 3022-3066 (mostrado no Footer); ele    │
- * │  NÃO é, necessariamente, o número de WhatsApp.                             │
- * └──────────────────────────────────────────────────────────────────────────┘
+ * O link wa.me vem da fonte única de contato (src/data/site.js → whatsappUrl).
+ * Para trocar o número de WhatsApp, edite APENAS `whatsapp` em src/data/site.js.
+ *
+ * ⚠️ O número atual (555130223066 = 51 3022-3066) é o telefone FIXO da KLIT;
+ *    confirme que ele tem WhatsApp ativo. Detalhes/aviso em src/data/site.js.
  *
  * Tokens usados: --color-accent/primary-contrast, --radius-full, --shadow-lg,
  *   --space-*, --transition-base.  Sem libs externas, sem hex hardcoded.
  */
-
-// TODO(Fase 3): trocar o placeholder pelo número real de WhatsApp.
-const WHATSAPP_URL = "https://wa.me/55XXXXXXXXXXX";
+import { whatsappUrl } from "../data/site.js";
 ---
 
 <a
   class="whatsapp-fab"
-  href={WHATSAPP_URL}
+  href={whatsappUrl}
   target="_blank"
   rel="noopener noreferrer"
   aria-label="Falar no WhatsApp"

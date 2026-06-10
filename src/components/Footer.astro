@@ -11,9 +11,14 @@
  * Fundo: tom escuro (navy via --color-dark-bg) => texto claro e logo BRANCO
  * (/brand/logo-horizontal-branco.png), coerente com o tema/fundo.
  *
+ * Telefone e endereço vêm da fonte única de contato (src/data/site.js) — sem
+ * duplicar valores (ENT-07). Para trocar, edite apenas src/data/site.js.
+ *
  * Tokens usados: --color-dark-bg/dark-text/accent/border, --space-*, --container-*,
  *   --radius-*, --font-*.  Zero hex hardcoded.
  */
+import { telefone, telefoneTel, endereco } from "../data/site.js";
+
 const ano = new Date().getFullYear();
 
 const NAV = [
@@ -45,12 +50,12 @@ const NAV = [
     <div class="site-footer__contact">
       <h2 class="site-footer__heading">Contato</h2>
       <p>
-        <a href="tel:+555130223066" class="site-footer__phone">51 3022-3066</a>
+        <a href={`tel:${telefoneTel}`} class="site-footer__phone">{telefone}</a>
       </p>
       <address class="site-footer__address">
-        Av. Doutor Nilo Peçanha 3238, 2º andar<br />
-        Chácara das Pedras, Porto Alegre/RS<br />
-        CEP 91330-001
+        {endereco.logradouro}<br />
+        {endereco.bairro}, {endereco.cidade}<br />
+        {endereco.cep}
       </address>
     </div>
 
