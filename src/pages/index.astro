@@ -1,24 +1,271 @@
 ---
-// Página HOME (esqueleto) — Fase 1, plano 01-03.
-// Usa o BaseLayout (Header + Footer + WhatsApp flutuante vêm do layout).
-// Conteúdo real da home (hero, pilar de Segurança, soluções) chega na Fase 2.
+// Página HOME — Fase 2, plano 02-01 (parte 1).
+// Monta as TRÊS primeiras seções da home sobre o BaseLayout da Fase 1:
+//   1. Hero (sem slider, mensagem fixa) — CNT-01
+//   2. Segurança em destaque (Kofre/Sherlock/Eskudo + Trend Micro/Cisco) — CNT-02
+//   3. Tese econômica ("Investimento inicial nulo" + mobilidade) — CNT-04
+// As seções de pilares/parceiros/institucional/CTA final chegam no 02-02
+// (serão anexadas depois desta parte).
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/Section.astro";
 import Container from "../components/Container.astro";
+import Button from "../components/Button.astro";
+import Card from "../components/Card.astro";
+import { solucoesPorPilar, PILAR } from "../data/solucoes.js";
+
+// Os 3 cards de Segurança vêm do MÓDULO de dados (fonte única de verdade) —
+// não redigitamos os nomes inline, garantindo consistência das marcas.
+const segurancaSolucoes = solucoesPorPilar(PILAR.SEGURANCA);
 ---
 
 <BaseLayout
-  title="KLIT — Início"
-  description="KLIT — tecnologia e segurança em Porto Alegre. Página inicial; conteúdo completo em breve."
+  title="KLIT — Infraestrutura de TI gerenciada e segura"
+  description="KLIT — infraestrutura de TI gerenciada e segura para empresas: do dado à rede à nuvem, com investimento inicial nulo e suporte especializado."
 >
-  <Section>
+  {/* ============ Seção 1 — Hero (CNT-01) ============ */}
+  <Section id="hero">
     <Container size="md">
-      <h1>KLIT — Início</h1>
-      <p>
-        Bem-vindo à KLIT. Esta é a página inicial em estrutura (esqueleto): o
-        layout, a navegação e o tema já funcionam. O conteúdo completo — com o
-        hero, o pilar de Segurança e as soluções — chega na Fase 2.
+      <div class="hero">
+        <p class="hero__eyebrow">Infraestrutura de TI gerenciada e segura</p>
+        <h1 class="hero__title">
+          Infraestrutura de TI gerenciada e segura para sua empresa.
+        </h1>
+        <p class="hero__subtitle">
+          Do dado à rede à nuvem — com investimento inicial nulo e suporte de
+          quem entende do seu negócio.
+        </p>
+        <div class="hero__ctas">
+          {/* TODO(Fase 3): trocar href para wa.me quando o número de WhatsApp for fornecido. */}
+          <Button variant="primary" href="/contato">Falar no WhatsApp</Button>
+          <Button variant="secondary" href="/solucoes">Conheça as soluções</Button>
+        </div>
+      </div>
+    </Container>
+  </Section>
+
+  {/* ============ Seção 2 — Segurança em destaque (CNT-02) ============ */}
+  <Section id="seguranca" tone="dark">
+    <Container>
+      <div class="seg__head">
+        <h2 class="seg__title">Segurança de ponta a ponta</h2>
+        <p class="seg__subtitle">
+          Protegemos cada camada da sua operação: do <strong>dado</strong> ao
+          <strong>uso</strong> à <strong>rede</strong> — com monitoramento
+          contínuo e gestão especializada.
+        </p>
+      </div>
+
+      <ul class="seg__grid">
+        {
+          segurancaSolucoes.map((sol) => (
+            <li class="seg__item">
+              <Card title={sol.nome}>
+                <p>{sol.descritor}</p>
+              </Card>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="seg__prova">
+        Tecnologia validada por parceiros líderes de mercado, como
+        <strong>Trend Micro</strong> e <strong>Cisco</strong>.
       </p>
     </Container>
   </Section>
+
+  {/* ============ Seção 3 — Tese econômica (CNT-04) ============ */}
+  <Section id="investimento">
+    <Container size="md">
+      <div class="tese">
+        <p class="tese__eyebrow">Modelo de serviço</p>
+        <h2 class="tese__title">Investimento inicial nulo</h2>
+        <p class="tese__lead">
+          Infraestrutura como serviço: você troca o gasto de capital
+          (<abbr title="Capital Expenditure">CAPEX</abbr>) por um custo
+          operacional (<abbr title="Operational Expenditure">OPEX</abbr>)
+          previsível, com um parceiro único responsável pelo seu ambiente de TI.
+        </p>
+        <p class="tese__mobi">
+          E mobilidade de verdade: <strong>trabalhe de qualquer lugar, a
+          qualquer momento.</strong>
+        </p>
+      </div>
+    </Container>
+  </Section>
 </BaseLayout>
+
+<style>
+  /* ===== Hero ===== */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    max-width: var(--container-sm);
+  }
+
+  .hero__eyebrow {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .hero__title {
+    margin: 0;
+    font-size: var(--font-size-4xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  .hero__subtitle {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    line-height: var(--line-snug);
+    color: var(--color-text-muted);
+  }
+
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+  }
+
+  /* ===== Segurança em destaque (sobre fundo escuro via Section tone="dark") ===== */
+  .seg__head {
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-7);
+  }
+
+  .seg__title {
+    margin: 0 0 var(--space-4);
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-dark-text);
+  }
+
+  .seg__subtitle {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-dark-text-muted);
+  }
+
+  .seg__subtitle strong {
+    color: var(--color-accent);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .seg__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+
+  .seg__item {
+    display: flex;
+  }
+
+  /* O Card já é uma superfície clara; aqui só garantimos que ocupe a célula. */
+  .seg__item :global(.card) {
+    width: 100%;
+  }
+
+  .seg__prova {
+    margin: var(--space-7) 0 0;
+    font-size: var(--font-size-base);
+    color: var(--color-dark-text-muted);
+  }
+
+  .seg__prova strong {
+    color: var(--color-dark-text);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* ===== Tese econômica ===== */
+  .tese {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    border-left: 4px solid var(--color-primary);
+    padding-left: var(--space-6);
+  }
+
+  .tese__eyebrow {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .tese__title {
+    margin: 0;
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  .tese__lead {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+    max-width: var(--container-sm);
+  }
+
+  .tese__lead abbr {
+    text-decoration: none;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+  }
+
+  .tese__mobi {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-snug);
+    color: var(--color-text);
+  }
+
+  .tese__mobi strong {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* ===== Responsivo ===== */
+  @media (max-width: 900px) {
+    .seg__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero__title {
+      font-size: var(--font-size-3xl);
+    }
+    .hero__subtitle {
+      font-size: var(--font-size-lg);
+    }
+    .hero__ctas {
+      width: 100%;
+    }
+    .seg__grid {
+      grid-template-columns: 1fr;
+    }
+    .tese {
+      padding-left: var(--space-5);
+    }
+  }
+</style>
