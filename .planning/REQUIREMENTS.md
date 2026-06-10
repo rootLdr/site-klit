@@ -16,6 +16,7 @@ Requisitos do primeiro conceito. Cada um mapeia para uma fase do roadmap.
 - [ ] **FND-05**: Header com navegação + footer + botão WhatsApp flutuante em todas as páginas
 - [ ] **FND-06**: Estrutura 100% responsiva (mobile, tablet, desktop)
 - [ ] **FND-07**: Troca fácil de logo/textos/imagens (sem editar lógica complexa), documentada
+- [ ] **FND-08**: **Seletor de tema** visível troca a cor primária entre as opções da paleta (Ocean Blue / Navy Dark / Sky Blue / Soft Blue) com 1 clique, aplicado em runtime (CSS custom properties / `data-theme`)
 
 ### Conteúdo & Páginas (CNT) — Categoria/Fase 2
 
@@ -73,13 +74,13 @@ Explicitamente excluído neste ciclo — documentado para evitar scope creep.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FND-01..07 | Fase 1 | Pending |
+| FND-01..08 | Fase 1 | Pending |
 | CNT-01..10 | Fase 2 | Pending |
 | ENT-01..08 | Fase 3 | Pending |
 
 **Coverage:**
-- v1 requirements: 25 total (FND 7 · CNT 10 · ENT 8)
-- Mapeados para fases: 25
+- v1 requirements: 26 total (FND 8 · CNT 10 · ENT 8)
+- Mapeados para fases: 26
 - Não mapeados: 0 ✅
 
 ---

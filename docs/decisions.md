@@ -39,6 +39,7 @@ Registro objetivo das decisões tomadas na fase de QUESTIONING/alinhamento.
 | M1 | **Novo Logo KLIT 2026** | Marca de nós/rede + wordmark; variantes por cor em `assets-input/logos/Novo Logo 2026/` |
 | M2 | **Paleta oficial** | Ocean Blue `#005A91` (primária), Navy Dark `#1B3A5C`, Sky Blue `#81D2F1`, Soft Blue `#A3C5F1`, Preto `#000000`, Branco |
 | M3 | Azul como base visual | Reforça confiança/segurança — alinhado ao pilar de destaque |
+| M4 | **Tema trocável em runtime** | Em vez de fixar 1 primária, seletor de tema (1 clique) alterna Ocean Blue / Navy / Sky / Soft Blue via CSS custom properties — usuário escolhe vendo ao vivo |
 
 ## Pendentes de decisão (dependem de input do usuário)
 

@@ -17,17 +17,18 @@ Construção de **um conceito** de site institucional moderno e premium para a K
 ### Phase 1: Fundação & Base Visual
 **Goal**: Base técnica e visual pronta — projeto roda localmente, design system premium definido e layout base (header/footer/WhatsApp) responsivo, com pipeline lendo de `assets-input/`.
 **Depends on**: Nothing (first phase)
-**Requirements**: FND-01, FND-02, FND-03, FND-04, FND-05, FND-06, FND-07
+**Requirements**: FND-01, FND-02, FND-03, FND-04, FND-05, FND-06, FND-07, FND-08
 **Success Criteria** (o que deve ser VERDADE):
   1. `npm run dev` (ou equivalente) sobe o site localmente no navegador
   2. Trocar uma cor/tipografia em um arquivo de tokens muda o site inteiro
-  3. Header, footer e botão WhatsApp aparecem e a página base se adapta a mobile/desktop
-  4. Colocar um logo em `assets-input/logos/` o disponibiliza ao site
+  3. Um **seletor de tema** alterna a cor primária (Ocean Blue / Navy / Sky / Soft Blue) com 1 clique, ao vivo
+  4. Header, footer e botão WhatsApp aparecem e a página base se adapta a mobile/desktop
+  5. Colocar um logo em `assets-input/logos/` o disponibiliza ao site
 **Plans**: 3 plans
 
 Plans:
 - [ ] 01-01 (**1.1**): Scaffold do site estático — stack leve, dev server, estrutura de pastas e pipeline de `assets-input/`
-- [ ] 01-02 (**1.2**): Design system premium — tokens (cores, tipografia, espaçamento, grid) + componentes base (botão, card, seção, container)
+- [ ] 01-02 (**1.2**): Design system premium — tokens via CSS custom properties (paleta KLIT, tipografia, espaçamento, grid) + **seletor de tema** (troca de cor primária em runtime) + componentes base (botão, card, seção, container)
 - [ ] 01-03 (**1.3**): Layout base — header com navegação, footer, botão WhatsApp flutuante e esqueleto responsivo das páginas
 
 ### Phase 2: Conteúdo & Páginas
