@@ -1,0 +1,160 @@
+---
+/**
+ * ContatoForm — formulário de contato da KLIT (CNT-09).
+ *
+ * UI + validação HTML5 NATIVA (required, type=email, type=tel). Cada campo tem
+ * um <label> associado por `for`/`id` (acessibilidade). O botão de envio reusa
+ * o primitivo Button (variant primary, type submit).
+ *
+ * ⚠️ ENVIO NÃO FUNCIONAL NESTA FASE.
+ *   O atributo `action="#"` é um PLACEHOLDER documentado. A integração com um
+ *   serviço externo de envio (ex.: Formspree) é responsabilidade da Fase 3.
+ *   // TODO(Fase 3, ENT-02): integrar serviço externo de envio (ex.: Formspree)
+ *   //                       e substituir action="#" pelo endpoint real.
+ *
+ * Estilos escopados, exclusivamente via var(--token) — zero hex.
+ */
+import Button from "./Button.astro";
+---
+
+{/* TODO(Fase 3, ENT-02): integrar serviço externo de envio (ex.: Formspree). Envio NÃO funcional nesta fase: action é placeholder. */}
+<form class="form" action="#" method="post" novalidate={false}>
+  <p class="form__intro">
+    Conte seu cenário que retornamos pelo WhatsApp ou e-mail. Campos com
+    <span aria-hidden="true">*</span> são obrigatórios.
+  </p>
+
+  <div class="form__field">
+    <label class="form__label" for="contato-nome">Nome <span class="form__req" aria-hidden="true">*</span></label>
+    <input
+      class="form__input"
+      type="text"
+      id="contato-nome"
+      name="nome"
+      autocomplete="name"
+      required
+    />
+  </div>
+
+  <div class="form__field">
+    <label class="form__label" for="contato-email">E-mail <span class="form__req" aria-hidden="true">*</span></label>
+    <input
+      class="form__input"
+      type="email"
+      id="contato-email"
+      name="email"
+      autocomplete="email"
+      required
+    />
+  </div>
+
+  <div class="form__field">
+    <label class="form__label" for="contato-empresa">Empresa</label>
+    <input
+      class="form__input"
+      type="text"
+      id="contato-empresa"
+      name="empresa"
+      autocomplete="organization"
+    />
+  </div>
+
+  <div class="form__field">
+    <label class="form__label" for="contato-telefone">Telefone</label>
+    <input
+      class="form__input"
+      type="tel"
+      id="contato-telefone"
+      name="telefone"
+      autocomplete="tel"
+      inputmode="tel"
+      placeholder="(51) 99999-9999"
+    />
+  </div>
+
+  <div class="form__field">
+    <label class="form__label" for="contato-mensagem">Mensagem <span class="form__req" aria-hidden="true">*</span></label>
+    <textarea
+      class="form__input form__textarea"
+      id="contato-mensagem"
+      name="mensagem"
+      rows="5"
+      required
+    ></textarea>
+  </div>
+
+  <div class="form__actions">
+    <Button type="submit" variant="primary">Enviar mensagem</Button>
+  </div>
+</form>
+
+<style>
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .form__intro {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-base);
+  }
+  .form__intro span {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .form__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .form__label {
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+  }
+  .form__req {
+    color: var(--color-primary);
+  }
+
+  .form__input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition:
+      border-color var(--transition-base),
+      box-shadow var(--transition-base);
+  }
+  .form__input::placeholder {
+    color: var(--color-text-muted);
+  }
+  .form__input:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-muted);
+  }
+  /* Estado de inválido só após o usuário interagir (não na carga). */
+  .form__input:user-invalid {
+    border-color: var(--color-accent);
+  }
+
+  .form__textarea {
+    resize: vertical;
+    min-height: 7rem;
+    line-height: var(--line-base);
+  }
+
+  .form__actions {
+    display: flex;
+    margin-top: var(--space-2);
+  }
+</style>

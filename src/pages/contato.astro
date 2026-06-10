@@ -1,26 +1,162 @@
 ---
-// Página CONTATO (esqueleto) — Fase 1, plano 01-03.
-// Usa o BaseLayout (Header + Footer + WhatsApp flutuante vêm do layout).
-// Formulário e dados completos chegam na Fase 2. O telefone fixo 51 3022-3066
-// e o endereço já aparecem no Footer do layout.
+/**
+ * Página /CONTATO (CNT-09) — Fase 2, plano 02-03.
+ *
+ * Layout em duas colunas (colapsa em mobile):
+ *   - Coluna 1: formulário de contato (ContatoForm) — UI + validação HTML5.
+ *               ENVIO NÃO FUNCIONAL nesta fase (action placeholder; Fase 3, ENT-02).
+ *   - Coluna 2: dados reais — telefone 51 3022-3066 (tel:), endereço completo de
+ *               Porto Alegre e WhatsApp.
+ *
+ * Reusa o shell (BaseLayout) e os primitivos. Mapa embed é opcional → Fase 3
+ * (não implementado aqui). Estilos só via var(--token) — zero hex.
+ */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/Section.astro";
 import Container from "../components/Container.astro";
+import Button from "../components/Button.astro";
+import ContatoForm from "../components/ContatoForm.astro";
 ---
 
 <BaseLayout
   title="KLIT — Contato"
-  description="Fale com a KLIT em Porto Alegre. Telefone 51 3022-3066. Formulário em breve."
+  description="Fale com a KLIT em Porto Alegre: telefone 51 3022-3066, WhatsApp e endereço na Av. Doutor Nilo Peçanha, Chácara das Pedras."
 >
   <Section>
-    <Container size="md">
-      <h1>Contato</h1>
-      <p>
-        Esta é a página de Contato em estrutura (esqueleto). Na Fase 2 ela trará
-        o formulário e os atalhos de atendimento. O telefone (51 3022-3066) e o
-        endereço já estão disponíveis no rodapé, e o botão flutuante de WhatsApp
-        acompanha você em todas as páginas.
-      </p>
+    <Container size="lg">
+      <div class="intro">
+        <p class="intro__eyebrow">Fale com a KLIT</p>
+        <h1 class="intro__title">Contato</h1>
+        <p class="intro__lead">
+          Conte seu cenário de TI e mostramos como podemos ajudar — com
+          infraestrutura gerenciada, segura e de custo previsível.
+        </p>
+      </div>
+
+      <div class="grid">
+        <!-- Coluna 1: formulário -->
+        <div class="grid__form">
+          <ContatoForm />
+        </div>
+
+        <!-- Coluna 2: dados de contato reais -->
+        <aside class="grid__info" aria-label="Dados de contato">
+          <div class="info__block">
+            <h2 class="info__title">Telefone</h2>
+            <a class="info__link" href="tel:+555130223066">51 3022-3066</a>
+          </div>
+
+          <div class="info__block">
+            <h2 class="info__title">WhatsApp</h2>
+            {/* TODO(Fase 3): trocar href para wa.me quando o número de WhatsApp for fornecido. */}
+            <Button href="/contato" variant="primary">Falar no WhatsApp</Button>
+          </div>
+
+          <div class="info__block">
+            <h2 class="info__title">Endereço</h2>
+            <address class="info__address">
+              Av. Doutor Nilo Peçanha 3238, 2º andar<br />
+              Chácara das Pedras<br />
+              Porto Alegre/RS<br />
+              CEP 91330-001
+            </address>
+            {/* Mapa embed: opcional, adiado para a Fase 3. */}
+          </div>
+        </aside>
+      </div>
     </Container>
   </Section>
 </BaseLayout>
+
+<style>
+  /* ===== Intro ===== */
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: var(--container-sm);
+    margin-bottom: var(--space-7);
+  }
+  .intro__eyebrow {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .intro__title {
+    margin: 0;
+    font-size: var(--font-size-4xl);
+    line-height: var(--line-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+  .intro__lead {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+  }
+
+  /* ===== Grade 2 colunas ===== */
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  /* ===== Coluna de dados ===== */
+  .grid__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding: var(--space-6);
+    background-color: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .info__block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .info__title {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+  }
+  .info__link {
+    color: var(--color-primary);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    text-decoration: none;
+  }
+  .info__link:hover {
+    text-decoration: underline;
+  }
+  .info__address {
+    margin: 0;
+    font-style: normal;
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    line-height: var(--line-base);
+  }
+
+  /* ===== Responsivo: colapsa em 1 coluna ===== */
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-7);
+    }
+  }
+  @media (max-width: 640px) {
+    .intro__title {
+      font-size: var(--font-size-3xl);
+    }
+  }
+</style>
