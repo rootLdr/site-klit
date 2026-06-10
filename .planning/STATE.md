@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: "Completed 01-01-PLAN.md (scaffold Astro + assets:sync)"
-last_updated: "2026-06-10T22:21:49.154Z"
+stopped_at: "Completed 01-02-PLAN.md (design system: tokens/temas, primitivos, ThemeSwitcher)"
+last_updated: "2026-06-10T22:26:00.000Z"
 last_activity: 2026-06-10
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
-  percent: 0
+  completed_plans: 2
+  percent: 67
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-10)
 ## Current Position
 
 Phase: 1 of 3 (Fundação & Base Visual)
-Plan: 1 of 3 in current phase
-Status: Ready to execute
+Plan: 3 of 3 in current phase (01-02 concluído)
+Status: Ready to execute (01-03 layout base)
 Last activity: 2026-06-10
 
-Progress: [███░░░░░░░] 33%
+Progress: [███████░░░] 67%
 
 ## Accumulated Context
 
@@ -44,6 +44,9 @@ Decisões logadas em PROJECT.md (Key Decisions) e docs/decisions.md. Recentes:
 - [Phase ?]: 01-01: Pipeline assets:sync (idempotente) public/brand/ versionado; slugs ocean/navy/sky/soft.
 - [Phase ?]: 01-01: Scaffold Astro 6.4.6 estático na raiz (saída static, sem SSR); npm run dev OK.
 - [Phase ?]: 01-01: Canônicos do site = favicon.png + logo-horizontal.png (ocean) + logo-horizontal-branco.png (branco) p/ 01-03.
+- [Phase 1]: 01-02: Fonte Inter via @fontsource (pesos 400/500/600/700) como tipografia base, importada em global.css.
+- [Phase 1]: 01-02: Design tokens em tokens.css (paleta = único hex); temas via [data-theme] trocam só --color-primary (ocean/navy/sky/soft).
+- [Phase 1]: 01-02: ThemeSwitcher persiste em localStorage (chave klit-theme); swatches usam tokens de paleta (sem hex); anti-flash is:inline a hoistar p/ <head> em 01-03.
 
 ### Pending Todos
 
@@ -62,6 +65,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-10T22:21:49.143Z
-Stopped at: Completed 01-01-PLAN.md (scaffold Astro + assets:sync)
+Last session: 2026-06-10T22:26:00.000Z
+Stopped at: Completed 01-02-PLAN.md (design system: tokens/temas, primitivos, ThemeSwitcher)
 Resume file: None
