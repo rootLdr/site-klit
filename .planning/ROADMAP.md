@@ -63,7 +63,7 @@ Plans:
 Plans:
 - [x] 03-01 (**3.1**): Conversão — WhatsApp (`wa.me`) + formulário via serviço externo (ex.: Formspree) com validação + CTAs
 - [x] 03-02 (**3.2**): Qualidade — responsividade final, acessibilidade básica, SEO básico e performance/imagens
-- [ ] 03-03 (**3.3**): Entrega — README de manutenção, build de produção e checagem de rodar localmente
+- [x] 03-03 (**3.3**): Entrega — README de manutenção, build de produção e checagem de rodar localmente
 
 ## Progress
 
@@ -73,7 +73,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Fundação & Base Visual | 3/3 | Complete   | 2026-06-10 |
 | 2. Conteúdo & Páginas | 3/3 | Complete   | 2026-06-10 |
-| 3. Conversão, Qualidade & Entrega | 2/3 | In Progress|  |
+| 3. Conversão, Qualidade & Entrega | 3/3 | Complete   | 2026-06-11 |
 
 ---
 *Roadmap criado: 2026-06-10*

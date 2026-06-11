@@ -39,8 +39,8 @@ Requisitos do primeiro conceito. Cada um mapeia para uma fase do roadmap.
 - [x] **ENT-04**: SEO básico (title, meta description, Open Graph, favicon)
 - [x] **ENT-05**: Acessibilidade básica (contraste, alt text, teclado, HTML semântico)
 - [x] **ENT-06**: Performance (imagens otimizadas, carregamento rápido)
-- [ ] **ENT-07**: README de manutenção (rodar local, estrutura, onde colocar assets, trocar conteúdo)
-- [ ] **ENT-08**: Build de produção gerável e servível localmente
+- [x] **ENT-07**: README de manutenção (rodar local, estrutura, onde colocar assets, trocar conteúdo)
+- [x] **ENT-08**: Build de produção gerável e servível localmente
 
 ## v2 Requirements
 
