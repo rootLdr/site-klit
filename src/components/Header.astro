@@ -22,6 +22,7 @@
  *   --container-*, --shadow-sm, --transition-*, --font-*.  Zero hex hardcoded.
  */
 import ThemeSwitcher from "./ThemeSwitcher.astro";
+import { href, isActive } from "../utils/links.js";
 
 const path = Astro.url.pathname;
 
@@ -31,24 +32,18 @@ const NAV = [
   { href: "/suporte", label: "Suporte" },
   { href: "/contato", label: "Contato" },
 ];
-
-// Marca ativo: "/" só na home; demais por prefixo (tolera "/solucoes/").
-function isActive(href: string): boolean {
-  if (href === "/") return path === "/";
-  return path === href || path.startsWith(href + "/");
-}
 ---
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a href="/" class="site-header__logo" aria-label="KLIT — página inicial">
+    <a href={href("/")} class="site-header__logo" aria-label="KLIT — página inicial">
       {/*
         Header de FUNDO CLARO => logo colorido (ocean).
         Para um header de fundo ESCURO, troque para:
         /brand/logo-horizontal-branco.png
       */}
       <img
-        src="/brand/logo-horizontal.png"
+        src={href("/brand/logo-horizontal.png")}
         alt="KLIT"
         width="160"
         height="44"
@@ -64,9 +59,9 @@ function isActive(href: string): boolean {
           NAV.map((item) => (
             <li>
               <a
-                href={item.href}
-                class:list={["nav-link", { "nav-link--active": isActive(item.href) }]}
-                aria-current={isActive(item.href) ? "page" : undefined}
+                href={href(item.href)}
+                class:list={["nav-link", { "nav-link--active": isActive(item.href, path) }]}
+                aria-current={isActive(item.href, path) ? "page" : undefined}
               >
                 {item.label}
               </a>
@@ -111,9 +106,9 @@ function isActive(href: string): boolean {
         NAV.map((item) => (
           <li>
             <a
-              href={item.href}
-              class:list={["mobile-menu__link", { "mobile-menu__link--active": isActive(item.href) }]}
-              aria-current={isActive(item.href) ? "page" : undefined}
+              href={href(item.href)}
+              class:list={["mobile-menu__link", { "mobile-menu__link--active": isActive(item.href, path) }]}
+              aria-current={isActive(item.href, path) ? "page" : undefined}
               data-menu-link
             >
               {item.label}

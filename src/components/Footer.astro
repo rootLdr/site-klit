@@ -18,6 +18,7 @@
  *   --radius-*, --font-*.  Zero hex hardcoded.
  */
 import { telefone, telefoneTel, endereco } from "../data/site.js";
+import { href } from "../utils/links.js";
 
 const ano = new Date().getFullYear();
 
@@ -34,7 +35,7 @@ const NAV = [
     <div class="site-footer__brand">
       {/* Rodapé de FUNDO ESCURO => logo BRANCO (variante branco) */}
       <img
-        src="/brand/logo-horizontal-branco.png"
+        src={href("/brand/logo-horizontal-branco.png")}
         alt="KLIT"
         width="180"
         height="50"
@@ -63,7 +64,7 @@ const NAV = [
       <h2 class="site-footer__heading">Navegação</h2>
       <ul>
         {NAV.map((item) => (
-          <li><a href={item.href}>{item.label}</a></li>
+          <li><a href={href(item.href)}>{item.label}</a></li>
         ))}
       </ul>
     </nav>

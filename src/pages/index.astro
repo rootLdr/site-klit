@@ -12,6 +12,7 @@ import Button from "../components/Button.astro";
 import Card from "../components/Card.astro";
 import { solucoes, pilares, solucoesPorPilar, PILAR } from "../data/solucoes.js";
 import { whatsappUrl } from "../data/site.js";
+import { href } from "../utils/links.js";
 
 // Os 3 cards de Segurança vêm do MÓDULO de dados (fonte única de verdade) —
 // não redigitamos os nomes inline, garantindo consistência das marcas.
@@ -59,7 +60,7 @@ const valores = [
         </p>
         <div class="hero__ctas">
           <Button variant="primary" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Falar no WhatsApp</Button>
-          <Button variant="secondary" href="/solucoes">Conheça as soluções</Button>
+          <Button variant="secondary" href={href("/solucoes")}>Conheça as soluções</Button>
         </div>
       </div>
     </Container>
@@ -153,7 +154,7 @@ const valores = [
       </div>
 
       <div class="sol__cta">
-        <Button variant="secondary" href="/solucoes">
+        <Button variant="secondary" href={href("/solucoes")}>
           Ver todas as soluções
         </Button>
       </div>
@@ -227,7 +228,7 @@ const valores = [
         </p>
         <div class="cta__actions">
           <Button variant="primary" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Falar no WhatsApp</Button>
-          <Button variant="secondary" href="/contato">Ir para Contato</Button>
+          <Button variant="secondary" href={href("/contato")}>Ir para Contato</Button>
         </div>
         <p class="cta__fone">
           Ou ligue para

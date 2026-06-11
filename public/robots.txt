@@ -1,5 +1,2 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://klit.com.br/sitemap.xml
-Host: klit.com.br
