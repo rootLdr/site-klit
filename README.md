@@ -22,7 +22,13 @@ npm install     # instala as dependências (1ª vez ou após mudar package.json)
 npm run dev     # sobe o servidor de desenvolvimento do Astro
 ```
 
-O `npm run dev` imprime a URL local no terminal (por padrão `http://localhost:4321`). Abra-a no navegador; as alterações em `src/` recarregam automaticamente.
+O `npm run dev` imprime a URL no terminal. O projeto está configurado (`server.host: true`, `port: 3333` em `astro.config.mjs`) para escutar na **rede local**, então:
+
+- Nesta máquina: `http://localhost:3333`
+- **De outros dispositivos na mesma rede (LAN):** `http://192.168.68.99:3333`
+  (a porta 3333 está no range 3000–3999 já liberado no firewall da VM; o mesmo vale para `npm run preview`.)
+
+As alterações em `src/` recarregam automaticamente no `dev` (no `preview` é preciso rodar `npm run build` de novo).
 
 ---
 
