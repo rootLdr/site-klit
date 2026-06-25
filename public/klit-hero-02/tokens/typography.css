@@ -1,0 +1,62 @@
+/* KLIT — Typography tokens
+   Manrope for headings/display, Inter for body/labels. */
+
+:root {
+  /* Families */
+  --font-display: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    'SFMono-Regular', ui-monospace, 'Menlo', Consolas, monospace;
+
+  /* Weights */
+  --fw-regular:  400; /* @kind font */
+  --fw-medium:   500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold:     700; /* @kind font */
+  --fw-extra:    800; /* @kind font */
+
+  /* Type scale (px) — see klit.html spec */
+  --fs-display: 56px;  /* hero */
+  --fs-h1: 48px;
+  --fs-h2: 36px;
+  --fs-h3: 28px;
+  --fs-h4: 20px;
+  --fs-body-lg: 18px;
+  --fs-body: 16px;
+  --fs-small: 13px;
+  --fs-caption: 11px;
+
+  /* Line heights */
+  --lh-tight:   1.1; /* @kind other */
+  --lh-heading: 1.2; /* @kind other */
+  --lh-snug:    1.4; /* @kind other */
+  --lh-body:    1.6; /* @kind other */
+
+  /* Letter spacing */
+  --ls-tight:  -0.02em; /* @kind other */
+  --ls-normal: 0; /* @kind other */
+  --ls-wide:   0.04em; /* @kind other */
+}
+
+/* ---- Helper classes (optional, semantic) ---- */
+.klit-display {
+  font-family: var(--font-display);
+  font-weight: var(--fw-extra);
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--text-strong);
+}
+.klit-h1 { font-family: var(--font-display); font-weight: var(--fw-bold); font-size: var(--fs-h1); line-height: var(--lh-heading); letter-spacing: var(--ls-tight); color: var(--text-strong); }
+.klit-h2 { font-family: var(--font-display); font-weight: var(--fw-bold); font-size: var(--fs-h2); line-height: var(--lh-heading); letter-spacing: var(--ls-tight); color: var(--text-strong); }
+.klit-h3 { font-family: var(--font-display); font-weight: var(--fw-semibold); font-size: var(--fs-h3); line-height: var(--lh-heading); color: var(--text-strong); }
+.klit-h4 { font-family: var(--font-display); font-weight: var(--fw-medium); font-size: var(--fs-h4); line-height: var(--lh-snug); color: var(--text-strong); }
+.klit-body { font-family: var(--font-body); font-weight: var(--fw-regular); font-size: var(--fs-body); line-height: var(--lh-body); color: var(--text-body); }
+.klit-small { font-family: var(--font-body); font-size: var(--fs-small); line-height: var(--lh-snug); color: var(--text-muted); }
+.klit-eyebrow {
+  font-family: var(--font-body);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-small);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}

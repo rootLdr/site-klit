@@ -1,0 +1,5 @@
+/* KLIT — Webfonts
+   Display/headings: Manrope · Body/labels: Inter (both Google Fonts, open source).
+   Loaded via Google Fonts CSS so consumers get the binaries through styles.css. */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');

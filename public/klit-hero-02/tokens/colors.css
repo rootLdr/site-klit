@@ -1,0 +1,92 @@
+/* KLIT — Color tokens
+   Base navy (institutional), blue accent, neutrals, status.
+   Base values first, then semantic aliases. */
+
+:root {
+  /* ---- Base: Navy (institutional) ---- */
+  --navy-black: #0C121D;  /* near-black, deepest backgrounds */
+  --navy-dark:  #1E2B40;  /* dark navy surface */
+  --navy-mid:   #334663;  /* mid navy */
+  --steel:      #4B6387;  /* steel blue */
+
+  /* ---- Accent: Blue (CTA, links, highlights) ---- */
+  --blue-pale:  #A3C5F1;  /* primary accent — matches logo */
+  --blue-2:     #7EB3FF;  /* secondary accent */
+  --blue-3:     #83A2CD;  /* muted accent */
+  --blue-ink:   #2E6BB8;  /* darker blue for text/links on light bg (AA) */
+
+  /* ---- Neutrals ---- */
+  --white: #FFFFFF;
+  --g50:   #F8FAFC;
+  --g100:  #F1F5F9;
+  --g200:  #E2E8F0;
+  --g250:  #DEE5ED;  /* between g300 and g100 — soft mist */
+  --g300:  #CBD5E1;
+  --g400:  #94A3B8;
+  --g500:  #64748B;
+  --g600:  #475569;
+  --g700:  #334155;
+  --g900:  #0F172A;
+
+  /* ---- Status (always pair color with an icon, never color alone) ---- */
+  --ok:      #22C55E;
+  --ok-bg:   #DCFCE7;
+  --info:    #A3C5F1;
+  --info-bg: #E5EEFB;
+  --warn:    #F59E0B;
+  --warn-bg: #FEF3C7;
+  --err:     #EF4444;
+  --err-bg:  #FEE2E2;
+  --neutral: #94A3B8;
+
+  /* ================= Semantic aliases ================= */
+
+  /* Surfaces */
+  --surface-page:      var(--g50);    /* app/page background */
+  --surface-card:      var(--white);  /* cards, panels */
+  --surface-sunken:    var(--g100);   /* inset / table headers */
+  --surface-inverse:   var(--navy-dark);  /* dark sections */
+  --surface-inverse-deep: var(--navy-black);
+
+  /* ---- Alternating section rhythm (claro ↔ escuro) ----
+     Use these as the background of full-width page sections.
+     Alternate: section-light → section-dark → section-light → section-dark …
+     Pair each with its matching --on-* text colors below. */
+  --section-light:      var(--g50);        /* #F8FAFC — light section */
+  --section-light-alt:  var(--white);      /* optional 2nd light tone */
+  --section-dark:       var(--navy-dark);  /* #1E2B40 — dark counterpoint */
+  --section-dark-deep:  var(--navy-black); /* #0C121D — deepest (hero) */
+
+  /* Text on light sections */
+  --on-light-strong: var(--g900);   /* headings */
+  --on-light-body:   var(--g700);   /* body */
+  --on-light-muted:  var(--g600);   /* secondary */
+  --on-light-accent: var(--blue-ink);   /* links / eyebrow on light */
+  /* Text on dark sections */
+  --on-dark-strong:  var(--white);          /* headings */
+  --on-dark-body:    var(--text-inverse-muted); /* body */
+  --on-dark-accent:  var(--blue-pale);      /* links / eyebrow on dark */
+
+  /* Text */
+  --text-strong:   var(--g900);   /* headings, primary text */
+  --text-body:     var(--g700);   /* body copy */
+  --text-muted:    var(--g600);   /* secondary text */
+  --text-subtle:   var(--g400);   /* captions, placeholders */
+  --text-inverse:  var(--white);  /* text on dark surfaces */
+  --text-inverse-muted: #B7C4D6;  /* muted text on dark */
+  --text-link:     var(--blue-ink);
+
+  /* Accent (interactive) */
+  --accent:           var(--blue-pale);
+  --accent-strong:    var(--blue-ink);
+  --accent-on-dark:   var(--blue-pale);  /* accent used on navy surfaces */
+
+  /* Borders & dividers */
+  --border:        var(--g300);
+  --border-subtle: var(--g200);
+  --border-strong: var(--g400);
+  --border-inverse: rgba(163,197,241,0.22);  /* hairline on navy */
+
+  /* Focus ring */
+  --focus-ring: rgba(126,179,255,0.55);
+}
