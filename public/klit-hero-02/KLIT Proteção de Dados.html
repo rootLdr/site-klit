@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KLIT — Proteção de dados</title>
+
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/colors.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/typography.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/effects.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/styles.css">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    background: var(--navy-black);
+    color: var(--text-inverse);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav { position: sticky; top: 0; z-index: 100; background: rgba(12,18,29,0.82); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-inverse); }
+  .nav__inner { max-width: 1160px; margin: 0 auto; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; }
+  .nav__brand img { height: 30px; display: block; }
+  .nav__back { display: inline-flex; align-items: center; gap: 8px; color: var(--text-inverse-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color var(--dur-base) var(--ease-out); }
+  .nav__back:hover { color: var(--blue-pale); }
+  .nav__back svg { transition: transform var(--dur-base) var(--ease-out); }
+  .nav__back:hover svg { transform: translateX(-3px); }
+
+  /* ---------- Shared ---------- */
+  .wrap { max-width: 1160px; margin: 0 auto; padding-left: 28px; padding-right: 28px; }
+  .eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; margin: 0 0 20px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px; line-height: 1;
+    font-family: var(--font-body); font-weight: 600; font-size: 15px;
+    padding: 14px 24px; border-radius: var(--radius-sm, 8px); text-decoration: none;
+    border: 1px solid transparent; cursor: pointer;
+    transition: background var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+  }
+  .btn--primary { background: var(--blue-ink); color: #fff; }
+  .btn--primary:hover { background: #2a62a8; transform: translateY(-2px); }
+  .btn--primary:active { transform: translateY(0); }
+  .btn--quiet { background: transparent; color: var(--blue-pale); padding-left: 6px; padding-right: 6px; }
+  .btn--quiet:hover { color: #fff; }
+  .btn svg { transition: transform var(--dur-base) var(--ease-out); }
+  .btn--primary:hover svg, .btn--quiet:hover svg { transform: translateX(3px); }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; overflow: hidden; }
+  .hero__grid {
+    max-width: 1160px; margin: 0 auto; padding: clamp(72px, 13vh, 150px) 28px clamp(72px, 13vh, 140px);
+    display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 40px; align-items: center;
+  }
+  @media (max-width: 880px) { .hero__grid { grid-template-columns: 1fr; gap: 8px; } }
+  .hero__copy { max-width: 560px; }
+  .hero .eyebrow { color: var(--blue-pale); }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(36px, 5.2vw, 62px); line-height: 1.05; letter-spacing: -0.025em;
+    margin: 0; color: #F2F7FE; text-wrap: balance;
+  }
+  .hero__sub { font-size: clamp(16px, 1.9vw, 19px); color: var(--text-inverse-muted); margin: 26px 0 0; max-width: 46ch; text-wrap: pretty; }
+  .hero__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 38px; }
+  .hero__viz { position: relative; aspect-ratio: 1 / 1; min-height: 320px; }
+  @media (max-width: 880px) {
+    .hero__grid > * { min-width: 0; }
+    .hero__viz { aspect-ratio: 16 / 11; min-height: 0; width: 100%; max-width: 100%; margin-top: 8px; }
+  }
+  #backup-viz { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .poweredby { display: inline-flex; align-items: center; gap: 8px; margin-top: 40px; font-size: 12.5px; letter-spacing: 0.02em; color: var(--text-subtle); }
+  .poweredby b { color: var(--blue-pale); font-weight: 600; }
+
+  /* ---------- Section base ---------- */
+  .section { padding: clamp(80px, 13vh, 132px) 0; }
+  .section__head { max-width: 680px; }
+  .section h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(27px, 3.4vw, 40px); line-height: 1.12; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+  .section__head p { font-size: clamp(15px, 1.5vw, 17px); margin: 18px 0 0; max-width: 58ch; text-wrap: pretty; }
+
+  .s-light { background: var(--surface-page); color: var(--text-strong); }
+  .s-light .eyebrow { color: var(--blue-ink); }
+  .s-light .section__head p { color: var(--text-muted); }
+  .s-dark { background: var(--section-dark, #1E2B40); }
+  .s-dark .eyebrow { color: var(--blue-pale); }
+  .s-dark .section__head p { color: var(--text-inverse-muted); }
+  .s-deep { background: var(--navy-black); }
+  .s-deep .eyebrow { color: var(--blue-pale); }
+  .s-deep .section__head p { color: var(--text-inverse-muted); }
+
+  /* ---------- Capabilities ---------- */
+  .caps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: clamp(44px, 6vh, 72px); border: 1px solid var(--border); border-radius: var(--radius-md, 10px); overflow: hidden; background: var(--border); }
+  @media (max-width: 880px) { .caps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .caps { grid-template-columns: 1fr; } }
+  .cap { background: var(--surface-card); padding: clamp(28px, 3vw, 40px); transition: background var(--dur-base) var(--ease-out); }
+  .cap:hover { background: #fff; }
+  .cap__icon { color: var(--blue-ink); margin-bottom: 22px; }
+  .cap h3 { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin: 0; letter-spacing: -0.01em; color: var(--text-strong); }
+  .cap p { font-size: 14.5px; line-height: 1.6; color: var(--text-muted); margin: 10px 0 0; text-wrap: pretty; }
+
+  /* ---------- Facts ---------- */
+  .facts { display: flex; flex-wrap: wrap; gap: clamp(32px, 6vw, 80px); margin-top: clamp(44px, 6vh, 68px); }
+  .fact { max-width: 24ch; }
+  .fact b { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(40px, 5vw, 60px); line-height: 1; letter-spacing: -0.03em; color: #F2F7FE; }
+  .fact span { display: block; font-size: 14.5px; color: var(--text-inverse-muted); margin-top: 14px; }
+
+  /* ---------- Steps ---------- */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 3vw, 44px); margin-top: clamp(44px, 6vh, 68px); }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; gap: 32px; } }
+  .step { padding-top: 24px; border-top: 1px solid var(--border); }
+  .step__n { font-family: var(--font-display); font-weight: 700; font-size: 13px; color: var(--blue-ink); letter-spacing: 0.06em; }
+  .step h3 { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin: 14px 0 0; letter-spacing: -0.01em; color: var(--text-strong); }
+  .step p { font-size: 14.5px; line-height: 1.6; color: var(--text-muted); margin: 10px 0 0; text-wrap: pretty; }
+
+  /* ---------- CTA ---------- */
+  .cta { text-align: center; }
+  .cta h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 3.8vw, 46px); line-height: 1.1; letter-spacing: -0.025em; margin: 0 auto; max-width: 17ch; color: #F2F7FE; text-wrap: balance; }
+  .cta p { font-size: clamp(15px, 1.7vw, 18px); color: var(--text-inverse-muted); margin: 20px auto 0; max-width: 52ch; }
+  .cta .hero__ctas { justify-content: center; margin-top: 36px; }
+
+  /* ---------- Footer ---------- */
+  .foot { background: var(--navy-black); color: var(--text-subtle); border-top: 1px solid var(--border-inverse); }
+  .foot__inner { max-width: 1160px; margin: 0 auto; padding: 34px 28px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; font-size: 13px; }
+  .foot__inner img { height: 22px; display: block; opacity: 0.9; }
+  .foot__inner a { color: var(--blue-pale); text-decoration: none; }
+
+  /* ---------- WhatsApp floating button ---------- */
+  .wa { position: fixed; right: 18px; bottom: 18px; z-index: 300; display: flex; align-items: center; }
+  .wa__label {
+    background: #fff; color: #0C121D; font-size: 12px; font-weight: 600;
+    padding: 6px 11px; border-radius: 999px; margin-right: 9px; white-space: nowrap;
+    box-shadow: 0 5px 16px rgba(12,18,29,0.22);
+    opacity: 0; transform: translateX(6px); pointer-events: none;
+    transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+  }
+  .wa:hover .wa__label { opacity: 1; transform: translateX(0); }
+  .wa__btn {
+    position: relative;
+    width: 30px; height: 30px; border-radius: 50%; background: #25D366;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+    box-shadow: 0 5px 16px rgba(37,211,102,0.42); cursor: pointer;
+    transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+  }
+  .wa__btn:hover { transform: translateY(-2px); box-shadow: 0 9px 22px rgba(37,211,102,0.5); }
+  .wa__btn:active { transform: translateY(0); }
+  .wa__pulse { position: absolute; right: 0; bottom: 0; width: 30px; height: 30px; border-radius: 50%; background: #25D366; opacity: 0.5; animation: waPulse 2.4s var(--ease-out) infinite; z-index: -1; }
+  @keyframes waPulse { 0% { transform: scale(1); opacity: 0.45; } 70%,100% { transform: scale(1.7); opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) { .wa__pulse { animation: none; display: none; } }
+</style>
+</head>
+<body>
+
+<template id="__bundler_thumbnail" data-bg-color="#0C121D">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0C121D"></rect>
+    <path d="M470 320 q0 -68 68 -76 q18 -52 78 -52 q64 0 82 58 q64 4 64 70 q0 62 -76 62 H538 q-68 0 -68 -62 z" fill="none" stroke="#A3C5F1" stroke-width="6"></path>
+    <path d="M576 300 h64 v34 q0 30 -32 44 q-32 -14 -32 -44 z" fill="none" stroke="#A3C5F1" stroke-width="5"></path>
+    <polyline points="592 318 606 332 626 306" fill="none" stroke="#DCEBFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></polyline>
+    <text x="600" y="600" font-family="Manrope, sans-serif" font-size="56" font-weight="800" fill="#A3C5F1" text-anchor="middle">Proteção</text>
+  </svg>
+</template>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="index.html" aria-label="KLIT — início"><img src="assets/klit-logo-white.png" alt="KLIT"></a>
+    <a class="nav__back" href="index.html#solucao-protecao">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Voltar
+    </a>
+  </div>
+</nav>
+
+<header class="hero s-deep">
+  <div class="hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow">Proteção de dados gerenciada</p>
+      <h1>Seus dados protegidos, recuperáveis e sob controle</h1>
+      <p class="hero__sub">Backup, recuperação de desastres e arquivamento numa só solução na nuvem — para servidores, estações de trabalho e Microsoft 365. Quando algo dá errado, você restaura rápido e segue operando.</p>
+      <div class="hero__ctas">
+        <a class="btn btn--primary" href="#recursos">Ver como protegemos
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+        <a class="btn btn--quiet" href="#como">Como funciona
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+      <p class="poweredby">Com a tecnologia <b>Cove Data Protection</b></p>
+    </div>
+    <div class="hero__viz" aria-hidden="true"><canvas id="backup-viz"></canvas></div>
+  </div>
+</header>
+
+<!-- Capabilities -->
+<section class="s-light section" id="recursos">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">O que está incluído</p>
+      <h2>Uma camada de proteção completa para seus dados</h2>
+      <p>Prevenção, recuperação e retenção trabalhando juntas — gerenciadas pela KLIT, com relatórios que comprovam que o backup está funcionando de verdade.</p>
+    </div>
+    <div class="caps" id="cap-grid"></div>
+  </div>
+</section>
+
+<!-- Why / numbers -->
+<section class="s-dark section">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Projetado para a nuvem</p>
+      <h2>Backup mais leve, mais rápido e sem equipamento para manter</h2>
+      <p>A arquitetura do Cove Data Protection envia para a nuvem uma fração dos dados de um backup tradicional. Menos volume, menos janela de backup, menos coisa para dar errado — e nada de appliances proprietários para comprar ou cuidar.</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>60×</b><span>mais eficiente que backups tradicionais</span></div>
+      <div class="fact"><b>Zero</b><span>equipamentos proprietários para comprar ou manter</span></div>
+      <div class="fact"><b>Um</b><span>painel único para servidores, estações e Microsoft 365</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="s-light section" id="como">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Como funciona</p>
+      <h2>Do seu ambiente para a nuvem, com segurança de ponta a ponta</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step__n">01</span>
+        <h3>Backup incremental contínuo</h3>
+        <p>Após a primeira cópia, só as mudanças são enviadas — desduplicadas e comprimidas. Backups diários ocupam uma fração do tamanho.</p>
+      </div>
+      <div class="step">
+        <span class="step__n">02</span>
+        <h3>Criptografia de ponta a ponta</h3>
+        <p>Seus arquivos viajam e ficam armazenados com criptografia AES de 256 bits — protegidos em trânsito e em repouso.</p>
+      </div>
+      <div class="step">
+        <span class="step__n">03</span>
+        <h3>Recuperação testada</h3>
+        <p>Testes de restauração automatizados confirmam que o backup é recuperável — arquivo, máquina inteira ou nuvem, quando você precisar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="s-deep section cta">
+  <div class="wrap">
+    <h2>Não espere o desastre para descobrir se o backup funciona</h2>
+    <p>A KLIT implanta, monitora e comprova a proteção dos seus dados — com restauração testada e relatórios claros.</p>
+    <div class="hero__ctas">
+      <a class="btn btn--primary" href="index.html">Falar com um especialista
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot__inner">
+    <img src="assets/klit-logo-white.png" alt="KLIT">
+    <span>© 2026 KLIT Serviços Gerenciados de TI Ltda. · <a href="index.html">Voltar ao início</a></span>
+  </div>
+</footer>
+
+<!-- WhatsApp floating button (simulated) -->
+<a class="wa" href="https://wa.me/" target="_blank" rel="noopener" aria-label="Fale com a KLIT no WhatsApp">
+  <span class="wa__label">Fale com a gente no WhatsApp</span>
+  <span class="wa__btn">
+    <span class="wa__pulse" aria-hidden="true"></span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.247-.694.247-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+  </span>
+</a>
+
+<script>
+  // ---------- Capability cards ----------
+  (function () {
+    var CAP = [
+      { t: 'Backup gerenciado', d: 'Cópias automáticas e contínuas de servidores e estações, monitoradas pela KLIT — sem depender de alguém lembrar de rodar o backup.',
+        i: '<ellipse cx="12" cy="6" rx="8" ry="3"></ellipse><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"></path>' },
+      { t: 'Recuperação de desastres', d: 'Restauração rápida e flexível — arquivo único, máquina inteira ou bare-metal — com backups fora do local por padrão.',
+        i: '<path d="M21 12a9 9 0 1 1-3-6.7"></path><polyline points="21 4 21 9 16 9"></polyline>' },
+      { t: 'Arquivamento de longo prazo', d: 'Retenção estendida sem custo extra de equipamento — recupere um arquivo do ano passado tão fácil quanto um de ontem.',
+        i: '<rect x="3" y="4" width="18" height="4" rx="1"></rect><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"></path>' },
+      { t: 'Proteção do Microsoft 365', d: 'Backup de Exchange, OneDrive e SharePoint no mesmo painel — porque o que está na nuvem também precisa de cópia.',
+        i: '<rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M3 9h18M8 13h3M8 16h6"></path>' },
+      { t: 'Segurança de ponta a ponta', d: 'Criptografia AES de 256 bits em trânsito e em repouso, com controle de retenção — seus dados protegidos do começo ao fim.',
+        i: '<path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"></path><path d="M9 12l2 2 4-4"></path>' },
+      { t: 'Relatórios que comprovam', d: 'Status de cada backup, testes de restauração e janelas de proteção — a KLIT mostra que está funcionando, não só promete.',
+        i: '<path d="M4 19V5M4 19h16M8 16v-5M12 16V8M16 16v-7"></path>' }
+    ];
+    document.getElementById('cap-grid').innerHTML = CAP.map(function (s) {
+      return '<article class="cap"><div class="cap__icon">' +
+        '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + s.i + '</svg>' +
+        '</div><h3>' + s.t + '</h3><p>' + s.d + '</p></article>';
+    }).join('');
+  })();
+</script>
+
+<script>
+  // ---------- Hero visual: data quietly flowing up into a secure cloud ----------
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var wrap = document.querySelector('.hero__viz');
+    var canvas = document.getElementById('backup-viz');
+    var ctx = canvas.getContext('2d');
+    var BLUE = '163,197,241';
+    var W, H, DPR, raf = null, prev = 0;
+
+    var CLOUD = [0.52, 0.30];
+    var DEVS = [ [0.26, 0.84], [0.52, 0.90], [0.78, 0.84] ];
+
+    function layout() {
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = wrap.clientWidth; H = wrap.clientHeight;
+      canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    function P(p) { return [p[0] * W, p[1] * H]; }
+    function qpt(p1, c, p2, t) { var u = 1 - t; return [
+      u*u*p1[0] + 2*u*t*c[0] + t*t*p2[0],
+      u*u*p1[1] + 2*u*t*c[1] + t*t*p2[1] ]; }
+    function S() { return Math.min(W, H) / 460; }
+
+    function drawCloud(cx, cy, pulse) {
+      var k = S() * 1.08;
+      ctx.save(); ctx.translate(cx, cy); ctx.scale(k, k);
+      ctx.beginPath();
+      ctx.moveTo(-66, 16);
+      ctx.bezierCurveTo(-92, 16, -92, -18, -60, -22);
+      ctx.bezierCurveTo(-54, -52, -8, -56, 4, -34);
+      ctx.bezierCurveTo(26, -50, 64, -34, 60, -8);
+      ctx.bezierCurveTo(90, -8, 90, 16, 60, 16);
+      ctx.closePath();
+      ctx.lineWidth = 1.8; ctx.strokeStyle = 'rgba(' + BLUE + ',0.7)';
+      ctx.shadowColor = 'rgba(' + BLUE + ',0.35)'; ctx.shadowBlur = 12 + pulse * 8;
+      ctx.stroke(); ctx.shadowBlur = 0;
+      ctx.fillStyle = 'rgba(' + BLUE + ',0.04)'; ctx.fill();
+      // shield + check
+      ctx.beginPath();
+      ctx.moveTo(-13, -15); ctx.lineTo(13, -15); ctx.lineTo(13, 1);
+      ctx.bezierCurveTo(13, 13, 4, 19, 0, 21);
+      ctx.bezierCurveTo(-4, 19, -13, 13, -13, 1);
+      ctx.closePath();
+      ctx.lineWidth = 1.6; ctx.strokeStyle = 'rgba(' + BLUE + ',0.85)'; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-6, 1); ctx.lineTo(-1, 7); ctx.lineTo(8, -7);
+      ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.strokeStyle = 'rgba(224,237,255,0.95)'; ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawDevice(x, y) {
+      var k = S();
+      ctx.save(); ctx.translate(x, y);
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(-14*k, -10*k, 28*k, 20*k, 3*k);
+      else ctx.rect(-14*k, -10*k, 28*k, 20*k);
+      ctx.lineWidth = 1.6; ctx.strokeStyle = 'rgba(' + BLUE + ',0.4)';
+      ctx.fillStyle = 'rgba(' + BLUE + ',0.04)'; ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-6*k, 15*k); ctx.lineTo(6*k, 15*k);
+      ctx.moveTo(0, 10*k); ctx.lineTo(0, 15*k); ctx.stroke();
+      ctx.restore();
+    }
+
+    var packets = [];
+    function seed() {
+      packets = [];
+      DEVS.forEach(function (d, i) {
+        for (var n = 0; n < 2; n++) packets.push({ dev: i, t: (n / 2) + i * 0.16, sp: 0.1 + (i % 2) * 0.015 });
+      });
+    }
+
+    function frame(ts) {
+      var dt = prev ? Math.min(0.05, (ts - prev) / 1000) : 0.016; prev = ts;
+      ctx.clearRect(0, 0, W, H);
+      var cloud = P(CLOUD);
+
+      DEVS.forEach(function (d) {
+        var p1 = P(d), c = [(p1[0]+cloud[0])/2 - 22*S(), (p1[1]+cloud[1])/2];
+        ctx.beginPath();
+        for (var s = 0; s <= 24; s++) { var p = qpt(p1, c, cloud, s/24); s ? ctx.lineTo(p[0],p[1]) : ctx.moveTo(p[0],p[1]); }
+        ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(' + BLUE + ',0.1)'; ctx.stroke();
+      });
+
+      packets.forEach(function (pk) {
+        pk.t += dt * pk.sp;
+        if (pk.t >= 1) pk.t -= 1;
+        var p1 = P(DEVS[pk.dev]), c = [(p1[0]+cloud[0])/2 - 22*S(), (p1[1]+cloud[1])/2];
+        var pos = qpt(p1, c, cloud, pk.t);
+        var a = 0.25 + 0.4 * Math.sin(pk.t * Math.PI);
+        ctx.beginPath(); ctx.arc(pos[0], pos[1], 2.2 * S(), 0, 6.2832);
+        ctx.fillStyle = 'rgba(' + BLUE + ',' + a.toFixed(2) + ')';
+        ctx.shadowColor = 'rgba(' + BLUE + ',0.6)'; ctx.shadowBlur = 6; ctx.fill(); ctx.shadowBlur = 0;
+      });
+
+      DEVS.forEach(function (d) { var p = P(d); drawDevice(p[0], p[1]); });
+
+      var pulse = 0.5 + 0.5 * Math.sin(ts / 900);
+      drawCloud(cloud[0], cloud[1], pulse);
+
+      raf = requestAnimationFrame(frame);
+    }
+
+    function drawStatic() {
+      layout();
+      ctx.clearRect(0, 0, W, H);
+      var cloud = P(CLOUD);
+      DEVS.forEach(function (d) {
+        var p1 = P(d), c = [(p1[0]+cloud[0])/2 - 22*S(), (p1[1]+cloud[1])/2];
+        ctx.beginPath();
+        for (var s = 0; s <= 24; s++) { var p = qpt(p1, c, cloud, s/24); s ? ctx.lineTo(p[0],p[1]) : ctx.moveTo(p[0],p[1]); }
+        ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(' + BLUE + ',0.2)'; ctx.stroke();
+        drawDevice(p1[0], p1[1]);
+      });
+      drawCloud(cloud[0], cloud[1], 0.4);
+    }
+
+    function start() {
+      layout();
+      if (reduced) { drawStatic(); return; }
+      seed(); if (raf) cancelAnimationFrame(raf); prev = 0; raf = requestAnimationFrame(frame);
+    }
+    start();
+
+    var rt;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { if (reduced) drawStatic(); else layout(); }, 160);
+    });
+  })();
+</script>
+
+</body>
+</html>

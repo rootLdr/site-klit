@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KLIT — Soluções</title>
+
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/colors.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/typography.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/effects.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/styles.css">
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/_ds_bundle.js"></script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--font-body); background: var(--surface-page); color: var(--text-strong); -webkit-font-smoothing: antialiased; }
+
+  .nav { position: sticky; top: 0; z-index: 100; background: var(--navy-black); border-bottom: 1px solid var(--border-inverse); }
+  .nav__inner { max-width: 1160px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .nav__brand img { height: 34px; display: block; }
+  .nav__back { display: inline-flex; align-items: center; gap: 8px; color: var(--text-inverse-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color var(--dur-base) var(--ease-out); }
+  .nav__back:hover { color: var(--blue-pale); }
+
+  .head { background: radial-gradient(120% 130% at 80% 0%, #1E2B40 0%, #0C121D 64%); color: var(--text-inverse); padding: clamp(64px, 12vh, 120px) 24px clamp(48px, 8vh, 84px); }
+  .head__inner { max-width: 1160px; margin: 0 auto; }
+  .head h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 5vw, 60px); line-height: 1.05; letter-spacing: -0.02em; margin: 16px 0 0; max-width: 18ch; text-wrap: balance; }
+  .head p { font-size: clamp(17px, 2vw, 19px); line-height: 1.6; color: var(--text-inverse-muted); max-width: 60ch; margin: 18px 0 0; text-wrap: pretty; }
+
+  .cat { max-width: 1160px; margin: 0 auto; padding: clamp(56px, 9vh, 96px) 24px clamp(72px, 11vh, 120px); }
+  .cat__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  @media (max-width: 760px) { .cat__grid { grid-template-columns: 1fr; } }
+  .sol__icon { width: 52px; height: 52px; border-radius: var(--radius-md); background: var(--info-bg, #EAF1FB); color: var(--blue-ink); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .sol__n { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue-ink); margin: 0 0 8px; }
+  .sol__title { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--text-strong); margin: 0; }
+  .sol__text { font-family: var(--font-body); font-size: 15px; line-height: 1.6; color: var(--text-muted); margin: 10px 0 18px; text-wrap: pretty; }
+  .sol__link { display: inline-flex; align-items: center; gap: 8px; color: var(--blue-ink); font-weight: 600; font-size: 14px; text-decoration: none; }
+  .sol__link:hover { text-decoration: underline; }
+  .sol__link svg { transition: transform var(--dur-base) var(--ease-out); }
+  .sol__link:hover svg { transform: translateX(3px); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="index.html" aria-label="KLIT — início"><img src="assets/klit-logo-white.png" alt="KLIT"></a>
+    <a class="nav__back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Voltar
+    </a>
+  </div>
+</nav>
+
+<header class="head">
+  <div class="head__inner" id="head-root"></div>
+</header>
+
+<main class="cat">
+  <div class="cat__grid" id="cat-root"></div>
+</main>
+
+<script type="text/babel" data-presets="react">
+  const { Eyebrow } = window.KLITDesignSystem_68a42b;
+
+  const Arrow = (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+  );
+  const IconGen = (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect></svg>
+  );
+
+  const SOLUTIONS = [
+    { n: 'Solução 1', title: 'Solução 1', text: 'Descrição da solução — substitua por uma frase curta na voz KLIT, começando pelo resultado.' },
+    { n: 'Solução 2', title: 'Solução 2', text: 'Descrição da solução — substitua por uma frase curta na voz KLIT, começando pelo resultado.' },
+    { n: 'Solução 3', title: 'Solução 3', text: 'Descrição da solução — substitua por uma frase curta na voz KLIT, começando pelo resultado.' },
+    { n: 'Solução 4', title: 'Solução 4', text: 'Descrição da solução — substitua por uma frase curta na voz KLIT, começando pelo resultado.' }
+  ];
+
+  function Head() {
+    return (
+      <React.Fragment>
+        <Eyebrow onDark>Soluções KLIT</Eyebrow>
+        <h1>Tudo o que cuidamos da sua TI, em um só lugar</h1>
+        <p>Conheça o catálogo de soluções gerenciadas da KLIT — segurança, continuidade e gestão, com qualidade comprovável.</p>
+      </React.Fragment>
+    );
+  }
+
+  function Catalog() {
+    return SOLUTIONS.map(function (s, i) {
+      return (
+        <div className="sol" key={i} style={{ background: 'var(--surface-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: 28, boxShadow: 'var(--shadow-sm, 0 1px 3px rgba(12,18,29,.08))' }}>
+          <div className="sol__icon">{IconGen}</div>
+          <p className="sol__n">{s.n}</p>
+          <h3 className="sol__title">{s.title}</h3>
+          <p className="sol__text">{s.text}</p>
+          <a className="sol__link" href="#">Saiba mais {Arrow}</a>
+        </div>
+      );
+    });
+  }
+
+  ReactDOM.createRoot(document.getElementById('head-root')).render(<Head />);
+  ReactDOM.createRoot(document.getElementById('cat-root')).render(<Catalog />);
+</script>
+
+</body>
+</html>

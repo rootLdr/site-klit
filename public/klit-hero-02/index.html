@@ -1,52 +1,1185 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KLIT — Serviços gerenciados de TI</title>
-<link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KLIT — Cresça sem perder o controle</title>
+
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/colors.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/typography.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/tokens/effects.css">
+<link rel="stylesheet" href="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/styles.css">
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/klit-design-system-68a42b2a-590c-4245-93a9-3a7847b522b2/_ds_bundle.js"></script>
+<script src="network.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
 <style>
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body { font-family: var(--font-body); background: var(--surface-page); color: var(--text-body); }
-  a { color: inherit; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; overflow-x: clip; }
+  body {
+    font-family: var(--font-body);
+    background: var(--navy-black);
+    color: var(--text-inverse);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Navbar ---------- */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(12,18,29,0.30);
+    -webkit-backdrop-filter: saturate(160%) blur(10px);
+    backdrop-filter: saturate(160%) blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: background var(--dur-slow, 420ms) var(--ease-out, ease),
+                backdrop-filter var(--dur-slow, 420ms) var(--ease-out, ease),
+                border-color var(--dur-slow, 420ms) var(--ease-out, ease),
+                box-shadow var(--dur-slow, 420ms) var(--ease-out, ease);
+  }
+  /* once scrolled past the hero, the header becomes a solid bar so it sits cleanly
+     over the flow imagery instead of an awkward translucent overlay */
+  .nav--solid {
+    background: var(--navy-black);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+    border-bottom-color: var(--border-inverse);
+    box-shadow: 0 6px 24px rgba(8,12,20,0.30);
+  }
+  .nav__inner {
+    max-width: 1200px; margin: 0 auto;
+    padding: 10px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+  }
+  .nav__brand { display: flex; align-items: center; gap: 10px; }
+  .nav__brand img { height: 34px; display: block; transition: height var(--dur-slow, 420ms) var(--ease-out, ease); }
+  .nav__links {
+    display: flex; gap: 30px;
+    position: absolute; left: 50%; transform: translateX(-50%);
+  }
+  .nav__links a {
+    font-size: 14px; font-weight: 500; color: var(--text-inverse-muted);
+    text-decoration: none; transition: color var(--dur-base) var(--ease-out);
+  }
+  .nav__links a:hover { color: var(--blue-pale); }
+  @media (max-width: 880px) { .nav__links { display: none; } }
+
+  /* ---------- Hamburger + mobile menu (<=880px) ---------- */
+  .nav__burger {
+    display: none;
+    position: relative; z-index: 101; /* stay above the open mobile menu (z-99) so it can always be tapped to close */
+    width: 44px; height: 44px; padding: 0; margin: 0;
+    background: transparent; border: 0; cursor: pointer;
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 5px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav__burger span {
+    display: block; width: 22px; height: 2px; border-radius: 2px;
+    background: var(--text-inverse, #fff);
+    transition: transform 240ms var(--ease-out, ease), opacity 200ms var(--ease-out, ease);
+  }
+  .nav__burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav__burger.is-open span:nth-child(2) { opacity: 0; }
+  .nav__burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav__mobile {
+    position: fixed; left: 0; right: 0; top: 0; z-index: 99;
+    background: var(--navy-black);
+    border-bottom: 1px solid var(--border-inverse);
+    box-shadow: 0 14px 34px rgba(8,12,20,0.42);
+    padding: 70px 22px 22px;
+    display: flex; flex-direction: column; gap: 2px;
+    transform: translateY(-104%); opacity: 0; pointer-events: none;
+    transition: transform 360ms var(--ease-out, ease), opacity 280ms var(--ease-out, ease);
+  }
+  .nav__mobile.is-open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+  .nav__mobile a {
+    display: flex; align-items: center; min-height: 50px;
+    padding: 8px 6px; font-size: 17px; font-weight: 500;
+    color: var(--text-inverse); text-decoration: none;
+    border-bottom: 1px solid rgba(163,197,241,0.10);
+  }
+  .nav__mobile a:last-child { border-bottom: 0; }
+  .nav__mobile-cta {
+    margin-top: 14px; justify-content: center;
+    background: transparent; color: var(--blue-pale) !important;
+    border: 1px solid var(--border-inverse);
+    border-radius: var(--radius-sm, 8px); font-weight: 600 !important;
+    gap: 8px; font-size: 15px;
+  }
+  .nav__mobile-cta svg { flex: 0 0 auto; }
+  @media (max-width: 880px) {
+    .nav__burger { display: flex; }
+    #nav-cta { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav__mobile { transition: none; }
+  }
+
+  /* nav CTA enters gently after the site presents itself */
+  #nav-cta {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 620ms var(--ease-out), transform 620ms var(--ease-out);
+  }
+  #nav-cta.is-in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    #nav-cta { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* discreet “Área do cliente” link in the header */
+  .nav__client {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12.5px; font-weight: 500; line-height: 1;
+    color: var(--text-inverse-muted); text-decoration: none;
+    padding: 7px 13px; border-radius: 999px;
+    border: 1px solid var(--border-inverse);
+    transition: color var(--dur-base, 240ms) var(--ease-out, ease),
+                border-color var(--dur-base, 240ms) var(--ease-out, ease),
+                background var(--dur-base, 240ms) var(--ease-out, ease);
+  }
+  .nav__client:hover { color: var(--blue-pale); border-color: rgba(163,197,241,0.40); background: rgba(163,197,241,0.06); }
+  .nav__client svg { opacity: 0.85; }
+
+  /* ---------- Intro overlay (brand reveal) ---------- */
+  .intro {
+    position: fixed; inset: 0; z-index: 1000; overflow: hidden;
+    background: radial-gradient(120% 120% at 50% 50%, #16223A 0%, #0C121D 64%);
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 820ms var(--ease-out);
+  }
+  .intro.is-out { opacity: 0; pointer-events: none; transition: opacity 760ms var(--ease-out) 260ms; }
+  .intro__word {
+    display: inline-flex; align-items: flex-end;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(120px, 22vw, 300px);
+    line-height: 1;
+  }
+  /* each letter carries its own gradient fill, so transforms/filters
+     never break a shared background-clip (the earlier K bug) */
+  .intro__letter {
+    display: inline-block;
+    height: 0.72em; max-width: 1.3em; min-width: 0; overflow: hidden;
+    background: linear-gradient(120deg, #A3C5F1, #FFFFFF 42%, #7EB3FF 78%);
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: left center; mask-position: left center;
+    -webkit-mask-size: auto 100%; mask-size: auto 100%;
+    opacity: 0;
+    transform: translateY(0.16em);
+    transition: opacity 700ms var(--ease-out), transform 760ms var(--ease-out),
+                max-width 520ms var(--ease-out), margin 520ms var(--ease-out);
+  }
+  .intro__k  { -webkit-mask-image: url('assets/wm-K.png'); mask-image: url('assets/wm-K.png'); width: 0.568em; }
+  .intro__add.intro-l { -webkit-mask-image: url('assets/wm-L.png'); mask-image: url('assets/wm-L.png'); width: 0.467em; }
+  .intro__add.intro-i { -webkit-mask-image: url('assets/wm-I.png'); mask-image: url('assets/wm-I.png'); width: 0.138em; }
+  .intro__add.intro-t { -webkit-mask-image: url('assets/wm-T.png'); mask-image: url('assets/wm-T.png'); width: 0.558em; }
+  .intro__letter + .intro__letter { margin-left: 0.05em; }
+  /* whole word appears */
+  .intro__word.show .intro__letter { opacity: 1; transform: none; }
+  /* then KLIT swallows its own L, I, T \u2014 they collapse into the K */
+  .intro__add.eaten {
+    max-width: 0 !important;
+    margin-left: 0 !important;
+    opacity: 0 !important;
+    transform: translateX(-0.45em) !important;
+  }
+  /* portal: once only the K remains, it rushes toward the viewer and fades,
+     while the site emerges and grows behind it */
+  .intro.is-out .intro__word {
+    transform: scale(13);
+    opacity: 0;
+    filter: blur(7px);
+    transition: transform 1000ms cubic-bezier(0.66, 0, 0.84, 0),
+                opacity 760ms ease-in 200ms,
+                filter 1000ms ease-in;
+  }
+
+  /* hero copy reveals as the overlay clears */
+  #hero-copy {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out);
+  }
+  #hero-copy.is-in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .intro { display: none; }
+    #hero-copy { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ---------- Scroll cue (mouse silhouette) ---------- */
+  .scrollcue {
+    margin-top: clamp(72px, 13vh, 150px);
+    display: flex; flex-direction: column; align-items: center; gap: 9px;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
+  }
+  .scrollcue.is-in { opacity: 1; transform: none; }
+  .scrollcue__mouse { display: block; }
+  .scrollcue__wheel { animation: cueWheel 2s var(--ease-out) infinite; }
+  @keyframes cueWheel {
+    0%   { transform: translateY(0);   opacity: 0; }
+    16%  { opacity: 1; }
+    52%  { transform: translateY(9px); opacity: 0; }
+    100% { transform: translateY(9px); opacity: 0; }
+  }
+  .scrollcue__chev { animation: cueBob 2s var(--ease-out) infinite; }
+  @keyframes cueBob {
+    0%, 100% { transform: translateY(0);   opacity: 0.45; }
+    50%      { transform: translateY(4px); opacity: 0.9; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scrollcue { opacity: 1; transform: none; transition: none; }
+    .scrollcue__wheel, .scrollcue__chev { animation: none; }
+  }
+
+  /* ---------- Section 2 — FLOW SECTIONS ---------- */
+  .cats-wrap { position: relative; }  /* overflow visible so ScrollTrigger can pin */  .flow-section {
+    position: relative; min-height: 100vh; width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;   /* clip the scattered letters so they don't bleed into the hero / adjacent sections */
+  }
+  .flow-art-container {
+    position: absolute; inset: 0;
+    background-color: var(--navy-black);   /* neutral tonal placeholder marker — swap for a real background-image later */
+    background-size: cover; background-position: center;
+    transform: scale(1.05); overflow: hidden;
+  }
+  /* alternating tones for rhythm: light section ↔ dark section (hero is darkest) */
+  .flow-section:nth-child(odd) .flow-art-container  { background-color: var(--surface-page); }  /* 1, 3 — light */
+  .flow-section:nth-child(even) .flow-art-container { background-color: var(--navy-black); }      /* 2, 4 — dark */
+  .flow-overlay {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.15), rgba(0,0,0,0.5));
+  }
+  .flow-word {
+    position: relative; z-index: 10;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 8vw, 7rem); font-weight: 700;
+    text-transform: uppercase; letter-spacing: -0.02em;
+    color: var(--blue-pale); mix-blend-mode: difference;
+    text-align: center; line-height: 1; margin: 0;
+  }
+  .letter { display: inline-block; will-change: transform, opacity; }
+  /* group each word so letters never wrap mid-word; breaks happen only at the spaces between words */
+  .flow-word .word-unit { display: inline-block; white-space: nowrap; }
+
+  /* ---- Word-reveal helpers (scoped to flow sections) ---- */
+  /* terminal (Segurança): blinking caret */
+  .caret {
+    display: inline-block; width: 0.07em; height: 0.92em; vertical-align: -0.06em;
+    margin-left: 0.06em; background: var(--blue-pale);
+    box-shadow: 0 0 10px rgba(163,197,241,0.7);
+    animation: caretBlink 0.9s steps(1) infinite;
+  }
+  @keyframes caretBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+  /* telemetry (Gerenciamento): baseline + travelling pulse */
+  .wave-line {
+    position: absolute; left: 6%; right: 6%; top: 50%; height: 1px; z-index: 9;
+    background: rgba(163,197,241,0.28); opacity: 0; pointer-events: none;
+  }
+  .pulse {
+    position: absolute; top: 50%; left: 6%; width: 12px; height: 12px;
+    margin: -6px 0 0 -6px; border-radius: 50%; z-index: 10;
+    background: var(--blue-pale); box-shadow: 0 0 18px 4px rgba(163,197,241,0.85);
+    opacity: 0; pointer-events: none;
+  }
+  .packets { position: absolute; inset: 0; z-index: 9; pointer-events: none; overflow: hidden; }
+  .packet {
+    position: absolute; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-pale);
+    box-shadow: 0 0 10px rgba(163,197,241,0.85);
+  }
+
+  /* ---- Feature section (Segurança): two-phase — word converges, then projects left with copy ---- */
+  .flow-overlay--light {
+    background:
+      linear-gradient(90deg, rgba(248,250,252,0.55) 0%, rgba(248,250,252,0.12) 38%, rgba(0,0,0,0) 62%),
+      radial-gradient(ellipse at 70% 50%, rgba(12,18,29,0.10), rgba(12,18,29,0.30));
+  }
+  .flow-overlay--dark {
+    background:
+      linear-gradient(90deg, rgba(12,18,29,0.74) 0%, rgba(12,18,29,0.40) 42%, rgba(0,0,0,0) 66%),
+      radial-gradient(ellipse at 70% 50%, rgba(12,18,29,0.12), rgba(12,18,29,0.45));
+  }
+  .flow-content {
+    position: absolute; z-index: 10; left: 50%; top: 50%;
+    width: auto; max-width: 92vw;
+    display: flex; flex-direction: column; align-items: flex-start; text-align: left;
+    pointer-events: none;   /* the converging word shouldn't trap clicks; button re-enables below */
+  }
+  .flow-section--feature .flow-word {
+    text-align: left; width: auto;
+    white-space: nowrap;                 /* keep the word on a single line */
+    mix-blend-mode: normal;
+  }
+  /* light section (e.g. Segurança): deep navy word the foreground figure occludes */
+  /* light backdrop BEHIND the word reveal so the dark word reads before the photo fades in */
+  .flow-section--light-feat { background-color: #DEE5ED; }
+  .flow-section--light-feat .flow-word { color: var(--navy-mid); }
+  /* foreground cutout of the subject — sits ABOVE the word so the word tucks behind him (profundidade) */
+  .flow-fg {
+    position: absolute; inset: 0; z-index: 11; pointer-events: none;
+    background-repeat: no-repeat; background-position: center; background-size: cover;
+    transform: scale(1.05);
+  }
+  .flow-fg--seguranca { background-image: url('assets/seguranca-fg.png'); }
+  .flow-fg--gerenciamento { background-image: url('assets/gerenciamento-fg.png'); }
+  /* dark section (e.g. Proteção de dados): pale-blue word that blends luminously
+     into the scene (screen) so it reads as part of the image, like the light sections */
+  .flow-section--dark-feat .flow-word  { color: var(--blue-pale); mix-blend-mode: screen; }
+  .flow-section--dark-feat .flow-copy__text { color: var(--text-inverse); }
+  .flow-copy {
+    opacity: 0; margin-top: 22px; max-width: 40ch;
+    pointer-events: auto;
+  }
+  .flow-copy__text {
+    font-family: var(--font-body); font-weight: 400;
+    font-size: clamp(15px, 1.45vw, 17px); line-height: 1.6;
+    color: var(--text-strong); margin: 0 0 22px;
+    text-wrap: pretty;
+  }
+  .flow-btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: var(--blue-ink); color: #fff;
+    font-family: var(--font-body); font-weight: 600; font-size: 15px;
+    padding: 12px 20px; border-radius: var(--radius-sm, 8px);
+    text-decoration: none; line-height: 1;
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(12,18,29,.12));
+    transition: background var(--dur-base, 240ms) var(--ease-out, ease),
+                transform var(--dur-base, 240ms) var(--ease-out, ease),
+                box-shadow var(--dur-base, 240ms) var(--ease-out, ease);
+  }
+  .flow-btn:hover { background: #255a9c; transform: translateY(-2px); box-shadow: var(--shadow-md, 0 6px 18px rgba(12,18,29,.16)); }
+  .flow-btn:active { transform: translateY(0); box-shadow: var(--shadow-sm, 0 1px 3px rgba(12,18,29,.12)); }
+  .flow-btn svg { transition: transform var(--dur-base, 240ms) var(--ease-out, ease); }
+  .flow-btn:hover svg { transform: translateX(3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .letter, .flow-art-container { transform: none !important; }
+  }
+
+  /* gentle reveal-on-scroll */
+  [data-reveal] {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 640ms var(--ease-out), transform 640ms var(--ease-out);
+  }
+  [data-reveal].in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ============================================================
+     RESPONSIVE — tablet (<=768px) & phone (<=480px).
+     Desktop above 768px is untouched. The flow sections drop the
+     desktop “dock-left” transform (set in JS only when !mobile) and
+     stack the word + copy + button as a readable block.
+     ============================================================ */
+  @media (max-width: 768px) {
+    .hero { padding: 104px 20px 56px; min-height: 92vh; }
+    .hero__sub { max-width: 92vw; }
+
+    /* ---- Flow sections: stacked card (image on top, text below) ---- */
+    .flow-section {
+      min-height: auto; display: block; overflow: hidden;
+    }
+    /* framed image at the top of each section (no full-bleed scale → no overflow) */
+    .flow-art-container {
+      position: relative; inset: auto;
+      width: 100%; height: 44vh; min-height: 260px; max-height: 420px;
+      transform: none; background-position: center;
+    }
+    .flow-overlay { display: none; }   /* clean image; the text sits below on the solid bg */
+    .flow-fg { display: none; }        /* drop the foreground cutout on mobile */
+    .flow-section--dark-feat { background-color: var(--navy-black); }
+
+    /* text block below the image */
+    .flow-content {
+      position: relative; left: auto; top: auto; transform: none;
+      width: 100%; max-width: 100%;
+      padding: 30px 22px 48px;
+      align-items: flex-start; text-align: left;
+    }
+    .flow-section--feature .flow-word {
+      white-space: normal; overflow-wrap: break-word; word-break: normal; hyphens: none;
+      font-size: clamp(1.75rem, 9.2vw, 2.6rem); line-height: 1.08;
+      text-align: left; width: 100%; mix-blend-mode: normal;
+    }
+    .flow-section--dark-feat .flow-word { mix-blend-mode: normal; }
+    .flow-copy { opacity: 1; max-width: 100%; margin-top: 16px; }
+    .flow-copy__text { font-size: 15px; }
+  }
+
+  @media (max-width: 480px) {
+    /* tame the brand-intro portal so the scaled K can't leave residue / overflow */
+    .intro__word { font-size: clamp(110px, 30vw, 200px); }
+    .intro.is-out .intro__word { transform: scale(8); }
+    .hero h1 { font-size: clamp(34px, 9vw, 52px); }
+    .flow-art-container { height: 38vh; min-height: 220px; }
+  }
+
+  /* landscape phones: shorter image so the text block is reachable */
+  @media (max-width: 900px) and (orientation: landscape) and (max-height: 560px) {
+    .flow-art-container { height: 56vh; min-height: 180px; }
+    .hero { min-height: 100vh; }
+  }
+
+  /* ---------- Footer ---------- */
+  .foot { position: relative; z-index: 50; background: var(--navy-black); color: var(--text-inverse-muted); border-top: 1px solid var(--border-inverse); }
+  .foot__inner { max-width: 1200px; margin: 0 auto; padding: clamp(34px,5vh,52px) 24px clamp(24px,3vh,32px); display: grid; grid-template-columns: 1.25fr 2.75fr; gap: 40px; }
+  @media (max-width: 860px) { .foot__inner { grid-template-columns: 1fr; gap: 38px; } }
+  .foot__brand img { height: 24px; display: block; margin-bottom: 14px; }
+  .foot__brand p { font-size: 13px; line-height: 1.6; max-width: 34ch; margin: 0; color: var(--text-subtle); }
+  .foot__cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+  @media (max-width: 860px) { .foot__cols { grid-template-columns: repeat(2, 1fr); gap: 30px; } }
+  .foot__col h4 { font-family: var(--font-body); font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-subtle); margin: 0 0 12px; }
+  .foot__col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .foot__col li, .foot__col address { font-size: 13px; line-height: 1.5; font-style: normal; color: var(--text-inverse-muted); }
+  .foot__col a { color: var(--text-inverse-muted); text-decoration: none; transition: color var(--dur-base, 240ms) var(--ease-out, ease); }
+  .foot__col a:hover { color: var(--blue-pale); }
+  .foot__bar { border-top: 1px solid var(--border-inverse); }
+  .foot__bar-inner { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--text-subtle); }
+  .foot__bar-links { display: flex; gap: 22px; }
+  .foot__bar-links a { color: var(--text-inverse-muted); text-decoration: none; transition: color var(--dur-base, 240ms) var(--ease-out, ease); }
+  .foot__bar-links a:hover { color: var(--blue-pale); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; overflow: hidden;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 120px 24px 64px;
+    background: radial-gradient(120% 120% at 78% 0%, #1E2B40 0%, #0C121D 62%);
+  }
+  /* subtle dotted texture, masked toward the upper-right */
+  .hero__texture {
+    position: absolute; inset: 0; pointer-events: none;
+    opacity: 0.5;
+    background-image: radial-gradient(var(--border-inverse) 1px, transparent 1px);
+    background-size: 34px 34px;
+    -webkit-mask-image: radial-gradient(80% 70% at 72% 18%, #000 25%, transparent 78%);
+    mask-image: radial-gradient(80% 70% at 72% 18%, #000 25%, transparent 78%);
+  }
+
+  .hero__inner {
+    position: relative; z-index: 3;
+    width: 100%; max-width: 1200px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    will-change: transform, opacity;
+  }
+
+  /* soft scrim to keep the centred text legible over the network */
+  .hero__scrim {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: radial-gradient(46% 44% at 50% 50%, rgba(12,18,29,0.66) 0%, rgba(12,18,29,0.34) 42%, transparent 74%);
+  }
+
+  /* animated scene — full-bleed background of the section */
+  .scene {
+    position: absolute; inset: 0; z-index: 1;
+    pointer-events: none;
+  }
+  .scene canvas { width: 100%; height: 100%; display: block; }
+
+  .hero__eyebrow { margin-bottom: 18px; }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(40px, 7vw, 84px);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    margin: 0 auto;
+    max-width: 16ch;
+    text-wrap: balance;
+    background: linear-gradient(100deg, #A3C5F1, #FFFFFF 32%, #7EB3FF 60%, #A3C5F1);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: heroSheen 9s ease-in-out infinite;
+  }
+  @keyframes heroSheen {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .hero__sub {
+    font-family: var(--font-body);
+    font-size: clamp(17px, 2.2vw, 20px);
+    line-height: 1.6;
+    color: var(--text-inverse-muted);
+    max-width: 560px;
+    margin: 26px auto 0;
+    text-wrap: pretty;
+  }
+
+  .hero__ctas {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    justify-content: center;
+    margin-top: 34px;
+  }
+
+  .hero__seals {
+    display: flex; flex-wrap: wrap; gap: 10px 26px;
+    justify-content: center; align-items: center;
+    margin-top: 30px;
+    font-size: 14px;
+    color: var(--text-inverse-muted);
+  }
+  .seal { display: inline-flex; align-items: center; gap: 9px; }
+  .seal__dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ok);
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.16);
+  }
+  .seal__sep { color: rgba(163,197,241,0.34); }
+  @media (max-width: 560px) { .seal__sep { display: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero h1 { animation: none; }
+  }
+
+  /* ---------- WhatsApp floating button (always visible) ---------- */
+  .wa { position: fixed; right: 18px; bottom: 18px; z-index: 300; display: flex; align-items: center; }
+  .wa__label {
+    background: #fff; color: #0C121D; font-size: 12px; font-weight: 600;
+    padding: 6px 11px; border-radius: 999px; margin-right: 9px; white-space: nowrap;
+    box-shadow: 0 5px 16px rgba(12,18,29,0.22);
+    opacity: 0; transform: translateX(6px); pointer-events: none;
+    transition: opacity var(--dur-base, 240ms) var(--ease-out, ease), transform var(--dur-base, 240ms) var(--ease-out, ease);
+  }
+  .wa:hover .wa__label { opacity: 1; transform: translateX(0); }
+  .wa__btn {
+    position: relative;
+    width: 30px; height: 30px; border-radius: 50%; background: #25D366;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+    box-shadow: 0 5px 16px rgba(37,211,102,0.42); cursor: pointer;
+    transition: transform var(--dur-base, 240ms) var(--ease-out, ease), box-shadow var(--dur-base, 240ms) var(--ease-out, ease);
+  }
+  .wa__btn:hover { transform: translateY(-2px); box-shadow: 0 9px 22px rgba(37,211,102,0.5); }
+  .wa__btn:active { transform: translateY(0); }
+  .wa__pulse { position: absolute; right: 0; bottom: 0; width: 30px; height: 30px; border-radius: 50%; background: #25D366; opacity: 0.5; animation: waPulse 2.4s var(--ease-out, ease) infinite; z-index: -1; }
+  @keyframes waPulse { 0% { transform: scale(1); opacity: 0.45; } 70%,100% { transform: scale(1.7); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .wa__pulse { animation: none; display: none; } }
 </style>
-<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
-<script src="_ds_bundle.js"></script>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel" src="icons.jsx"></script>
-<script type="text/babel" src="Header.jsx"></script>
-<script type="text/babel" src="Hero.jsx"></script>
-<script type="text/babel" src="Services.jsx"></script>
-<script type="text/babel" src="Proof.jsx"></script>
-<script type="text/babel" src="CTASection.jsx"></script>
-<script type="text/babel">
-  function Site() {
-    const { SiteHeader, Hero, Services, Proof, CTASection, SiteFooter } = window;
+
+<template id="__bundler_thumbnail" data-bg-color="#0C121D">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0C121D"></rect>
+    <g stroke="#A3C5F1" stroke-width="6" fill="none" opacity="0.9">
+      <line x1="600" y1="400" x2="450" y2="280"></line>
+      <line x1="600" y1="400" x2="760" y2="300"></line>
+      <line x1="600" y1="400" x2="500" y2="560"></line>
+      <line x1="600" y1="400" x2="780" y2="520"></line>
+    </g>
+    <g fill="#A3C5F1">
+      <circle cx="600" cy="400" r="34"></circle>
+      <circle cx="450" cy="280" r="20"></circle>
+      <circle cx="760" cy="300" r="20"></circle>
+      <circle cx="500" cy="560" r="20"></circle>
+      <circle cx="780" cy="520" r="20"></circle>
+    </g>
+    <text x="600" y="690" font-family="Manrope, sans-serif" font-size="84" font-weight="800" fill="#FFFFFF" text-anchor="middle" letter-spacing="2">KLIT</text>
+  </svg>
+</template>
+
+<div class="intro" id="intro" aria-hidden="true">
+  <span class="intro__word" id="intro-word"><span class="intro__letter intro__k"></span><span class="intro__letter intro__add intro-l"></span><span class="intro__letter intro__add intro-i"></span><span class="intro__letter intro__add intro-t"></span></span>
+</div>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="#" aria-label="KLIT — início">
+      <img src="assets/klit-logo-white.png" alt="KLIT">
+    </a>
+    <div class="nav__links">
+      <a href="#quem-somos">Quem somos</a>
+      <a href="#solucoes">Soluções</a>
+      <a href="#blog">Blog KLIT</a>
+      <a href="#contato">Contato</a>
+    </div>
+    <div id="nav-cta"></div>
+    <button class="nav__burger" id="nav-burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav__mobile" id="mobile-menu" hidden>
+    <a href="#quem-somos">Quem somos</a>
+    <a href="#solucoes">Soluções</a>
+    <a href="#blog">Blog KLIT</a>
+    <a href="#contato">Contato</a>
+    <a class="nav__mobile-cta" href="#area-cliente">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+      Área do cliente
+    </a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero__texture" aria-hidden="true"></div>
+  <div class="scene" aria-hidden="true">
+    <canvas id="net-canvas"></canvas>
+  </div>
+  <div class="hero__scrim" aria-hidden="true"></div>
+  <div class="hero__inner" id="hero-inner">
+    <div id="hero-copy"></div>
+    <div class="scrollcue" id="scrollcue" aria-hidden="true">
+      <svg class="scrollcue__mouse" width="34" height="54" viewBox="0 0 34 54" fill="none">
+        <rect x="1.4" y="1.4" width="31.2" height="51.2" rx="15.6" stroke="rgba(163,197,241,0.55)" stroke-width="1.8"></rect>
+        <circle class="scrollcue__wheel" cx="17" cy="15" r="2.9" fill="#A3C5F1"></circle>
+      </svg>
+      <svg class="scrollcue__chev" width="22" height="12" viewBox="0 0 22 12" fill="none">
+        <path d="M2.5 2.5 L11 9.5 L19.5 2.5" stroke="rgba(163,197,241,0.5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<div class="cats-wrap">
+  <section id="solucao-seguranca" data-flow-section data-flow-feature data-reveal="terminal" class="flow-section flow-section--feature flow-section--light-feat" data-screen-label="Flow 1 — Segurança">
+    <div class="flow-art-container" style="background-image: url('assets/seguranca.png');">
+      <div class="flow-overlay flow-overlay--light"></div>
+    </div>
+    <div class="flow-content" data-flow-content>
+      <h2 class="flow-word" data-word="SEGURANÇA">SEGURANÇA</h2>
+      <div class="flow-copy" data-flow-copy>
+        <p class="flow-copy__text">Proteção de dados, controle de acessos e backup criptografado — sua operação blindada contra perdas e paradas, com monitoramento contínuo e resposta rápida.</p>
+        <a class="flow-btn" href="KLIT Ameaças Cibernéticas.html">Saiba mais
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+    <div class="flow-fg flow-fg--seguranca" aria-hidden="true"></div>
+  </section>
+  <section id="solucao-protecao" data-flow-section data-flow-feature data-reveal="scramble" class="flow-section flow-section--feature flow-section--dark-feat" data-screen-label="Flow 2 — Proteção de dados">
+    <div class="flow-art-container" style="background-image: url('assets/protecao-dados.png');">
+      <div class="flow-overlay flow-overlay--dark"></div>
+    </div>
+    <div class="flow-content" data-flow-content>
+      <h2 class="flow-word" data-word="PROTEÇÃO DE
+DADOS">PROTEÇÃO DE DADOS</h2>
+      <div class="flow-copy" data-flow-copy>
+        <p class="flow-copy__text">Backup criptografado, redundância e recuperação testada — seus dados protegidos contra perda, ransomware e falhas, com cópias diárias e restauração rápida.</p>
+        <a class="flow-btn" href="KLIT Proteção de Dados.html">Saiba mais
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section id="solucao-gerenciamento" data-flow-section data-flow-feature data-reveal="telemetry" class="flow-section flow-section--feature flow-section--light-feat" data-screen-label="Flow 3 — Gerenciamento">
+    <div class="flow-art-container" style="background-image: url('assets/gerenciamento.png');">
+      <div class="flow-overlay flow-overlay--light"></div>
+    </div>
+    <span class="wave-line" aria-hidden="true"></span>
+    <span class="pulse" aria-hidden="true"></span>
+    <div class="flow-content" data-flow-content>
+      <h2 class="flow-word" data-word="GERENCIAMENTO">GERENCIAMENTO</h2>
+      <div class="flow-copy" data-flow-copy>
+        <p class="flow-copy__text">Inventário, atualizações e chamados num só painel — sua TI gerenciada de ponta a ponta, com indicadores claros e decisões baseadas em dados, não em achismo.</p>
+        <a class="flow-btn" href="KLIT Saiba Mais.html">Saiba mais
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+    <div class="flow-fg flow-fg--gerenciamento" aria-hidden="true"></div>
+  </section>
+  <section id="solucao-infraestrutura" data-flow-section data-flow-feature data-reveal="datacenter" class="flow-section flow-section--feature flow-section--dark-feat" data-screen-label="Flow 4 — Infraestrutura">
+    <div class="flow-art-container" style="background-image: url('assets/infraestrutura.png');">
+      <div class="flow-overlay flow-overlay--dark"></div>
+    </div>
+    <span class="packets" aria-hidden="true"></span>
+    <div class="flow-content" data-flow-content>
+      <h2 class="flow-word" data-word="INFRAESTRUTURA">INFRAESTRUTURA</h2>
+      <div class="flow-copy" data-flow-copy>
+        <p class="flow-copy__text">Servidores, redes e nuvem dimensionados e monitorados — uma base estável e escalável, com alta disponibilidade que acompanha o crescimento do seu negócio.</p>
+        <a class="flow-btn" href="KLIT Saiba Mais.html">Saiba mais
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="foot">
+  <div class="foot__inner">
+    <div class="foot__brand">
+      <img src="assets/klit-logo-white.png" alt="KLIT">
+      <p>Serviços gerenciados de TI. Acompanhamento contínuo, dados protegidos e qualidade comprovável.</p>
+    </div>
+    <div class="foot__cols">
+      <div class="foot__col">
+        <h4>Padrões</h4>
+        <ul>
+          <li>ISO/IEC 27001</li>
+          <li>ISO 9001</li>
+          <li>SOC 2 Type II</li>
+          <li>Conformidade LGPD</li>
+        </ul>
+      </div>
+      <div class="foot__col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="mailto:contato@klit.com.br">contato@klit.com.br</a></li>
+          <li><a href="tel:+551140028922">+55 (11) 4002-8922</a></li>
+          <li>Seg–Sex · 8h–18h</li>
+        </ul>
+      </div>
+      <div class="foot__col">
+        <h4>Endereço</h4>
+        <address>
+          Av. Paulista, 1842 — Conj. 74<br>
+          Bela Vista, São Paulo — SP<br>
+          CEP 01310-200
+        </address>
+      </div>
+      <div class="foot__col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Política de privacidade</a></li>
+          <li><a href="#">Avisos legais</a></li>
+          <li><a href="#">Termos de serviço</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot__bar">
+    <div class="foot__bar-inner">
+      <span>© 2025 KLIT Serviços Gerenciados de TI Ltda. · CNPJ 12.345.678/0001-90 · Todos os direitos reservados.</span>
+      <div class="foot__bar-links">
+        <a href="#">Política de privacidade</a>
+        <a href="#">Avisos legais</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="text/babel" data-presets="react">
+  const { Button, Eyebrow } = window.KLITDesignSystem_68a42b;
+
+  const ArrowRight = (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  );
+
+  function NavCta() {
+    return (
+      <a className="nav__client" href="#area-cliente">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="4" y="11" width="16" height="10" rx="2" />
+          <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+        </svg>
+        Área do cliente
+      </a>
+    );
+  }
+
+  function HeroCopy() {
     return (
       <React.Fragment>
-        <SiteHeader />
-        <Hero />
-        <Services />
-        <Proof />
-        <CTASection />
-        <SiteFooter />
+        <h1>Cresça com segurança. Sem perder o controle</h1>
+        <p className="hero__sub">
+          Segurança, continuidade e gestão para empresas que não podem operar no improviso
+        </p>
       </React.Fragment>
     );
   }
-  // wait a tick for all babel src files to register on window
-  function mount() {
-    if (window.SiteHeader && window.Hero && window.Services && window.Proof && window.CTASection && window.SiteFooter && window.KLITDesignSystem_68a42b) {
-      ReactDOM.createRoot(document.getElementById('root')).render(<Site />);
-    } else {
-      setTimeout(mount, 40);
-    }
-  }
-  mount();
+
+  ReactDOM.createRoot(document.getElementById('nav-cta')).render(<NavCta />);
+  ReactDOM.createRoot(document.getElementById('hero-copy')).render(<HeroCopy />);
 </script>
+
+
+<script>
+  // ---- Intro / entrance timeline ----
+  // K fades in → overlay clears → phrase reveals → first point ignites mid-phrase → header CTA appears.
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var intro  = document.getElementById('intro');
+    var word   = document.getElementById('intro-word');
+    var adds   = intro.querySelectorAll('.intro__add');
+    var copy   = document.getElementById('hero-copy');
+    var navcta = document.getElementById('nav-cta');
+    var canvas = document.getElementById('net-canvas');
+    var hero   = document.querySelector('.hero');
+    var cue    = document.getElementById('scrollcue');
+
+    function startNetwork() {
+      if (canvas && window.KLITNetwork) window.KLITNetwork.init(canvas);
+    }
+
+    // arriving via a “Voltar” link from a solution subpage (#solucao-...) — skip the
+    // brand intro entirely and let the flow script jump straight to that section
+    var _hid = (location.hash || '').slice(1);
+    var arriveAtSection = _hid && document.getElementById(_hid) &&
+                          document.getElementById(_hid).hasAttribute('data-flow-section');
+
+    if (reduced || arriveAtSection) {
+      copy.classList.add('is-in');
+      navcta.classList.add('is-in');
+      cue.classList.add('is-in');
+      intro.style.display = 'none';
+      startNetwork();
+      return;
+    }
+
+    // the site sits small + hidden behind the overlay, ready to emerge from the K
+    hero.style.transformOrigin = '50% 50%';
+    hero.style.transition = 'transform 1100ms var(--ease-out), opacity 720ms var(--ease-out)';
+    hero.style.transform = 'scale(0.58)';
+    hero.style.opacity = '0';
+
+    // 1) the whole word KLIT appears
+    setTimeout(function () { word.classList.add('show'); }, 90);
+    // 2) KLIT swallows its own letters (T → I → L), leaving only the K
+    setTimeout(function () { adds[2].classList.add('eaten'); }, 1450);
+    setTimeout(function () { adds[1].classList.add('eaten'); }, 1610);
+    setTimeout(function () { adds[0].classList.add('eaten'); }, 1770);
+    // 3) portal: only the K remains — it rushes toward the viewer while the
+    //    site emerges from inside it and grows to fill the screen
+    setTimeout(function () {
+      intro.classList.add('is-out');     // K rushes forward + overlay fades
+      hero.style.transform = 'scale(1)'; // site grows to full screen
+      hero.style.opacity = '1';
+    }, 2450);
+    setTimeout(function () { copy.classList.add('is-in'); }, 2720);     // phrase reveals
+    setTimeout(function () { startNetwork(); }, 3850);                  // point ignites only AFTER the text has fully entered
+    setTimeout(function () { intro.style.display = 'none'; }, 3550);    // remove overlay from layout
+    setTimeout(function () { hero.style.transition = ''; hero.style.transformOrigin = ''; }, 3700);
+    setTimeout(function () { navcta.classList.add('is-in'); }, 3700);  // header CTA appears
+    setTimeout(function () { cue.classList.add('is-in'); }, 5600);     // scroll hint appears last
+  })();
+
+  // ---- Header: transparent over the hero, solid bar once scrolled into the flow ----
+  (function () {
+    var nav = document.querySelector('.nav');
+    var hero = document.querySelector('.hero');
+    var ticking = false;
+    function apply() {
+      ticking = false;
+      var h = (hero && hero.offsetHeight) || window.innerHeight;
+      if (window.scrollY > h * 0.55) nav.classList.add('nav--solid');
+      else nav.classList.remove('nav--solid');
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+    }, { passive: true });
+    apply();
+  })();
+
+  // ---- Mobile menu (hamburger) ----
+  (function () {
+    var burger = document.getElementById('nav-burger');
+    var menu = document.getElementById('mobile-menu');
+    if (!burger || !menu) return;
+    function setOpen(open) {
+      burger.classList.toggle('is-open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+      if (open) {
+        menu.hidden = false;
+        requestAnimationFrame(function () { menu.classList.add('is-open'); });
+      } else {
+        menu.classList.remove('is-open');
+        setTimeout(function () { if (!menu.classList.contains('is-open')) menu.hidden = true; }, 400);
+      }
+    }
+    burger.addEventListener('click', function () { setOpen(!menu.classList.contains('is-open')); });
+    menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+    window.addEventListener('resize', function () { if (window.innerWidth > 880) setOpen(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+  })();
+
+  // ---- Scroll-driven hero transform (subtle), rAF + reduced-motion ----
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+    var inner = document.getElementById('hero-inner');
+    var hero = document.querySelector('.hero');
+    var cue = document.getElementById('scrollcue');
+    var ticking = false;
+
+    function update() {
+      ticking = false;
+      var h = hero.offsetHeight || window.innerHeight;
+      var p = Math.min(Math.max(window.scrollY / h, 0), 1); // 0..1 across the hero
+      var scale = 1 - 0.05 * p;                 // 1 -> 0.95
+      var ty = -3 * p;                          // 0 -> -3vh
+      var opacity = p < 0.7 ? 1 : 1 - ((p - 0.7) / 0.3) * 0.5; // fade in last ~30%
+      inner.style.transform = 'translateY(' + ty + 'vh) scale(' + scale + ')';
+      inner.style.opacity = opacity;
+      // the scroll hint fades out as soon as the user starts scrolling
+      if (cue) {
+        if (window.scrollY > 5) cue.style.opacity = Math.max(0, 1 - window.scrollY / 70);
+        else cue.style.opacity = '';
+      }
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  })();
+
+  // ---- Reveal-on-scroll for [data-reveal] (gentle fade-up) ----
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function run() {
+      var els = document.querySelectorAll('[data-reveal]');
+      if (reduced || !('IntersectionObserver' in window)) {
+        els.forEach(function (el) { el.classList.add('in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.18 });
+      els.forEach(function (el) { io.observe(el); });
+    }
+    // wait for React to commit Section 2 before observing
+    requestAnimationFrame(function () { requestAnimationFrame(run); });
+  })();
+</script>
+
+<script>
+  // ---- FLOW SECTIONS: GSAP pin (page-turn) + letters converging from chaos ----
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    gsap.registerPlugin(ScrollTrigger);
+    var mobile = window.matchMedia('(max-width: 768px)').matches;
+
+    var GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&@<>/{}';
+    var BLUE = '#A3C5F1', NAVY = '#334663';
+
+    // split a word into individually-animatable letters (spaces flagged)
+    function split(el) {
+      // '\n' in data-word forces a hard line break (works even on desktop's nowrap word)
+      var lines = String(el.dataset.word).split('\n');
+      var html = lines.map(function (line) {
+        var words = line.split(' ');
+        var out = '';
+        words.forEach(function (word, wi) {
+          if (wi > 0) out += '<span class="letter" data-space="1"> </span>'; // breakable gap between words
+          out += '<span class="word-unit">';
+          Array.from(word).forEach(function (ch) {
+            if (ch === '\u00a0') { out += '<span class="letter" data-space="1">&nbsp;</span>'; }
+            else { out += '<span class="letter">' + ch + '</span>'; }
+          });
+          out += '</span>';
+        });
+        return out;
+      }).join('<br>');
+      el.innerHTML = html;
+      return el.querySelectorAll('.letter');
+    }
+    function reals(letters) {
+      return Array.prototype.filter.call(letters, function (l) { return !l.dataset.space; });
+    }
+
+    // ---- word-reveal players (chosen per section) ----
+    var players = {
+      // Segurança → secure terminal typewriter
+      terminal: function (section, wordEl, letters) {
+        var old = wordEl.querySelector('.caret'); if (old) old.remove();
+        gsap.killTweensOf(letters);
+        var real = reals(letters);
+        gsap.set(letters, { opacity: 0, x: 0, y: 0 });
+        Array.prototype.forEach.call(letters, function (l) { if (l.dataset.space) gsap.set(l, { opacity: 1 }); });
+        gsap.to(real, { opacity: 1, duration: 0.01, stagger: 0.08, ease: 'none' });
+        var caret = document.createElement('span'); caret.className = 'caret'; wordEl.appendChild(caret);
+        var total = real.length * 0.08 + 0.25;
+        gsap.delayedCall(total, function () {
+          gsap.to(caret, { opacity: 0, duration: 0.3, onComplete: function () { caret.remove(); } });
+        });
+      },
+      // Proteção de dados → decryption scramble
+      scramble: function (section, wordEl, letters) {
+        var real = reals(letters);
+        gsap.set(letters, { opacity: 1, x: 0, y: 0 });
+        real.forEach(function (l, i) {
+          if (l._iv) { clearInterval(l._iv); l._iv = null; }
+          var target = l.dataset.final || (l.dataset.final = l.textContent);
+          l.style.width = l.offsetWidth + 'px';      // lock box so glyphs can't reflow
+          l.style.textAlign = 'center';
+          l.style.color = 'rgba(163,197,241,0.5)';
+          var lockAt = 240 + i * 60, start = performance.now();
+          l._iv = setInterval(function () {
+            var t = performance.now() - start;
+            if (t >= lockAt) {
+              l.textContent = target; l.style.color = ''; l.style.width = '';
+              clearInterval(l._iv); l._iv = null;
+            } else { l.textContent = GLYPHS[(Math.random() * GLYPHS.length) | 0]; }
+          }, 45);
+        });
+      },
+      // Gerenciamento → telemetry pulse sweeping a baseline
+      telemetry: function (section, wordEl, letters) {
+        var wave = section.querySelector('.wave-line'), pulse = section.querySelector('.pulse');
+        gsap.killTweensOf([letters, wave, pulse]);
+        var real = reals(letters);
+        gsap.set(letters, { opacity: 0.08, x: 0, y: 0 });
+        gsap.set(wave, { opacity: 0 });
+        gsap.set(pulse, { opacity: 0, left: '6%' });
+        var tl = gsap.timeline();
+        tl.to(wave, { opacity: 1, duration: 0.25 }, 0);
+        tl.to(pulse, { opacity: 1, duration: 0.2 }, 0.1);
+        tl.to(pulse, { left: '94%', duration: 1.1, ease: 'power1.inOut' }, 0.1);
+        tl.to(real, { opacity: 1, duration: 0.3, stagger: 0.06, ease: 'power2.out' }, 0.2);
+        tl.to([wave, pulse], { opacity: 0, duration: 0.35 }, '>-0.1');
+      },
+      // Infraestrutura → data center boot + rising data packets
+      datacenter: function (section, wordEl, letters) {
+        var real = reals(letters);
+        gsap.killTweensOf(letters);
+        gsap.fromTo(real,
+          { opacity: 0.12, scaleY: 0.06, transformOrigin: 'center bottom' },
+          { opacity: 1, scaleY: 1, duration: 0.5, ease: 'power3.out', stagger: 0.06, overwrite: true });
+        spawnPackets(section);
+      }
+    };
+
+    function spawnPackets(section) {
+      var layer = section.querySelector('.packets');
+      if (!layer) return;
+      layer.innerHTML = '';
+      for (var i = 0; i < 22; i++) {
+        var d = document.createElement('span');
+        d.className = 'packet'; layer.appendChild(d);
+        gsap.set(d, { left: (3 + Math.random() * 94) + '%', bottom: '-6%', opacity: 0 });
+        gsap.to(d, { bottom: '108%', duration: 1.3 + Math.random() * 0.9, delay: Math.random(), ease: 'none' });
+        gsap.to(d, { opacity: 1, duration: 0.3, delay: Math.random(),
+          onComplete: function () { var el = this.targets()[0]; gsap.to(el, { opacity: 0, duration: 0.5 }); } });
+      }
+    }
+
+    // dock target: content block's left edge near 6vw
+    function dockX(content) {
+      return (window.innerWidth * 0.06 + content.offsetWidth / 2) - window.innerWidth / 2;
+    }
+    // centred-during-reveal shift (word is left-anchored inside content)
+    function fitScale(wordEl) { return Math.min(1, window.innerWidth * 0.86 / wordEl.offsetWidth); }
+    function centerX(content, wordEl) {
+      return content.offsetWidth / 2 - (wordEl.offsetWidth * fitScale(wordEl)) / 2;
+    }
+
+    // rough duration of each word-reveal, so the image waits until the word has resolved
+    var REVEAL_DUR = { terminal: 1.0, scramble: 1.0, telemetry: 1.2, datacenter: 0.9 };
+
+    // dock scale: keep the word contained to the left ~46vw so it never runs into the photo
+    function dockScale(wordEl) {
+      return Math.min(0.62, (window.innerWidth * 0.46) / wordEl.offsetWidth);
+    }
+
+    var sections = gsap.utils.toArray('[data-flow-section]');
+
+    // jump straight to a section when arriving via #solucao-... (the “Voltar” links)
+    function goToHashSection() {
+      var hid = (location.hash || '').slice(1);
+      if (!hid) return;
+      var el = document.getElementById(hid);
+      if (!el || !el.hasAttribute('data-flow-section')) return;
+      ScrollTrigger.refresh();
+      window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset);
+      if (el.__playSequence) el.__playSequence();
+    }
+
+    // Reduced motion: every section in its final, resolved state.
+    if (reduced) {
+      sections.forEach(function (section) {
+        var content = section.querySelector('[data-flow-content]');
+        var wordEl = section.querySelector('.flow-word');
+        split(wordEl);
+        gsap.set(section.querySelectorAll('.letter'), { opacity: 1, x: 0, y: 0, scaleY: 1 });
+        if (!mobile) {
+          gsap.set(wordEl, { scale: function () { return dockScale(wordEl); }, transformOrigin: 'left center' });
+          gsap.set(content, { left: '50%', top: '50%', xPercent: -50, yPercent: -50, x: dockX(content) });
+        }
+        gsap.set(section.querySelector('.flow-copy'), { opacity: 1, y: 0 });
+        gsap.set(section.querySelector('.flow-art-container'), { opacity: 1 });
+        var fg = section.querySelector('.flow-fg'); if (fg) gsap.set(fg, { opacity: 1 });
+      });
+      window.addEventListener('load', function () { ScrollTrigger.refresh(); setTimeout(goToHashSection, 100); });
+      return;
+    }
+
+    sections.forEach(function (section) {
+      var content = section.querySelector('[data-flow-content]');
+      var wordEl  = section.querySelector('.flow-word');
+      var copy    = section.querySelector('.flow-copy');
+      var art     = section.querySelector('.flow-art-container');
+      var fg      = section.querySelector('.flow-fg');
+      var kind    = section.dataset.reveal;
+      var isLight = section.classList.contains('flow-section--light-feat');
+      var startColor = isLight ? NAVY : BLUE;   // dark word on light bg / pale word on dark bg
+      var letters = split(wordEl);
+
+      function playReveal() { if (players[kind]) players[kind](section, wordEl, letters); }
+
+      // word lives at its final spot (docked left) the whole time; no pin, so there
+      // is no pinned-section handoff and therefore no scroll “jump”.
+      // On mobile we skip the dock transform entirely — CSS stacks the block instead.
+      if (mobile) {
+        gsap.set(wordEl, { color: startColor });
+      } else {
+        gsap.set(wordEl, { transformOrigin: 'left center', color: startColor,
+          scale: function () { return dockScale(wordEl); } });
+        gsap.set(content, { left: '50%', top: '50%', xPercent: -50, yPercent: -50,
+          x: function () { return dockX(content); } });
+      }
+      gsap.set(letters, { opacity: 0 });   // hidden until the reveal runs
+      gsap.set(art, { opacity: 0 });        // image hidden during the word reveal
+      if (fg) gsap.set(fg, { opacity: 0 });
+      gsap.set(copy, { opacity: 0, y: 12 });
+
+      // when the section scrolls into view: word reveals at the left, THEN the image
+      // fades in, THEN the copy + “Saiba mais” button.
+      function playSequence() {
+        gsap.killTweensOf([art, copy].concat(fg ? [fg] : []));
+        gsap.set(art, { opacity: 0 });
+        if (fg) gsap.set(fg, { opacity: 0 });
+        gsap.set(copy, { opacity: 0, y: 12 });
+        gsap.set(wordEl, { color: startColor });
+        playReveal();
+        var m = gsap.timeline({ delay: REVEAL_DUR[kind] || 1.2 });
+        m.to(art, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0);
+        if (fg) m.to(fg, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.05);
+        m.to(copy, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 0.35);
+      }
+
+      ScrollTrigger.create({
+        trigger: section, start: 'top 65%',
+        onEnter: playSequence, onEnterBack: playSequence
+      });
+      section.__playSequence = playSequence;
+    });
+
+    window.addEventListener('load', function () { ScrollTrigger.refresh(); setTimeout(goToHashSection, 100); });
+  })();
+</script>
+
+<!-- WhatsApp floating button (simulated) -->
+<a class="wa" href="https://wa.me/" target="_blank" rel="noopener" aria-label="Fale com a KLIT no WhatsApp">
+  <span class="wa__label">Fale com a gente no WhatsApp</span>
+  <span class="wa__btn">
+    <span class="wa__pulse" aria-hidden="true"></span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.247-.694.247-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+  </span>
+</a>
+
 </body>
 </html>
